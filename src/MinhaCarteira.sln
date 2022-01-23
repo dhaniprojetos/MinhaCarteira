@@ -7,21 +7,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Servidor.WebA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-Servidor", "03-Servidor", "{2B67C2DE-CAC3-45A8-AE59-4A52CDB3DD94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Servidor.Modelo", "MinhaCarteira.Servidor.Modelo\MinhaCarteira.Servidor.Modelo.csproj", "{5F0CCAAB-A6FA-497E-B99D-B1A213B55562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Servidor.Modelo", "MinhaCarteira.Servidor.Modelo\MinhaCarteira.Servidor.Modelo.csproj", "{5F0CCAAB-A6FA-497E-B99D-B1A213B55562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Servidor.Servico", "MinhaCarteira.Servidor.Servico\MinhaCarteira.Servidor.Servico.csproj", "{9E9A28CC-3898-4564-B2B7-846D5F8D5E7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Servidor.Controle", "MinhaCarteira.Servidor.Servico\MinhaCarteira.Servidor.Controle.csproj", "{9E9A28CC-3898-4564-B2B7-846D5F8D5E7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Comum", "02-Comum", "{5653D47A-DB6B-4877-B864-0D4139051D42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Comum.Definicao", "MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj", "{0526E0FC-AC7E-4484-897F-9AA0C4CADECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Comum.Definicao", "MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj", "{0526E0FC-AC7E-4484-897F-9AA0C4CADECB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Teste.WebApi", "MinhaCarteira.Teste.WebApi\MinhaCarteira.Teste.WebApi.csproj", "{FA0FF878-60AB-47A7-AC5F-8B70D543FD35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Teste.WebApi", "MinhaCarteira.Teste.WebApi\MinhaCarteira.Teste.WebApi.csproj", "{FA0FF878-60AB-47A7-AC5F-8B70D543FD35}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04-Teste", "04-Teste", "{9AE0BC35-114A-4DFC-BD4E-A05D0ABE1BC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Cliente", "01-Cliente", "{66FECA09-14A9-4940-8105-4E55E200737F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Cliente.AppWeb", "MinhaCarteira.Cliente.AppWeb\MinhaCarteira.Cliente.AppWeb.csproj", "{A90FA44A-C5C3-420C-8158-555E5C18BB6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Cliente.AppWeb", "MinhaCarteira.Cliente.AppWeb\MinhaCarteira.Cliente.AppWeb.csproj", "{A90FA44A-C5C3-420C-8158-555E5C18BB6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Teste.Mock", "MinhaCarteira.Teste.Mock\MinhaCarteira.Teste.Mock.csproj", "{118957DE-3837-49C4-8B50-3561566B6804}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{A90FA44A-C5C3-420C-8158-555E5C18BB6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A90FA44A-C5C3-420C-8158-555E5C18BB6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A90FA44A-C5C3-420C-8158-555E5C18BB6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{118957DE-3837-49C4-8B50-3561566B6804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{118957DE-3837-49C4-8B50-3561566B6804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{118957DE-3837-49C4-8B50-3561566B6804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{118957DE-3837-49C4-8B50-3561566B6804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{0526E0FC-AC7E-4484-897F-9AA0C4CADECB} = {5653D47A-DB6B-4877-B864-0D4139051D42}
 		{FA0FF878-60AB-47A7-AC5F-8B70D543FD35} = {9AE0BC35-114A-4DFC-BD4E-A05D0ABE1BC4}
 		{A90FA44A-C5C3-420C-8158-555E5C18BB6B} = {66FECA09-14A9-4940-8105-4E55E200737F}
+		{118957DE-3837-49C4-8B50-3561566B6804} = {9AE0BC35-114A-4DFC-BD4E-A05D0ABE1BC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {208A5474-951B-4DB9-AC97-8EE05632206D}

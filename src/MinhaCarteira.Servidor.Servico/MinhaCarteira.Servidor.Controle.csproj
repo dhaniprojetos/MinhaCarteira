@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>MinhaCarteira.Servidor.Controle</AssemblyName>
+    <RootNamespace>MinhaCarteira.Servidor.Controle</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj" />
+    <ProjectReference Include="..\MinhaCarteira.Servidor.Modelo\MinhaCarteira.Servidor.Modelo.csproj" />
+  </ItemGroup>
+
+</Project>
