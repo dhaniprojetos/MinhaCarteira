@@ -15,7 +15,7 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     EhCliente = table.Column<bool>(type: "bit", nullable: false),
                     EhFornecedor = table.Column<bool>(type: "bit", nullable: false),
-                    IdAuxiliar = table.Column<int>(type: "int", nullable: false)
+                    IdAuxiliar = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MinhaCarteira.Comum.Definicao.Helper;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
@@ -25,7 +26,10 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 for (int i = 0; i < itens.Count; i++)
                 {
                     var item = await ObterPorId(itens[i].Id);
+                    item = itens[i].CreateDeepCopy();
                     itens[i] = item;
+
+                    Contexto.Entry(item).State = EntityState.Modified;
                 }
 
                 return itens;
@@ -90,6 +94,9 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 Tabela.UpdateRange(itensPreparados);
                 await Contexto.SaveChangesAsync();
 
+                itens.ToList().ForEach(f =>
+                    Contexto.Entry(f).State = EntityState.Detached);
+
                 return itens;
             }
             catch (Exception e)
@@ -117,6 +124,9 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 await Tabela.AddRangeAsync(itens);
                 await Contexto.SaveChangesAsync();
 
+                itens.ToList().ForEach(f =>
+                    Contexto.Entry(f).State = EntityState.Detached);
+
                 return itens;
             }
             catch (Exception e)
@@ -130,7 +140,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
         {
             var item = await AdicionarIncludes(Tabela)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(s => s.Id == id);
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             Contexto.Entry(item).State = EntityState.Detached;
 

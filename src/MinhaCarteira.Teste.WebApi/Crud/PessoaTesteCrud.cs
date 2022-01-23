@@ -19,9 +19,19 @@ namespace MinhaCarteira.Teste.WebApi.Crud
         { }
 
         [Fact]
-        public async Task CadastrarPessoa()
+        public async Task TestarMetodosCrud()
         {
-            var itens = await IncluirItensAsync(2);
+            var qtdTeste = 4;
+            var itens = await IncluirItensAsync(qtdTeste);
+            var qtdItensAdicionados = itens.Length;
+            Assert.Equal(qtdTeste, qtdItensAdicionados);
+
+            itens = await AlterarIntesAsync(itens);
+            var qtdItensAlterados = itens.Length;
+            Assert.Equal(qtdItensAdicionados, qtdItensAlterados);
+
+            //var removidos = await DeletarAsync(itens);
+            //Assert.Equal(qtdItensAlterados, removidos);
         }
 
     }
