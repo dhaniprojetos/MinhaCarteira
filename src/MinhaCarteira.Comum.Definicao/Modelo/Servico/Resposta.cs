@@ -15,16 +15,15 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
             Erros = null;
         }
 
-        public T Dados { get; protected set; }
+        public T Dados { get; set; }
         public string Mensagem { get; set; }
         public bool BemSucedido { get; set; }
         public Exception[] Erros { get; set; }
-        public string[] MensagensErro
-        {
-            get => Erros?
-                .Select(s => s.Message)
-                .ToArray();
-
-        }
+        //public string[] MensagensErro
+        //{
+        //    get => Erros?
+        //        .Select(s => s.Message)
+        //        .ToArray();
+        //}
     }
 }

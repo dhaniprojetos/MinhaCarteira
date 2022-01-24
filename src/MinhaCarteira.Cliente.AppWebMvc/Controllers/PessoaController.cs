@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Servico;
 using MinhaCarteira.Cliente.AppWebMvc.ViewModel;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -12,6 +18,17 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         private readonly IMapper _mapper;
         private readonly IPessoaServico _servico;
 
+        private async Task<PessoaViewModel> ObterPorId(int id)
+        {
+            var resposta = await _servico.ObterPorId(id);
+            PessoaViewModel item = null;
+
+            if (resposta.Dados != null)
+                item = _mapper.Map<PessoaViewModel>(resposta.Dados);
+
+            return item;
+        }
+
         public PessoaController(IPessoaServico servico, IMapper mapper)
         {
             _servico = servico;
@@ -20,7 +37,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var itens = await _servico.Navegar();
+            var resposta = await _servico.Navegar();
+            IList<PessoaViewModel> itens = null;
+
+            if (resposta.Dados != null)
+                itens = _mapper.Map<List<PessoaViewModel>>(resposta.Dados);
 
             return View(itens);
         }
@@ -46,14 +67,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         public async Task<IActionResult> Detalhes(int id)
         {
-            var item = await _servico.ObterPorId(id);
+            var item = await ObterPorId(id);
 
             return View(item);
         }
 
         public async Task<IActionResult> Alterar(int id)
         {
-            var item = await _servico.ObterPorId(id);
+            var item = await ObterPorId(id);
 
             return View(item);
         }
@@ -74,7 +95,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         public async Task<IActionResult> Deletar(int id)
         {
-            var item = await _servico.ObterPorId(id);
+            var item = await ObterPorId(id);
 
             return View(item);
         }

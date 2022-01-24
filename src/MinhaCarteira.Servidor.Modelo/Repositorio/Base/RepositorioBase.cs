@@ -142,7 +142,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id);
 
-            Contexto.Entry(item).State = EntityState.Detached;
+            if (item != null)
+                Contexto.Entry(item).State = EntityState.Detached;
 
             return item;
         }

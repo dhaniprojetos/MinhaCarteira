@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using System.Collections.Generic;
@@ -17,13 +18,22 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
             Servico = servico;
         }
 
+        //[HttpGet]
+        //public async Task<IList<TEntidade>> Navegar()
+        //{
+        //    var itens = await Servico.Navegar(null);
+        //    
+        //    return itens;
+        //}
+        
         [HttpGet]
         public async Task<IActionResult> Navegar()
         {
             var itens = await Servico.Navegar(null);
-            return itens != null
-                ? Ok(new Resposta<IList<TEntidade>>(itens))
-                : NotFound();
+
+            return itens == null 
+                ? NotFound() 
+                : Ok(new Resposta<IList<TEntidade>>(itens));
         }
 
         [HttpGet("{id:int}")]
