@@ -7,6 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.13" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="6.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
 ﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Teste.Mock.Interface;
 using System;

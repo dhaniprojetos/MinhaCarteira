@@ -5,12 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
-using MinhaCarteira.Comum.Definicao.Interface.Servico;
-using MinhaCarteira.Servidor.Controle.Servico;
-using MinhaCarteira.Servidor.Modelo.Data;
-using MinhaCarteira.Servidor.Modelo.Repositorio;
+using MinhaCarteira.Comum.Recursos.Helper;
 
 namespace MinhaCarteira.Servidor.WebApi
 {
@@ -26,19 +21,17 @@ namespace MinhaCarteira.Servidor.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MinhaCarteiraContext>(options =>
-            {
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("Default"));
-            });
-
-            services.AddScoped<ICrud<Pessoa>, PessoaRepositorio>();
-            services.AddScoped<IServicoCrud<Pessoa>, PessoaServico>();
+            services.AdicionarDados(
+                Configuration.GetConnectionString("Default"));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MinhaCarteira.Servidor.WebApi", Version = "v1" });
+                c.SwaggerDoc(
+                    "v1", 
+                    new OpenApiInfo { 
+                        Title = "MinhaCarteira.Servidor.WebApi", 
+                        Version = "v1" });
             });
         }
 
@@ -49,7 +42,9 @@ namespace MinhaCarteira.Servidor.WebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MinhaCarteira.Servidor.WebApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint(
+                    "/swagger/v1/swagger.json", 
+                    "MinhaCarteira.Servidor.WebApi v1"));
             }
 
             app.UseHttpsRedirection();

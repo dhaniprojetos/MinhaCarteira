@@ -112,8 +112,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 ? AdicionarIncludes(Tabela).AsNoTracking()
                 : Tabela.AsNoTracking();
 
-            if (criterio?.Filtro != null)
-                tab = criterio.Filtro.Filtrar(tab);
+            //if (criterio?.Filtro != null)
+            //    tab = criterio.Filtro.Filtrar(tab);
 
             return await tab.ToListAsync();
         }

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj" />
+    <ProjectReference Include="..\MinhaCarteira.Comum.Recursos\MinhaCarteira.Comum.Recursos.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Servidor.Modelo\MinhaCarteira.Servidor.Modelo.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Servidor.Servico\MinhaCarteira.Servidor.Controle.csproj" />
   </ItemGroup>

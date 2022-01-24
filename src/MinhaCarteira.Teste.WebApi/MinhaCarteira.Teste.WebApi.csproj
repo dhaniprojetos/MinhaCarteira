@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MinhaCarteira.Comum.Recursos\MinhaCarteira.Comum.Recursos.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Servidor.Servico\MinhaCarteira.Servidor.Controle.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Teste.Mock\MinhaCarteira.Teste.Mock.csproj" />
   </ItemGroup>
