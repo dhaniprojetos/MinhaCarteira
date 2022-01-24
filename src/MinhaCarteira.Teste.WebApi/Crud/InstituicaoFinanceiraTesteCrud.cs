@@ -1,23 +1,23 @@
-﻿using MinhaCarteira.Comum.Definicao.Entidade;
+﻿using System.Threading.Tasks;
+using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
 using MinhaCarteira.Teste.Mock.Interface;
 using MinhaCarteira.Teste.WebApi.Crud.Base;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace MinhaCarteira.Teste.WebApi.Crud
 {
-    public class PessoaTesteCrud : TesteBase<
-        Pessoa, 
-        PessoaBuilder, 
-        PessoaServico>
+    public class InstituicaoFinanceiraTesteCrud : TesteBase<
+        InstituicaoFinanceira,
+        InstituicaoFinanceiraBuilder, 
+        InstituicaoFinanceiraServico>
     {
-        public PessoaTesteCrud(
-            IBuilder<Pessoa> builder,
-            IServicoCrud<Pessoa> servico,
+        public InstituicaoFinanceiraTesteCrud(
+            IBuilder<InstituicaoFinanceira> builder,
+            IServicoCrud<InstituicaoFinanceira> servico,
             ITestOutputHelper output)
             : base(builder, servico, output) { }
 
@@ -36,6 +36,5 @@ namespace MinhaCarteira.Teste.WebApi.Crud
             //var removidos = await DeletarAsync(itens);
             //Assert.Equal(qtdItensAlterados, removidos);
         }
-
     }
 }

@@ -13,6 +13,7 @@ namespace MinhaCarteira.Servidor.Modelo.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PessoaMap());
+            modelBuilder.ApplyConfiguration(new InstituicaoFinanceiraMap());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -13,6 +13,7 @@ namespace MinhaCarteira.Teste.WebApi
             services.AdicionarDados("Server=(localdb)\\MSSQLLocalDB;Database=MinhaCarteiraDb;Integrated Security=true;");
 
             services.AddScoped<IBuilder<Pessoa>, PessoaBuilder>();
+            services.AddScoped<IBuilder<InstituicaoFinanceira>, InstituicaoFinanceiraBuilder>();
         }
     }
 }

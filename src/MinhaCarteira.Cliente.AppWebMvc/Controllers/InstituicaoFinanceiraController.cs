@@ -1,17 +1,19 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
-using MinhaCarteira.Cliente.AppWebMvc.ViewModel;
+using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using System.Threading.Tasks;
 using MinhaCarteira.Comum.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
-    public class PessoaController : BaseController<Pessoa, PessoaViewModel>
+    public class InstituicaoFinanceiraController :
+        BaseController<InstituicaoFinanceira, InstituicaoFinanceiraViewModel>
     {
-        public PessoaController(IServicoBase<Pessoa> servico, IMapper mapper)
-            : base(servico, mapper) { }
+        public InstituicaoFinanceiraController(IServicoBase<InstituicaoFinanceira> servico, IMapper mapper) : base(servico, mapper)
+        {
+        }
 
         public override Task<IActionResult> Index()
         {
@@ -37,5 +39,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             return await base.Deletar(id);
         }
+
     }
 }

@@ -22,6 +22,9 @@ namespace MinhaCarteira.Comum.Recursos.Helper
             services.AddScoped<ICrud<Pessoa>, PessoaRepositorio>();
             services.AddScoped<IServicoCrud<Pessoa>, PessoaServico>();
 
+            services.AddScoped<ICrud<InstituicaoFinanceira>, InstituicaoFinanceiraRepositorio>();
+            services.AddScoped<IServicoCrud<InstituicaoFinanceira>, InstituicaoFinanceiraServico>();
+
             return services;
         }
     }
