@@ -1,6 +1,8 @@
-﻿namespace MinhaCarteira.Cliente.AppWebMvc.ViewModel
+﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+
+namespace MinhaCarteira.Cliente.AppWebMvc.ViewModel
 {
-    public class PessoaViewModel
+    public class PessoaViewModel : IEntidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }

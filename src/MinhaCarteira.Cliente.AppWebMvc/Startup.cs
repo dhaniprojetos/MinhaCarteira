@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhaCarteira.Cliente.AppWebMvc.AutoMapper;
 using MinhaCarteira.Cliente.AppWebMvc.Servico;
+using MinhaCarteira.Cliente.AppWebMvc.Servico.Base;
+using MinhaCarteira.Comum.Definicao.Entidade;
 using Refit;
 using System;
 
@@ -22,11 +24,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var baseUrlApi = new Uri(Configuration["BaseUrlApi"].ToString());
+            var baseUrlApi = Configuration["BaseUrlApi"].ToString();
 
             services
-                .AddRefitClient<IPessoaServico>()
-                .ConfigureHttpClient(c => c.BaseAddress = baseUrlApi);
+                .AddRefitClient<IServicoBase<Pessoa>>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "pessoa"));
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
