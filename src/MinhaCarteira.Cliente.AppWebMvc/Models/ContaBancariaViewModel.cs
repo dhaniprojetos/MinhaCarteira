@@ -2,10 +2,8 @@
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
@@ -15,9 +13,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         {
             InstituicoesBancaria = new List<SelectListItem>();
         }
-        public ContaBancariaViewModel(Resposta<IList<InstituicaoFinanceira>> reposta)
+        public ContaBancariaViewModel(Resposta<IList<InstituicaoFinanceira>> resposta)
         {
-            var items = reposta.Dados?
+            AdicionarInstituicoesFinanceiras(resposta.Dados);
+        }
+
+        public void AdicionarInstituicoesFinanceiras(IList<InstituicaoFinanceira> items)
+        {
+            var instituicoes = items?
                 .Select(s => new SelectListItem()
                 {
                     Value = s.Id.ToString(),
@@ -25,7 +28,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
                 })
                 .ToList();
 
-            InstituicoesBancaria = items;
+            InstituicoesBancaria = instituicoes;
         }
 
         public int Id { get; set; }

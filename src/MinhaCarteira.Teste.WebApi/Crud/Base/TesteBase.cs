@@ -1,10 +1,10 @@
 ﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
-using MinhaCarteira.Teste.Mock.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using Xunit.Abstractions;
 
 namespace MinhaCarteira.Teste.WebApi.Crud.Base

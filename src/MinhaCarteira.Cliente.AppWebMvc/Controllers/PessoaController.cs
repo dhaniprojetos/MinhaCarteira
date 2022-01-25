@@ -13,14 +13,25 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public PessoaController(IServicoBase<Pessoa> servico, IMapper mapper)
             : base(servico, mapper) { }
 
+        protected override async Task<PessoaViewModel> InicializarViewModel(PessoaViewModel viewModel)
+        {
+            return await Task.FromResult(viewModel);
+        }
+
+        protected override async Task<bool> ValidarViewModel(PessoaViewModel viewModel)
+        {
+            return await Task.FromResult(true);
+        }
+
+        #region Métodos sobrescritos apenas manter as views
         public override Task<IActionResult> Index()
         {
             return base.Index();
         }
 
-        public override IActionResult Criar()
+        public override async Task<IActionResult> Criar()
         {
-            return base.Criar();
+            return await base.Criar();
         }
 
         public override async Task<IActionResult> Detalhes(int id)
@@ -37,5 +48,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             return await base.Deletar(id);
         }
+        #endregion
     }
 }

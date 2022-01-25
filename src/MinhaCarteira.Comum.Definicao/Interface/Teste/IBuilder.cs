@@ -1,6 +1,6 @@
 ﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
-namespace MinhaCarteira.Teste.Mock.Interface
+namespace MinhaCarteira.Comum.Definicao.Interface.Teste
 {
     public interface IBuilder<TEntidade>
         where TEntidade: class, IEntidade

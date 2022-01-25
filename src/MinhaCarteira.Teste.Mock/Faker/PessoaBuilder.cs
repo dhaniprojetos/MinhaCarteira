@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Teste.Mock.Interface;
 using System;
+using MinhaCarteira.Comum.Definicao.Interface.Teste;
 
 namespace MinhaCarteira.Teste.Mock.Faker
 {

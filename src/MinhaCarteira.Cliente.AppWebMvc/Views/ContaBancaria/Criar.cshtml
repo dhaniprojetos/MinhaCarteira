@@ -39,11 +39,13 @@
                     <span asp-validation-for="IdInstituicaoFinanceira" class="text-danger"></span>
                 </div>
             *@
-        <div class="form-group">
-            <label asp-for="IdInstituicaoFinanceira" class="control-label"></label>
-            <select asp-for="IdInstituicaoFinanceira" asp-items="Model.InstituicoesBancaria" class="form-control"></select>
-            <span asp-validation-for="IdInstituicaoFinanceira" class="text-danger"></span>
-        </div>
+            <div class="form-group">
+                <label asp-for="IdInstituicaoFinanceira" class="control-label"></label>
+                <select asp-for="IdInstituicaoFinanceira" asp-items="Model.InstituicoesBancaria" class="form-control">
+                    <option>Selecione</option>
+                </select>
+                <span asp-validation-for="IdInstituicaoFinanceira" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

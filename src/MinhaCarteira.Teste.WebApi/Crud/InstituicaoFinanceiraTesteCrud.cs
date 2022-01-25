@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
+using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
-using MinhaCarteira.Teste.Mock.Interface;
 using MinhaCarteira.Teste.WebApi.Crud.Base;
 using Xunit;
 using Xunit.Abstractions;

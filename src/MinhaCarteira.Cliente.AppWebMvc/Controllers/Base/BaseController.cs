@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using System.Collections.Generic;
@@ -7,14 +8,17 @@ using MinhaCarteira.Comum.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
-    public class BaseController<TEntidade, TEntidadeViewModel> : Controller
+    public abstract class BaseController<TEntidade, TEntidadeViewModel> : Controller
         where TEntidade : class, IEntidade
         where TEntidadeViewModel : class, IEntidade
     {
         private readonly IMapper _mapper;
         private readonly IServicoBase<TEntidade> _servico;
 
-        private async Task<TEntidadeViewModel> ObterPorId(int id)
+        protected IMapper Mapper => _mapper;
+        protected IServicoBase<TEntidade> Servico => _servico;
+
+        protected async Task<TEntidadeViewModel> ObterPorId(int id)
         {
             var resposta = await _servico.ObterPorId(id);
             TEntidadeViewModel item = default;
@@ -42,23 +46,33 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(itens);
         }
 
-        public virtual IActionResult Criar()
+        protected abstract Task<TEntidadeViewModel> InicializarViewModel(
+            TEntidadeViewModel viewModel);
+
+        protected abstract Task<bool> ValidarViewModel(TEntidadeViewModel viewModel);
+
+        public virtual async Task<IActionResult> Criar()
         {
-            return View();
+            var item = await InicializarViewModel(
+                Activator.CreateInstance<TEntidadeViewModel>());
+
+            return await Task.Run(() => View(item));
         }
         [HttpPost]
         public virtual async Task<IActionResult> Criar(TEntidadeViewModel item)
         {
-            if (ModelState.IsValid)
+            if (!await ValidarViewModel(item) || !ModelState.IsValid)
             {
-                var itemArray = new[] { _mapper.Map<TEntidade>(item) };
-                var itemDb = await _servico.Incluir(itemArray);
-                //TempData["Adicionado"] = pessoaDb;
-
-                return RedirectToAction(nameof(Index));
+                item = await InicializarViewModel(item);
+                return View(item);
             }
 
-            return View(item);
+            var itemArray = new[] { _mapper.Map<TEntidade>(item) };
+            var itemDb = await _servico.Incluir(itemArray);
+            //TempData["Adicionado"] = pessoaDb;
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         public virtual async Task<IActionResult> Detalhes(int id)
@@ -71,6 +85,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         public virtual async Task<IActionResult> Alterar(int id)
         {
             var item = await ObterPorId(id);
+            item = await InicializarViewModel(item);
 
             return View(item);
         }
@@ -78,36 +93,41 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         [HttpPost]
         public virtual async Task<IActionResult> Alterar(TEntidadeViewModel item)
         {
-            if (ModelState.IsValid)
+            if (!await ValidarViewModel(item) || !ModelState.IsValid)
             {
-                var itemArray = new[] { _mapper.Map<TEntidade>(item) };
-                var itemDb = await _servico.Alterar(itemArray);
-                //TempData["Adicionado"] = pessoaDb;
-
-                return RedirectToAction(nameof(Index));
+                item = await InicializarViewModel(item);
+                return View(item);
             }
+            
+            var itemArray = new[] { _mapper.Map<TEntidade>(item) };
+            var itemDb = await _servico.Alterar(itemArray);
+            //TempData["Adicionado"] = pessoaDb;
 
-            return View(item);
+            return RedirectToAction(nameof(Index));
+
         }
 
         public virtual async Task<IActionResult> Deletar(int id)
         {
             var item = await ObterPorId(id);
+            item = await InicializarViewModel(item);
 
             return View(item);
         }
         [HttpPost]
         public virtual async Task<IActionResult> Deletar(TEntidadeViewModel item)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var itensId = await _servico.Deletar(item.Id);
-                //TempData["Adicionado"] = pessoaDb;
-
-                return RedirectToAction(nameof(Index));
+                item = await InicializarViewModel(item);
+                return View(item);
             }
 
-            return View(item);
+            var itensId = await _servico.Deletar(item.Id);
+            //TempData["Adicionado"] = pessoaDb;
+
+            return RedirectToAction(nameof(Index));
+
         }
 
     }

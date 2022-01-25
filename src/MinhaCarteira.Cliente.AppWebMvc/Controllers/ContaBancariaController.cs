@@ -4,9 +4,6 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Recursos.Refit.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -18,24 +15,42 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         public ContaBancariaController(
             IServicoBase<ContaBancaria> servico,
-            IMapper mapper, 
+            IMapper mapper,
             IServicoBase<InstituicaoFinanceira> instituicaoFinanceiraServico)
             : base(servico, mapper)
         {
             _instituicaoFinanceiraServico = instituicaoFinanceiraServico;
         }
 
+        protected override async Task<ContaBancariaViewModel> InicializarViewModel(ContaBancariaViewModel viewModel)
+        {
+            var resp = await _instituicaoFinanceiraServico.Navegar();
+            viewModel.AdicionarInstituicoesFinanceiras(resp.Dados);
+
+            return viewModel;
+        }
+
+        protected override async Task<bool> ValidarViewModel(ContaBancariaViewModel conta)
+        {
+            if (!string.IsNullOrWhiteSpace(conta.Nome)) 
+                return await Task.FromResult(true);
+
+            ModelState.AddModelError(
+                nameof(conta.Nome),
+                "O campo Nome deve ser preenchido.");
+
+            return await Task.FromResult(false);
+        }
+
+        #region Métodos sobrescritos apenas manter as views
         public override Task<IActionResult> Index()
         {
             return base.Index();
         }
 
-        public override IActionResult Criar()
+        public override async Task<IActionResult> Criar()
         {
-            var bancos = _instituicaoFinanceiraServico.Navegar().Result;
-            var viewModel = new ContaBancariaViewModel(bancos);
-
-            return View(viewModel);
+            return await base.Criar();
         }
 
         public override async Task<IActionResult> Detalhes(int id)
@@ -52,5 +67,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             return await base.Deletar(id);
         }
+        #endregion
     }
 }

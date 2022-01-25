@@ -15,12 +15,14 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             modelBuilder.ApplyConfiguration(new PessoaMap());
             modelBuilder.ApplyConfiguration(new InstituicaoFinanceiraMap());
             modelBuilder.ApplyConfiguration(new ContaBancariaMap());
+            modelBuilder.ApplyConfiguration(new CategoriaMap());
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }
-        public DbSet<InstituicaoFinanceira> InstituicaoFinanceira { get; set; }
-        public DbSet<ContaBancaria> ContaBancaria { get; set; }
+        public DbSet<InstituicaoFinanceira> InstituicoesFinanceira { get; set; }
+        public DbSet<ContaBancaria> ContasBancaria { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
     }
 }

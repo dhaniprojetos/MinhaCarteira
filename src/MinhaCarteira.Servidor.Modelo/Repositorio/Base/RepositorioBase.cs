@@ -18,7 +18,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
         {
             return source;
         }
-        protected virtual async Task<IList<TEntidade>> ExecutarAntesAlteracao(
+        protected virtual async Task<IList<TEntidade>> ExecutarAntesAlterar(
             IList<TEntidade> itens)
         {
             try
@@ -26,7 +26,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 for (int i = 0; i < itens.Count; i++)
                 {
                     var item = await ObterPorId(itens[i].Id);
-                    item = itens[i].CreateDeepCopy();
+                    item.Mapear(itens[i]);
                     itens[i] = item;
 
                     Contexto.Entry(item).State = EntityState.Modified;
@@ -84,11 +84,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public async Task<IList<TEntidade>> Alterar(IList<TEntidade> itens)
+        public virtual async Task<IList<TEntidade>> Alterar(IList<TEntidade> itens)
         {
             try
             {
-                var itensPreparados = await ExecutarAntesAlteracao(itens);
+                var itensPreparados = await ExecutarAntesAlterar(itens);
                 if (itensPreparados == null) return null;
 
                 Tabela.UpdateRange(itensPreparados);
