@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MinhaCarteira.Comum.Recursos.Helper;
 using MinhaCarteira.Servidor.Modelo.Data;
+using Newtonsoft.Json;
 
 namespace MinhaCarteira.Servidor.WebApi
 {
@@ -25,14 +26,20 @@ namespace MinhaCarteira.Servidor.WebApi
             services.AdicionarDados(
                 Configuration.GetConnectionString("Default"));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(
-                    "v1", 
-                    new OpenApiInfo { 
-                        Title = "MinhaCarteira.Servidor.WebApi", 
-                        Version = "v1" });
+                    "v1",
+                    new OpenApiInfo
+                    {
+                        Title = "MinhaCarteira.Servidor.WebApi",
+                        Version = "v1"
+                    });
             });
         }
 
@@ -46,13 +53,13 @@ namespace MinhaCarteira.Servidor.WebApi
                     .Database
                     .Migrate();
             }
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint(
-                    "/swagger/v1/swagger.json", 
+                    "/swagger/v1/swagger.json",
                     "MinhaCarteira.Servidor.WebApi v1"));
             }
 
