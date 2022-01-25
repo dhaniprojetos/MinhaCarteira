@@ -14,6 +14,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper
             
             CreateMap<InstituicaoFinanceira, InstituicaoFinanceiraViewModel>();
             CreateMap<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>();
+
+            CreateMap<ContaBancaria, ContaBancariaViewModel>();
+            CreateMap<ContaBancariaViewModel, ContaBancaria>();
         }
     }
 }

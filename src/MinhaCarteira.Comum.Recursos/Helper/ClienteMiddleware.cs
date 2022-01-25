@@ -24,6 +24,11 @@ namespace MinhaCarteira.Comum.Recursos.Helper
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/instituicaofinanceira"));
 
+            services
+                .AddRefitClient<IServicoBase<ContaBancaria>>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "/contabancaria"));
+
             return services;
         }
     }

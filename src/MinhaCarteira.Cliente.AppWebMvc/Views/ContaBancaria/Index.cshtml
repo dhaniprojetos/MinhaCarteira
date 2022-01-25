@@ -1,0 +1,60 @@
+﻿@model IEnumerable<MinhaCarteira.Cliente.AppWebMvc.Models.ContaBancariaViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Criar">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Agencia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Conta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdInstituicaoFinanceira)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Agencia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Conta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InstituicaoFinanceira.Nome)
+                </td>
+                <td>
+                    @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
+                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

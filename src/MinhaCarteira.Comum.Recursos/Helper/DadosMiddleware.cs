@@ -25,6 +25,9 @@ namespace MinhaCarteira.Comum.Recursos.Helper
             services.AddScoped<ICrud<InstituicaoFinanceira>, InstituicaoFinanceiraRepositorio>();
             services.AddScoped<IServicoCrud<InstituicaoFinanceira>, InstituicaoFinanceiraServico>();
 
+            services.AddScoped<ICrud<ContaBancaria>, ContaBancariaRepositorio>();
+            services.AddScoped<IServicoCrud<ContaBancaria>, ContaBancariaServico>();
+
             return services;
         }
     }

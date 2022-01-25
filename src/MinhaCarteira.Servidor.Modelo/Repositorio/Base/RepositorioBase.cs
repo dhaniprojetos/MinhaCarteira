@@ -108,16 +108,18 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
         public async Task<IList<TEntidade>> Navegar(
             ICriterio<TEntidade> criterio)
         {
-            var tab = criterio != null && criterio.AdicionarIncludes
-                ? AdicionarIncludes(Tabela).AsNoTracking()
-                : Tabela.AsNoTracking();
+            var tab = AdicionarIncludes(Tabela).AsNoTracking();
+
+            //var tab = criterio != null && criterio.AdicionarIncludes
+            //    ? AdicionarIncludes(Tabela).AsNoTracking()
+            //    : Tabela.AsNoTracking();
 
             //if (criterio?.Filtro != null)
             //    tab = criterio.Filtro.Filtrar(tab);
 
             return await tab.ToListAsync();
         }
-        public async Task<IList<TEntidade>> Incluir(IList<TEntidade> itens)
+        public virtual async Task<IList<TEntidade>> Incluir(IList<TEntidade> itens)
         {
             try
             {

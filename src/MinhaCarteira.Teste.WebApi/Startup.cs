@@ -14,6 +14,7 @@ namespace MinhaCarteira.Teste.WebApi
 
             services.AddScoped<IBuilder<Pessoa>, PessoaBuilder>();
             services.AddScoped<IBuilder<InstituicaoFinanceira>, InstituicaoFinanceiraBuilder>();
+            services.AddScoped<IBuilder<ContaBancaria>, ContaBancariaBuilder>();
         }
     }
 }
