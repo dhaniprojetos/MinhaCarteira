@@ -29,7 +29,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdCategoriaPai" class="control-label"></label>
-                <input asp-for="IdCategoriaPai" class="form-control" />
+                <select asp-for="IdCategoriaPai" asp-items="Model.Categorias" class="form-control">
+                    <option Value="">Selecione</option>
+                </select>
                 <span asp-validation-for="IdCategoriaPai" class="text-danger"></span>
             </div>
             <div class="form-group">

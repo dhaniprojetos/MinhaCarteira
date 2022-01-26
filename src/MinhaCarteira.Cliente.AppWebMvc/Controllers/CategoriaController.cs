@@ -10,12 +10,21 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class CategoriaController : BaseController<Categoria, CategoriaViewModel>
     {
-        public CategoriaController(IServicoBase<Categoria> servico, IMapper mapper) : base(servico, mapper)
+        private readonly IServicoBase<Categoria> _categoriaServico;
+
+        public CategoriaController(
+            IServicoBase<Categoria> servico,
+            IMapper mapper, IServicoBase<Categoria> categoriaServico)
+            : base(servico, mapper)
         {
+            _categoriaServico = categoriaServico;
         }
 
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
+            var resp = await _categoriaServico.Navegar();
+            viewModel.AdicionarCategorias(resp.Dados);
+
             return await Task.FromResult(viewModel);
         }
 

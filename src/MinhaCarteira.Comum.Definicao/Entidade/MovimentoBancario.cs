@@ -30,13 +30,5 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
 
         public int ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
-
-        [NotMapped]
-        public decimal ValorReal
-        {
-            get => TipoMovimento == TipoMovimento.Credito
-                ? Valor
-                : Valor * (-1);
-        }
     }
 }

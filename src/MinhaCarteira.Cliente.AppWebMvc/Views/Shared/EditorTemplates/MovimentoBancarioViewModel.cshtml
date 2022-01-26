@@ -1,0 +1,87 @@
+﻿@using MinhaCarteira.Comum.Definicao.Modelo
+@model MinhaCarteira.Cliente.AppWebMvc.Models.MovimentoBancarioViewModel
+
+@{
+    ViewData["Title"] = "MovimentoBancarioViewModel";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @*<label asp-for="TipoMovimento" class="control-label"></label>
+                <input asp-for="TipoMovimento" class="form-control" />*@
+            @foreach (var c in Enum.GetValues(typeof(TipoMovimento)))
+            {
+                <input asp-for="TipoMovimento" type="radio" value="@((int)c)" checked="@((TipoMovimento)c == Model.TipoMovimento)" />
+                <label asp-for="TipoMovimento" class="control-label">@c</label>
+            }
+            <span asp-validation-for="TipoMovimento" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Id" class="control-label"></label>
+            <input asp-for="Id" class="form-control" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DataMovimento" class="control-label"></label>
+            <input asp-for="DataMovimento" class="form-control" />
+            <span asp-validation-for="DataMovimento" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descricao" class="control-label"></label>
+            <input asp-for="Descricao" class="form-control" />
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Valor" class="control-label"></label>
+            <input asp-for="Valor" class="form-control" />
+            <span asp-validation-for="Valor" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdAuxiliar" class="control-label"></label>
+            <input asp-for="IdAuxiliar" class="form-control" />
+            <span asp-validation-for="IdAuxiliar" class="text-danger"></span>
+        </div>
+        @*<div class="form-group">
+                <label asp-for="ValorReal" class="control-label"></label>
+                <input asp-for="ValorReal" class="form-control" />
+                <span asp-validation-for="ValorReal" class="text-danger"></span>
+            </div>*@
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="ContaBancariaId" class="control-label"></label>
+            <select asp-for="ContaBancariaId" asp-items="Model.ContasBancarias" class="form-control">
+                <option>Selecione</option>
+            </select>
+            <span asp-validation-for="ContaBancariaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoriaId" class="control-label"></label>
+            <select asp-for="CategoriaId" asp-items="Model.Categorias" class="form-control">
+                <option>Selecione</option>
+            </select>
+            <span asp-validation-for="CategoriaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PessoaId" class="control-label"></label>
+            <select asp-for="PessoaId" asp-items="Model.Pessoas" class="form-control">
+                <option Value="">Selecione</option>
+            </select>
+            <span asp-validation-for="PessoaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CentroClassificacaoId" class="control-label"></label>
+            <select asp-for="CentroClassificacaoId" asp-items="Model.CentrosClassificacao" class="form-control">
+                <option>Selecione</option>
+            </select>
+            <span asp-validation-for="CentroClassificacaoId" class="text-danger"></span>
+        </div>
+    </div>
+</div>
