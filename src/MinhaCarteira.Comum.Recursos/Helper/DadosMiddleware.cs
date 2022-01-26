@@ -33,6 +33,12 @@ namespace MinhaCarteira.Comum.Recursos.Helper
             services.AddScoped<ICrud<Categoria>, CategoriaRepositorio>();
             services.AddScoped<IServicoCrud<Categoria>, CategoriaServico>();
 
+            services.AddScoped<ICrud<CentroClassificacao>, CentroClassificacaoRepositorio>();
+            services.AddScoped<IServicoCrud<CentroClassificacao>, CentroClassificacaoServico>();
+
+            services.AddScoped<ICrud<MovimentoBancario>, MovimentoBancarioRepositorio>();
+            services.AddScoped<IServicoCrud<MovimentoBancario>, MovimentoBancarioServico>();
+
             return services;
         }
 
@@ -45,6 +51,8 @@ namespace MinhaCarteira.Comum.Recursos.Helper
             services.AddScoped<IBuilder<InstituicaoFinanceira>, InstituicaoFinanceiraBuilder>();
             services.AddScoped<IBuilder<ContaBancaria>, ContaBancariaBuilder>();
             services.AddScoped<IBuilder<Categoria>, CategoriaBuilder>();
+            services.AddScoped<IBuilder<CentroClassificacao>, CentroClassificacaoBuilder>();
+            services.AddScoped<IBuilder<MovimentoBancario>, MovimentoBancarioBuilder>();
 
             return services;
         }

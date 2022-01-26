@@ -26,10 +26,12 @@ namespace MinhaCarteira.Servidor.WebApi
             services.AdicionarDados(
                 Configuration.GetConnectionString("Default"));
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
 
             services.AddSwaggerGen(c =>
             {

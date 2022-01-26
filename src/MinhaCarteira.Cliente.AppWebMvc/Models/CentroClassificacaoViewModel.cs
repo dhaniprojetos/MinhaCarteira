@@ -1,8 +1,8 @@
 ﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
-namespace MinhaCarteira.Comum.Definicao.Entidade
+namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
-    public class CentroClassificacao : IEntidade
+    public class CentroClassificacaoViewModel : IEntidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }

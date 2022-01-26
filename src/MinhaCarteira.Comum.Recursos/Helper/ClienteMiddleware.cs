@@ -34,6 +34,16 @@ namespace MinhaCarteira.Comum.Recursos.Helper
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/categoria"));
 
+            services
+                .AddRefitClient<IServicoBase<CentroClassificacao>>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "/centroclassificacao"));
+
+            services
+                .AddRefitClient<IServicoBase<MovimentoBancario>>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "/movimentobancario"));
+
             return services;
         }
     }

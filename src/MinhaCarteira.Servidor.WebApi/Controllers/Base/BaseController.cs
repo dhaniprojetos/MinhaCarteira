@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
 {
@@ -10,12 +10,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
     [Route("[controller]")]
     public class BaseController<TEntidade> : ControllerBase
     {
-        protected IServicoCrud<TEntidade> Servico { get; }
-
         public BaseController(IServicoCrud<TEntidade> servico)
         {
             Servico = servico;
         }
+
+        protected IServicoCrud<TEntidade> Servico { get; }
 
         //[HttpGet]
         //public async Task<IList<TEntidade>> Navegar()
@@ -24,14 +24,14 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
         //    
         //    return itens;
         //}
-        
+
         [HttpGet]
         public async Task<IActionResult> Navegar()
         {
             var itens = await Servico.Navegar(null);
 
-            return itens == null 
-                ? NotFound() 
+            return itens == null
+                ? NotFound()
                 : Ok(new Resposta<IList<TEntidade>>(itens));
         }
 
@@ -52,7 +52,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
 
             return itemDb != null
                 ? CreatedAtAction(
-                    nameof(Incluir), 
+                    nameof(Incluir),
                     new Resposta<IList<TEntidade>>(itemDb))
                 : NotFound();
         }
@@ -76,6 +76,5 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                 ? Ok(Ok(new Resposta<int>(linhasAfetadas)))
                 : NotFound();
         }
-
     }
 }

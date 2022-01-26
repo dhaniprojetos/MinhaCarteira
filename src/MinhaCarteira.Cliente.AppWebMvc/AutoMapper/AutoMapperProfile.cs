@@ -20,6 +20,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper
 
             CreateMap<Categoria, CategoriaViewModel>();
             CreateMap<CategoriaViewModel, Categoria>();
+
+            CreateMap<CentroClassificacao, CentroClassificacaoViewModel>();
+            CreateMap<CentroClassificacaoViewModel, CentroClassificacao>();
+
+            CreateMap<MovimentoBancario, MovimentoBancarioViewModel>();
+            CreateMap<MovimentoBancarioViewModel, MovimentoBancario>();
         }
     }
 }

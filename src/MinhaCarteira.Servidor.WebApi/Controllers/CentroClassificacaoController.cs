@@ -4,10 +4,9 @@ using MinhaCarteira.Servidor.WebApi.Controllers.Base;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
-    public class InstituicaoFinanceiraController : BaseController<InstituicaoFinanceira>
+    public class CentroClassificacaoController : BaseController<CentroClassificacao>
     {
-        public InstituicaoFinanceiraController(IServicoCrud<InstituicaoFinanceira> servico) : base(servico)
-        {
-        }
+        public CentroClassificacaoController(IServicoCrud<CentroClassificacao> servico)
+            : base(servico) { }
     }
 }

@@ -1,11 +1,8 @@
-﻿using MinhaCarteira.Comum.Definicao.Entidade;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
@@ -13,6 +10,15 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
     {
         public MovimentoBancarioRepositorio(MinhaCarteiraContext contexto) : base(contexto)
         {
+        }
+
+        protected override IQueryable<MovimentoBancario> AdicionarIncludes(IQueryable<MovimentoBancario> source)
+        {
+            return source
+                .Include(i => i.CentroClassificacao)
+                .Include(i => i.Pessoa)
+                .Include(i => i.Categoria)
+                .Include(i => i.ContaBancaria);
         }
     }
 }

@@ -4,9 +4,9 @@ using MinhaCarteira.Servidor.Controle.Servico.Base;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class CentroClassificacaoServico : ServicoBase<CentroClassificacao>
+    public class MovimentoBancarioServico : ServicoBase<MovimentoBancario>
     {
-        public CentroClassificacaoServico(ICrud<CentroClassificacao> repositorio) : base(repositorio)
+        public MovimentoBancarioServico(ICrud<MovimentoBancario> repositorio) : base(repositorio)
         {
         }
     }

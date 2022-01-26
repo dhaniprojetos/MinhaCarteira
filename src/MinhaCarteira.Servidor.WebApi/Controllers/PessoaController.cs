@@ -6,7 +6,9 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
     public class PessoaController : BaseController<Pessoa>
     {
-        public PessoaController(IServicoCrud<Pessoa> servico) :
-            base(servico) { }
+        public PessoaController(IServicoCrud<Pessoa> servico)
+            : base(servico)
+        {
+        }
     }
 }

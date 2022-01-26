@@ -8,18 +8,18 @@ using MinhaCarteira.Comum.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
-    public class CategoriaController : BaseController<Categoria, CategoriaViewModel>
+    public class CentroClassificacaoController : BaseController<CentroClassificacao, CentroClassificacaoViewModel>
     {
-        public CategoriaController(IServicoBase<Categoria> servico, IMapper mapper) : base(servico, mapper)
+        public CentroClassificacaoController(IServicoBase<CentroClassificacao> servico, IMapper mapper) : base(servico, mapper)
         {
         }
 
-        protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
+        protected override async Task<CentroClassificacaoViewModel> InicializarViewModel(CentroClassificacaoViewModel viewModel)
         {
-            return await Task.FromResult(viewModel);
+            return await Task.FromResult(viewModel); 
         }
 
-        protected override async Task<bool> ValidarViewModel(CategoriaViewModel viewModel)
+        protected override async Task<bool> ValidarViewModel(CentroClassificacaoViewModel viewModel)
         {
             return await Task.FromResult(true);
         }
