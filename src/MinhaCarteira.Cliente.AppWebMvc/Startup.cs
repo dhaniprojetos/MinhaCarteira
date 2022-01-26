@@ -23,7 +23,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc
             services.AdicionarConexoesRefit(Configuration["BaseUrlApi"]);
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
-            services.AddControllersWithViews();
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,6 +13,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
     public class MovimentoBancarioViewModel : IEntidade
     {
+        [DisplayFormat(DataFormatString = "{0:d}", NullDisplayText = "Auto")]
         public int Id { get; set; }
         public TipoMovimento TipoMovimento { get; set; }
         [DisplayName("Data")]
