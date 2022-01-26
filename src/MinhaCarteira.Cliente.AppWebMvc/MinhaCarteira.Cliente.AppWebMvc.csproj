@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Debug.json" />
+    <Content Remove="appsettings.Release.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="6.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj" />
+    <ProjectReference Include="..\MinhaCarteira.Comum.Recursos\MinhaCarteira.Comum.Recursos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+  </ItemGroup>
+
+</Project>
