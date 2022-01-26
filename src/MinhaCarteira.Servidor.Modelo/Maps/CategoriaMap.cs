@@ -8,7 +8,7 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
     {
         public void Configure(EntityTypeBuilder<Categoria> builder)
         {
-            builder.ToTable("Categoria");
+            builder.ToTable(nameof(Categoria));
 
             builder.HasKey(k => k.Id);
 

@@ -10,8 +10,8 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
         {
             builder.ToTable(nameof(Pessoa));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Nome).HasMaxLength(200);
+            builder.HasKey(k => k.Id);
+            builder.Property(p => p.Nome).HasMaxLength(200);
 
             //builder.HasOne(x => x.Categoria)
             //    .WithMany()

@@ -8,9 +8,9 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
     {
         public void Configure(EntityTypeBuilder<InstituicaoFinanceira> builder)
         {
-            builder.ToTable("InstituicaoFinanceira");
+            builder.ToTable(nameof(InstituicaoFinanceira));
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(k => k.Id);
             builder.Property(p => p.Nome).HasMaxLength(200);
         }
     }

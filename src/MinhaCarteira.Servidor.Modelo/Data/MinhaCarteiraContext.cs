@@ -16,6 +16,8 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             modelBuilder.ApplyConfiguration(new InstituicaoFinanceiraMap());
             modelBuilder.ApplyConfiguration(new ContaBancariaMap());
             modelBuilder.ApplyConfiguration(new CategoriaMap());
+            modelBuilder.ApplyConfiguration(new CentroClassificacaoMap());
+            modelBuilder.ApplyConfiguration(new MovimentoBancarioMap());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -24,5 +26,7 @@ namespace MinhaCarteira.Servidor.Modelo.Data
         public DbSet<InstituicaoFinanceira> InstituicoesFinanceira { get; set; }
         public DbSet<ContaBancaria> ContasBancaria { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Categoria> CentrosClassificacao { get; set; }
+        public DbSet<Categoria> MovimentosBancarios { get; set; }
     }
 }

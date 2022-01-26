@@ -8,7 +8,7 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
     {
         public void Configure(EntityTypeBuilder<ContaBancaria> builder)
         {
-            builder.ToTable("ContaBancaria");
+            builder.ToTable(nameof(ContaBancaria));
 
             builder.HasKey(k => k.Id);
             builder.Property(p => p.Nome).HasMaxLength(200);
