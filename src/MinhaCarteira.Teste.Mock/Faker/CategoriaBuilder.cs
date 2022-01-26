@@ -27,9 +27,15 @@ namespace MinhaCarteira.Teste.Mock.Faker
             var categoria = ItemFake((int)args[0]);
             var random = new Random();
             var qtd = random.Next(1, 10);
+            var subQtd = random.Next(1, 10);
 
             for (var i = 1; i <= qtd; i++)
+            {
                 categoria.SubCategoria.Add(ItemFake(i));
+                
+                for (int j = 0; j < subQtd; j++)
+                    categoria.SubCategoria[i-1].SubCategoria.Add(ItemFake(j));
+            }
 
             return categoria;
         }

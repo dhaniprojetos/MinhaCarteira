@@ -24,7 +24,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud
         [Fact]
         public async Task TestarMetodosCrud()
         {
-            var qtdTeste = 4;
+            var qtdTeste = 2;
             var itens = await IncluirItensAsync(qtdTeste);
             var qtdItensAdicionados = itens.Length;
             Assert.Equal(qtdTeste, qtdItensAdicionados);
