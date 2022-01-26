@@ -29,11 +29,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdCategoriaPai" class="control-label"></label>
-                <select asp-for="IdCategoriaPai" asp-items="Model.Categorias" class="form-control">
-                    <option Value="">Selecione</option>
-                </select>
+                @*<select asp-for="IdCategoriaPai" asp-items="Model.Categorias" class="form-control">
+            <option Value="">Selecione</option>
+        </select>*@
+                <input type="hidden" asp-for="IdCategoriaPai" class="form-control" />
+                <input id="txtCategoria" class="form-control" />
                 <span asp-validation-for="IdCategoriaPai" class="text-danger"></span>
             </div>
+
+            @*<div class="form-group">
+                <input type="text" id="txtCustomer" name="Caminho" />
+                <input type="hidden" id="hfCustomer" name="CustomerId" />
+                <br /><br />
+            </div>*@
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -47,4 +56,38 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(function() {
+            $("#txtCategoria").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: '@Url.Action("ObterCategorias")',
+                        data: { "prefix": request.term },
+                        type: "POST",
+                        success: function(data) {
+                            response($.map(data, function(item) { return item; }));
+                        },
+                        error: function(response) {
+                            alert(response.responseText);
+                        },
+                        failure: function(response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                delay: 200,
+                minLength: 2,
+                select: function(e, i) {
+                    $("#IdCategoriaPai").val(i.item.val);
+                }
+            });
+
+            $("#txtCategoria").on('change keyup copy paste cut', function() {
+                if (!this.value) {
+                    $("#IdCategoriaPai").val('');
+                }
+            });
+        });
+    </script>
 }

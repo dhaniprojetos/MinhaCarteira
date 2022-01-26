@@ -18,6 +18,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
         {
             return source;
         }
+        protected virtual IQueryable<TEntidade> AdicionarOrdenacao(
+            IQueryable<TEntidade> source)
+        {
+            return source;
+        }
         protected virtual async Task<IList<TEntidade>> ExecutarAntesAlterar(
             IList<TEntidade> itens)
         {
@@ -109,6 +114,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             ICriterio<TEntidade> criterio)
         {
             var tab = AdicionarIncludes(Tabela).AsNoTracking();
+            tab = AdicionarOrdenacao(tab);
 
             //var tab = criterio != null && criterio.AdicionarIncludes
             //    ? AdicionarIncludes(Tabela).AsNoTracking()
@@ -117,7 +123,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             //if (criterio?.Filtro != null)
             //    tab = criterio.Filtro.Filtrar(tab);
 
-            return await tab.ToListAsync();
+            var itens = await tab.ToListAsync();
+            return itens;
         }
         public virtual async Task<IList<TEntidade>> Incluir(IList<TEntidade> itens)
         {

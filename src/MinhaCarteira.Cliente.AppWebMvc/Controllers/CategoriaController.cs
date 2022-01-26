@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
@@ -33,10 +36,31 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return await Task.FromResult(true);
         }
 
-        #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        [HttpPost]
+        public async Task<JsonResult> ObterCategorias(string prefix)
         {
-            return base.Index();
+            var resp = await _categoriaServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Caminho, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
+
+        #region Métodos sobrescritos apenas manter as views
+        public override async Task<IActionResult> Index()
+        {
+            var resposta = await Servico.Navegar();
+            IList<CategoriaViewModel> itens = null;
+
+            if (resposta.Dados != null)
+                itens = Mapper.Map<List<CategoriaViewModel>>(resposta.Dados);
+
+            return View(itens?.OrderBy(o => o.Caminho));
         }
 
         public override async Task<IActionResult> Criar()

@@ -12,6 +12,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+        public string Caminho { get; set; }
         public int? IdAuxiliar { get; set; }
 
         public IEnumerable<SelectListItem> Categorias { get; set; }
@@ -36,8 +37,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
                 .Select(s => new SelectListItem()
                 {
                     Value = s.Id.ToString(),
-                    Text = s.Nome
+                    Text = s.Caminho
                 })
+                .OrderBy(o => o.Text)
                 .ToList();
 
             Categorias = instituicoes;

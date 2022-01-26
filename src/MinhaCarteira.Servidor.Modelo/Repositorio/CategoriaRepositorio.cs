@@ -25,6 +25,10 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                     .ThenInclude(ti => ti.SubCategoria);
         }
 
+        //protected override IQueryable<Categoria> AdicionarOrdenacao(IQueryable<Categoria> source)
+        //{
+        //    return source.OrderBy(o => o.Caminho);
+        //}
 
         //private void PrepararPersistencia(Categoria item)
         //{
@@ -62,7 +66,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
         protected override async Task<IList<Categoria>> ExecutarAntesAlterar(IList<Categoria> itens)
         {
-            
+
             var ids = itens
                 .Select(s => s.Id)
                 .ToArray();
@@ -87,7 +91,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .ToArray();
 
             await Deletar(subCategoriasRemovidas);
-            
+
             return itens;
         }
     }
