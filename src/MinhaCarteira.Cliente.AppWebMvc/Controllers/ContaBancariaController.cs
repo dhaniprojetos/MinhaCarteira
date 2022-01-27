@@ -50,12 +50,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
 {
             var resp = await _instituicaoFinanceiraServico.Navegar();
-            var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
                 .Where(w => string.IsNullOrEmpty(prefix) ||
-                            compareInfo.IndexOf(w.label, prefix, CompareOptions.IgnoreCase) > -1)
+                            w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
                 .OrderBy(s => s.label)
                 .ToList();
 
