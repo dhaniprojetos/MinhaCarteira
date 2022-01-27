@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +20,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public DateTime DataMovimento { get; set; }
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
+        [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
         public int? IdAuxiliar { get; set; }
 

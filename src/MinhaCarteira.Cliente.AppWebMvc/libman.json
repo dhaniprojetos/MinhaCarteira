@@ -3,8 +3,8 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "jstree@3.3.12",
-      "destination": "wwwroot/lib/jstree/"
+      "library": "jquery.mask@1.14.16",
+      "destination": "wwwroot/lib/jquery.mask/"
     }
   ]
 }
