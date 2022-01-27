@@ -28,22 +28,34 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public int CentroClassificacaoId { get; set; }
         public CentroClassificacao CentroClassificacao { get; set; }
         public IEnumerable<SelectListItem> CentrosClassificacao { get; set; }
+        public string NomeCentroClassificacao => CentroClassificacao != null
+            ? CentroClassificacao.Nome
+            : string.Empty;
 
         [DisplayName("Pessoa")]
         public int? PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
         public IEnumerable<SelectListItem> Pessoas { get; set; }
+        public string NomePessoa => Pessoa != null
+            ? Pessoa.Nome
+            : string.Empty;
 
         [DisplayName("Categoria")]
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
         public IEnumerable<SelectListItem> Categorias { get; set; }
+        public string CaminhoCategoria => Categoria != null
+            ? Categoria.Caminho
+            : string.Empty;
 
         [DisplayName("Conta")]
         public int ContaBancariaId { get; set; }
         [DisplayName("Conta")]
         public ContaBancaria ContaBancaria { get; set; }
         public IEnumerable<SelectListItem> ContasBancarias { get; set; }
+        public string NomeContaBancaria => ContaBancaria != null
+            ? ContaBancaria.Nome
+            : string.Empty;
 
         public decimal ValorReal =>
             TipoMovimento == TipoMovimento.Credito
@@ -55,7 +67,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
             var now = DateTime.Now;
             DataMovimento = new DateTime(now.Year, now.Month, now.Day);
             TipoMovimento = TipoMovimento.Debito;
-            
+
             Pessoas = new List<SelectListItem>();
             CentrosClassificacao = new List<SelectListItem>();
             Categorias = new List<SelectListItem>();
@@ -99,7 +111,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
                 .OrderBy(o => o.Text)
                 .ToList();
 
-            Categorias= valores;
+            Categorias = valores;
         }
 
         public void AdicionarContasBancarias(IList<ContaBancaria> items)

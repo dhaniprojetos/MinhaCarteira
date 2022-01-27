@@ -60,7 +60,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return Json(items);
         }
 
-
         #region Métodos sobrescritos apenas manter as views
         public override Task<IActionResult> Index()
         {

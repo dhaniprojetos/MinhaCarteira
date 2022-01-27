@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
@@ -53,6 +55,66 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return await Task.FromResult(true);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ObterContaBancaria(string prefix)
+{
+            var resp = await _contaBancariaServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Nome, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ObterCategoria(string prefix)
+        {
+            var resp = await _categoriaServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Caminho, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ObterPessoa(string prefix)
+        {
+            var resp = await _pessoaServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Nome, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ObterCentroClassificacao(string prefix)
+        {
+            var resp = await _centroClassificacaoServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Nome, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
+
         #region Métodos sobrescritos apenas manter as views
         public override Task<IActionResult> Index()
         {
@@ -79,6 +141,5 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return await base.Deletar(id);
         }
         #endregion
-
     }
 }
