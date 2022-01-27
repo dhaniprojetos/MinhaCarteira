@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -40,11 +41,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<JsonResult> ObterCategorias(string prefix)
         {
             var resp = await _categoriaServico.Navegar();
+            var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
 
             var items = resp.Dados
                 .Select(s => new { label = s.Caminho, val = s.Id })
                 .Where(w => string.IsNullOrEmpty(prefix) ||
-                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                            compareInfo.IndexOf(w.label, prefix, CompareOptions.IgnoreNonSpace) > -1)
                 .OrderBy(s => s.label)
                 .ToList();
 

@@ -3,7 +3,7 @@
     $("#txtContaBancaria").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/movimentoBancario/obterContaBancaria',
+                url: window.siteRoot + 'movimentoBancario/obterContaBancaria',
                 data: { "prefix": request.term },
                 type: "POST",
                 success: function (data) {
@@ -35,7 +35,7 @@
     $("#txtCategoria").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/movimentoBancario/obterCategoria',
+                url: window.siteRoot + 'movimentoBancario/obterCategoria',
                 data: { "prefix": request.term },
                 type: "POST",
                 success: function (data) {
@@ -67,7 +67,7 @@
     $("#txtPessoa").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/movimentoBancario/obterPessoa',
+                url: window.siteRoot + 'movimentoBancario/obterPessoa',
                 data: { "prefix": request.term },
                 type: "POST",
                 success: function (data) {
@@ -99,7 +99,7 @@
     $("#txtCentroClassificacao").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/movimentoBancario/obterCentroClassificacao',
+                url: window.siteRoot + 'movimentoBancario/obterCentroClassificacao',
                 data: { "prefix": request.term },
                 type: "POST",
                 success: function (data) {

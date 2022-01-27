@@ -2,7 +2,7 @@
     $("#txtInstituicao").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/contabancaria/obterInstituicoesFinanceira',
+                url: window.siteRoot + 'contabancaria/obterInstituicoesFinanceira',
                 data: { "prefix": request.term },
                 type: "POST",
                 success: function (data) {

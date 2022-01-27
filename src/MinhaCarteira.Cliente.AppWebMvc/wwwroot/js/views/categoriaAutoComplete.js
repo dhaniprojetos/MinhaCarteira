@@ -2,7 +2,7 @@
     $("#edtCategoriaNome").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: '/categoria/ObterCategorias',
+                url: window.siteRoot + 'categoria/ObterCategorias',
                 data: { "prefix": request.term },
                 type: "POST",
                 success: function (data) {

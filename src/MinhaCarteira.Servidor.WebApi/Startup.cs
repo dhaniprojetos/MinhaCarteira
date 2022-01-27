@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -61,9 +62,10 @@ namespace MinhaCarteira.Servidor.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            Debug.WriteLine(Configuration["SwaggerEndpoint"]);
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint(
-                "/swagger/v1/swagger.json",
+                Configuration["SwaggerEndpoint"],
                 "MinhaCarteira.Servidor.WebApi v1"));
 
             app.UseHttpsRedirection();

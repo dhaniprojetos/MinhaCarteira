@@ -6,6 +6,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Recursos.Refit.Base;
 using MinhaCarteira.Servidor.Controle.Servico;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,11 +50,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
 {
             var resp = await _instituicaoFinanceiraServico.Navegar();
+            var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
                 .Where(w => string.IsNullOrEmpty(prefix) ||
-                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                            compareInfo.IndexOf(w.label, prefix, CompareOptions.IgnoreNonSpace) > -1)
                 .OrderBy(s => s.label)
                 .ToList();
 
