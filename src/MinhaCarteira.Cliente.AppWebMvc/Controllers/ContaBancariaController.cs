@@ -4,6 +4,9 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Recursos.Refit.Base;
+using MinhaCarteira.Servidor.Controle.Servico;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -41,6 +44,22 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
             return await Task.FromResult(false);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
+{
+            var resp = await _instituicaoFinanceiraServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Nome, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.CurrentCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
+
 
         #region Métodos sobrescritos apenas manter as views
         public override Task<IActionResult> Index()

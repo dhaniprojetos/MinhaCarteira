@@ -3,6 +3,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Models
@@ -14,6 +15,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public string Agencia { get; set; }
         public string Conta { get; set; }
 
+        [Display(Name ="Instituição Financeira")]
         public int IdInstituicaoFinanceira { get; set; }
         public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
 
