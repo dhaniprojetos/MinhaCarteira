@@ -55,7 +55,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
                 .Where(w => string.IsNullOrEmpty(prefix) ||
-                            compareInfo.IndexOf(w.label, prefix, CompareOptions.IgnoreNonSpace) > -1)
+                            compareInfo.IndexOf(w.label, prefix, CompareOptions.IgnoreCase) > -1)
                 .OrderBy(s => s.label)
                 .ToList();
 
