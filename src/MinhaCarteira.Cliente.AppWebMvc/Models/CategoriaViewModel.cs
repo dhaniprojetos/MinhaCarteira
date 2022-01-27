@@ -36,7 +36,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public CategoriaViewModel CategoriaPai { get; set; }
         public IEnumerable<SelectListItem> Categorias { get; set; }
         public string NomeCategoriaPai => CategoriaPai != null
-            ? CategoriaPai.Nome
+            ? CategoriaPai.Caminho
             : string.Empty;
 
         public CategoriaViewModel()
