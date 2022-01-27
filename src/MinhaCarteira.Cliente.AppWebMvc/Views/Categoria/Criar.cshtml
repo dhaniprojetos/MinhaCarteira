@@ -8,47 +8,11 @@
 
 <h4>CategoriaViewModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Criar">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdAuxiliar" class="control-label"></label>
-                <input asp-for="IdAuxiliar" class="form-control" />
-                <span asp-validation-for="IdAuxiliar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdCategoriaPai" class="control-label"></label>
-                @*<select asp-for="IdCategoriaPai" asp-items="Model.Categorias" class="form-control">
-            <option Value="">Selecione</option>
-        </select>*@
-                <input type="hidden" asp-for="IdCategoriaPai" class="form-control" />
-                <input id="txtCategoria" class="form-control" />
-                <span asp-validation-for="IdCategoriaPai" class="text-danger"></span>
-            </div>
+<form asp-action="Criar">
 
-            @*<div class="form-group">
-                <input type="text" id="txtCustomer" name="Caminho" />
-                <input type="hidden" id="hfCustomer" name="CustomerId" />
-                <br /><br />
-            </div>*@
+    @Html.EditorForModel()
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -56,38 +20,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-        $(function() {
-            $("#txtCategoria").autocomplete({
-                source: function(request, response) {
-                    $.ajax({
-                        url: '@Url.Action("ObterCategorias")',
-                        data: { "prefix": request.term },
-                        type: "POST",
-                        success: function(data) {
-                            response($.map(data, function(item) { return item; }));
-                        },
-                        error: function(response) {
-                            alert(response.responseText);
-                        },
-                        failure: function(response) {
-                            alert(response.responseText);
-                        }
-                    });
-                },
-                delay: 200,
-                minLength: 2,
-                select: function(e, i) {
-                    $("#IdCategoriaPai").val(i.item.val);
-                }
-            });
-
-            $("#txtCategoria").on('change keyup copy paste cut', function() {
-                if (!this.value) {
-                    $("#IdCategoriaPai").val('');
-                }
-            });
-        });
-    </script>
+    <script src="~/js/views/categoriaAutoComplete.js" asp-append-version="true"></script>
 }

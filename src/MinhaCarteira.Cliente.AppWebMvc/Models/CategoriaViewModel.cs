@@ -15,11 +15,28 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public string Caminho { get; set; }
         public int? IdAuxiliar { get; set; }
 
-        public IEnumerable<SelectListItem> Categorias { get; set; }
-        public int? IdCategoriaPai { get; set; }
+        private int? idCategoriaPai;
+        public int? IdCategoriaPai
+        {
+            get => idCategoriaPai;
+            set
+            {
+                idCategoriaPai = value;
+                if (value == null || value == 0)
+                {
+                    CategoriaPai = null;
+                }
+                else
+                {
+                    if (CategoriaPai != null)
+                        CategoriaPai.Id = (int)value;
+                }
+            }
+        }
         public CategoriaViewModel CategoriaPai { get; set; }
-        public string NomeCategoriaPai => CategoriaPai != null 
-            ? CategoriaPai.Nome 
+        public IEnumerable<SelectListItem> Categorias { get; set; }
+        public string NomeCategoriaPai => CategoriaPai != null
+            ? CategoriaPai.Nome
             : string.Empty;
 
         public CategoriaViewModel()
