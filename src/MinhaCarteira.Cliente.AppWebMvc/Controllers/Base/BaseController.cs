@@ -21,6 +21,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         protected IMapper Mapper => _mapper;
         protected IServicoBase<TEntidade> Servico => _servico;
 
+        protected virtual Tuple<TEntidadeViewModel, TEntidade> ExecutarAntesSalvar(
+            TEntidadeViewModel viewModel, TEntidade model)
+        {
+            return new Tuple<TEntidadeViewModel, TEntidade>(viewModel, model);
+        }
+
         protected async Task<TEntidadeViewModel> ObterPorId(int id)
         {
             try
@@ -102,7 +108,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             try
             {
                 var itemApi = _mapper.Map<TEntidade>(item);
-                var retornoApi = await _servico.Incluir(itemApi);
+                var items = ExecutarAntesSalvar(item, itemApi);
+                var retornoApi = await _servico.Incluir(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
             catch (ApiException ex)
@@ -134,7 +141,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             try
             {
                 var itemApi = _mapper.Map<TEntidade>(item);
-                var retornoApi = await _servico.Alterar(itemApi);
+                var items = ExecutarAntesSalvar(item, itemApi);
+                var retornoApi = await _servico.Alterar(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
             catch (ApiException ex)

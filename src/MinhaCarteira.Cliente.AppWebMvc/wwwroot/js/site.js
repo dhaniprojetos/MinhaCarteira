@@ -3,6 +3,9 @@
 
 // Write your JavaScript code.
 
-$(".alert").fadeTo(7000, 150).slideUp(150, function () {
+let ehErro = $(".alert").hasClass("alert-danger");
+let tempo = ehErro ? 7000 : 7500;
+
+$(".alert").fadeTo(tempo, 150).slideUp(150, function () {
     $("alert").slideUp(150);
 });

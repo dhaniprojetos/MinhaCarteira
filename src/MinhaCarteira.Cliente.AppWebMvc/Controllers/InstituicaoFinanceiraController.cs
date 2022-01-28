@@ -8,6 +8,7 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -75,24 +76,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return uniqueFileName;
         }
 
-        [HttpPost]
-        public override async Task<IActionResult> Alterar(InstituicaoFinanceiraViewModel item)
+        protected override Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira> ExecutarAntesSalvar(InstituicaoFinanceiraViewModel viewModel, InstituicaoFinanceira model)
         {
-            if (!await ValidarViewModel(item) || !ModelState.IsValid)
-            {
-                item = await InicializarViewModel(item);
-                return View(item);
-            }
+            var uniqueFileName = UploadedFile(viewModel);
+            model.Icone = uniqueFileName;
 
-            var uniqueFileName = UploadedFile(item);
-
-            var itemApi = Mapper.Map<InstituicaoFinanceira>(item);
-            itemApi.Icone = uniqueFileName;
-
-            var itemDb = await Servico.Alterar(itemApi);
-            //TempData["Adicionado"] = pessoaDb;
-
-            return RedirectToAction(nameof(Index));
+            return new Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>(viewModel, model);
         }
     }
 }

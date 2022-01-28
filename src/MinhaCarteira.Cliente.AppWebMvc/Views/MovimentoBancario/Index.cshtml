@@ -5,6 +5,7 @@
 }
 
 <h1>Index</h1>
+@{await Html.RenderPartialAsync("_PartialAlertas");}
 
 <p>
     <a asp-action="Criar">Create New</a>
@@ -36,31 +37,31 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataMovimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValorReal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categoria.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
-            </td>
-            <td>
-                @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
-                @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
-                @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataMovimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorReal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
+                </td>
+                <td>
+                    @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
+                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                </td>
+            </tr>
         }
     </tbody>
 </table>
