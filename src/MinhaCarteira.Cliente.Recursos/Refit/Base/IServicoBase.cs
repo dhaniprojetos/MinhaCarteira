@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Refit;
 
-namespace MinhaCarteira.Comum.Recursos.Refit.Base
+namespace MinhaCarteira.Cliente.Recursos.Refit.Base
 {
     public interface IServicoBase<TEntidade>
     {
@@ -14,13 +14,12 @@ namespace MinhaCarteira.Comum.Recursos.Refit.Base
         Task<Resposta<TEntidade>> ObterPorId(int id);
 
         [Post("")]
-        Task<Resposta<IList<TEntidade>>> Incluir(IList<TEntidade> itens);
+        Task<Resposta<TEntidade>> Incluir(TEntidade item);
 
         [Put("")]
-        Task<Resposta<IList<TEntidade>>> Alterar(IList<TEntidade> itens);
+        Task<Resposta<TEntidade>> Alterar(TEntidade item);
 
         [Delete("")]
         Task<Resposta<int>> Deletar(int id);
-
     }
 }

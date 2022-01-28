@@ -90,7 +90,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .Where(w => !subIds.Contains(w))
                 .ToArray();
 
-            await Deletar(subCategoriasRemovidas);
+            await DeletarRange(subCategoriasRemovidas);
 
             return itens;
         }

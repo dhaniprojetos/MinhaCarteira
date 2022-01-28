@@ -1,7 +1,6 @@
 ﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinhaCarteira.Comum.Definicao.Entidade
 {

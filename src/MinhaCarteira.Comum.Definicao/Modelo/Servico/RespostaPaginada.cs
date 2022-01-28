@@ -16,14 +16,12 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
         public RespostaPaginada(
             T dados,
             int numeroPagina,
-            int itensPorPagina)
+            int itensPorPagina,
+            string mensagem = null)
+        : base(dados, mensagem)
         {
             NumeroPagina = numeroPagina;
             ItensPorPagina = itensPorPagina;
-            Dados = dados;
-            Mensagem = null;
-            BemSucedido = true;
-            Erros = null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+﻿using Microsoft.AspNetCore.Http;
+using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
@@ -6,5 +7,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+        public IFormFile Icone { get; set; }
     }
 }

@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Recursos.Refit.Base;
-using MinhaCarteira.Servidor.Controle.Servico;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using MinhaCarteira.Cliente.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {

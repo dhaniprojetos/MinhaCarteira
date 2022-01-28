@@ -1,0 +1,26 @@
+﻿@using MinhaCarteira.Comum.Definicao.Modelo.Servico
+
+@if (ViewBag?.RetornoApi != null)
+{
+    var retornoApi = (Resposta<object>)ViewBag.RetornoApi;
+
+    if (retornoApi.BemSucedido && !string.IsNullOrWhiteSpace(retornoApi.Mensagem))
+    {
+        <div class="alert alert-success fixed-bottom">
+            <span class="fa fa-check-circle" style="font-size:17px;"></span>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong></strong> @Html.Raw(retornoApi.Mensagem)
+        </div>
+    }
+    else if (!retornoApi.BemSucedido && !string.IsNullOrWhiteSpace(retornoApi.Mensagem))
+    {
+        <div class="alert alert-danger fixed-bottom">
+            <span class="fa fa-check-circle" style="font-size:17px;"></span>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong></strong> @Html.Raw(retornoApi.Mensagem)
+            <hr/>
+            <span>@Html.Raw(retornoApi.MensagemErro) </span>
+        </div>
+    }
+}
+

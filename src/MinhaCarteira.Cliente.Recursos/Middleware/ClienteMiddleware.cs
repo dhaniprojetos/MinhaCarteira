@@ -1,10 +1,10 @@
 ﻿using System;
-using Refit;
 using Microsoft.Extensions.DependencyInjection;
+using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Recursos.Refit.Base;
+using Refit;
 
-namespace MinhaCarteira.Comum.Recursos.Helper
+namespace MinhaCarteira.Cliente.Recursos.Middleware
 {
     public static class ClienteMiddleware
     {

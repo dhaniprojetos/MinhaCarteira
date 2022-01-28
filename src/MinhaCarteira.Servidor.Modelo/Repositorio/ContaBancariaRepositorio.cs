@@ -19,7 +19,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             return source.Include(i => i.InstituicaoFinanceira);
         }
 
-        public override async Task<IList<ContaBancaria>> Incluir(
+        public override async Task<IList<ContaBancaria>> IncluirRange(
             IList<ContaBancaria> itens)
         {
             itens.ToList().ForEach(item =>
@@ -29,7 +29,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                         EntityState.Unchanged;
             });
 
-            return await base.Incluir(itens);
+            return await base.IncluirRange(itens);
         }
 
     }

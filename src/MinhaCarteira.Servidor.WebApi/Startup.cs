@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MinhaCarteira.Comum.Recursos.Helper;
 using MinhaCarteira.Servidor.Modelo.Data;
+using MinhaCarteira.Servidor.Recursos.Helper;
 using Newtonsoft.Json;
 
 namespace MinhaCarteira.Servidor.WebApi

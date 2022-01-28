@@ -73,7 +73,23 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             GC.SuppressFinalize(this);
         }
 
-        public async Task<int> Deletar(int[] ids)
+
+        public async Task<int> Deletar(int id)
+        {
+            return await DeletarRange(new[] { id });
+        }
+        public async Task<TEntidade> Alterar(TEntidade item)
+        {
+            var itens = await AlterarRange(new List<TEntidade> { item });
+            return itens[0];
+        }
+        public async Task<TEntidade> Incluir(TEntidade item)
+        {
+            var itens = await IncluirRange(new List<TEntidade> { item });
+            return itens[0];
+        }
+
+        public async Task<int> DeletarRange(int[] ids)
         {
             try
             {
@@ -89,7 +105,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public virtual async Task<IList<TEntidade>> Alterar(IList<TEntidade> itens)
+        public virtual async Task<IList<TEntidade>> AlterarRange(IList<TEntidade> itens)
         {
             try
             {
@@ -126,7 +142,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             var itens = await tab.ToListAsync();
             return itens;
         }
-        public virtual async Task<IList<TEntidade>> Incluir(IList<TEntidade> itens)
+        public virtual async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
         {
             try
             {

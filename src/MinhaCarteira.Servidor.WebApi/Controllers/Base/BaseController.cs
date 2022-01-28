@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
@@ -15,66 +16,182 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
             Servico = servico;
         }
 
-        protected IServicoCrud<TEntidade> Servico { get; }
+        private void DefinirCodigoStatus(ref IActionResult resposta)
+        {
+            var objResult = (ObjectResult)resposta;
+            if (objResult.Value is IRespostaServico resp)
+                resp.StatusCode = objResult.StatusCode;
+        }
 
-        //[HttpGet]
-        //public async Task<IList<TEntidade>> Navegar()
-        //{
-        //    var itens = await Servico.Navegar(null);
-        //    
-        //    return itens;
-        //}
+        protected IServicoCrud<TEntidade> Servico { get; }
 
         [HttpGet]
         public async Task<IActionResult> Navegar()
         {
-            var itens = await Servico.Navegar(null);
+            IActionResult resposta;
+            try
+            {
+                var itens = await Servico.Navegar(null);
+                resposta = itens == null
+                    ? NotFound()
+                    : Ok(new Resposta<IList<TEntidade>>(
+                        itens,
+                        "Itens localizados com sucesso."));
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
 
-            return itens == null
-                ? NotFound()
-                : Ok(new Resposta<IList<TEntidade>>(itens));
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ObterPorId(int id)
         {
-            var itemDb = await Servico.ObterPorId(id);
+            IActionResult resposta;
+            try
+            {
+                var itemDb = await Servico.ObterPorId(id);
 
-            return itemDb != null
-                ? Ok(new Resposta<TEntidade>(itemDb))
-                : NotFound();
+                resposta = itemDb != null
+                    ? Ok(new Resposta<TEntidade>(
+                        itemDb,
+                        "Item localizado com sucesso."))
+                    : NotFound();
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
+        }
+
+        [HttpPost("IncluirRange")]
+        public async Task<IActionResult> IncluirRange(IList<TEntidade> itens)
+        {
+            IActionResult resposta;
+            try
+            {
+                var itemDb = await Servico.IncluirRange(itens);
+
+                resposta = itemDb != null
+                    ? CreatedAtAction(
+                        nameof(IncluirRange),
+                        new Resposta<IList<TEntidade>>(
+                            itemDb,
+                            "Itens cadastrados com sucesso."))
+                    : NotFound();
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
+        }
+
+        [HttpPost("AlterarRange")]
+        public async Task<IActionResult> AlterarRange(IList<TEntidade> itens)
+        {
+            IActionResult resposta;
+            try
+            {
+                var itemDb = await Servico.AlterarRange(itens);
+
+                resposta = itemDb != null
+                    ? Ok(new Resposta<IList<TEntidade>>(
+                        itemDb,
+                        "Itens alterados com sucesso."))
+                    : NotFound();
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Incluir(IList<TEntidade> itens)
+        public async Task<IActionResult> Incluir(TEntidade item)
         {
-            var itemDb = await Servico.Incluir(itens);
+            IActionResult resposta;
+            try
+            {
+                var itemDb = await Servico.Incluir(item);
 
-            return itemDb != null
-                ? CreatedAtAction(
-                    nameof(Incluir),
-                    new Resposta<IList<TEntidade>>(itemDb))
-                : NotFound();
+                resposta = itemDb != null
+                    ? CreatedAtAction(
+                        nameof(IncluirRange),
+                        new Resposta<TEntidade>(
+                            itemDb,
+                            "Item cadastrado com sucesso."))
+                    : NotFound();
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
         }
 
         [HttpPut]
-        public async Task<IActionResult> Alterar(IList<TEntidade> itens)
+        public async Task<IActionResult> Alterar(TEntidade item)
         {
-            var itemDb = await Servico.Alterar(itens);
+            IActionResult resposta;
+            try
+            {
+                var itemDb = await Servico.Alterar(item);
 
-            return itemDb != null
-                ? Ok(new Resposta<IList<TEntidade>>(itemDb))
-                : NotFound();
+                resposta = itemDb != null
+                    ? Ok(new Resposta<TEntidade>(
+                        itemDb,
+                        "Item alterado com sucesso."))
+                    : NotFound();
+
+                return resposta;
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
         }
 
         [HttpDelete]
         public async Task<IActionResult> Deletar(int id)
         {
-            var linhasAfetadas = await Servico.Deletar(new[] { id });
+            IActionResult resposta;
+            try
+            {
+                var linhasAfetadas = await Servico.Deletar(id);
+                var msg = linhasAfetadas > 1
+                    ? "itens removidos"
+                    : "item removido";
 
-            return linhasAfetadas > 0
-                ? Ok(Ok(new Resposta<int>(linhasAfetadas)))
-                : NotFound();
+                resposta = linhasAfetadas > 0
+                    ? Ok(new Resposta<int>(
+                        linhasAfetadas,
+                        $"{linhasAfetadas} {msg} com sucesso."))
+                    : NotFound();
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
         }
     }
 }

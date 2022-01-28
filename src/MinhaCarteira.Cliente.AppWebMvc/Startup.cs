@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhaCarteira.Cliente.AppWebMvc.AutoMapper;
-using MinhaCarteira.Comum.Recursos.Helper;
+using MinhaCarteira.Cliente.Recursos.Middleware;
 
 namespace MinhaCarteira.Cliente.AppWebMvc
 {

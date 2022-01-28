@@ -34,22 +34,35 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
             GC.SuppressFinalize(this);
         }
 
-        public async Task<int> Deletar(int[] ids)
+        public async Task<int> Deletar(int id)
         {
-            return await Repositorio.Deletar(ids);
+            return await Repositorio.Deletar(id);
         }
-        public async Task<IList<TEntidade>> Alterar(IList<TEntidade> itens)
+        public async Task<TEntidade> Alterar(TEntidade item)
         {
-            return await Repositorio.Alterar(itens);
+            return await Repositorio.Alterar(item);
+        }
+        public async Task<TEntidade> Incluir(TEntidade item)
+        {
+            return await Repositorio.Incluir(item);
+        }
+
+        public async Task<int> DeletarRange(int[] ids)
+        {
+            return await Repositorio.DeletarRange(ids);
+        }
+        public async Task<IList<TEntidade>> AlterarRange(IList<TEntidade> itens)
+        {
+            return await Repositorio.AlterarRange(itens);
         }
         public async Task<IList<TEntidade>> Navegar(
             ICriterio<TEntidade> criterio)
         {
             return await Repositorio.Navegar(criterio);
         }
-        public async Task<IList<TEntidade>> Incluir(IList<TEntidade> itens)
+        public async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
         {
-            return await Repositorio.Incluir(itens);
+            return await Repositorio.IncluirRange(itens);
         }
 
         public async Task<TEntidade> ObterPorId(int id)
