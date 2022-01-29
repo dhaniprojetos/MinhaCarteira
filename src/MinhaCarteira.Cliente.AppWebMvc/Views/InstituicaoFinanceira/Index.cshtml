@@ -24,6 +24,8 @@
         </tr>
     </thead>
     <tbody>
+        @if (Model == null) return;
+
         @foreach (var item in Model)
         {
             <tr>
@@ -33,7 +35,7 @@
                 <td>
                     @if (!string.IsNullOrWhiteSpace(item.Icone))
                     {
-                        <img src="@item.PathImagens/@item.Icone"
+                        <img src="data:@item.MimeType;base64,@item.Icone"
                              height="32" width="32"
                              asp-append-version="true" />
                     }

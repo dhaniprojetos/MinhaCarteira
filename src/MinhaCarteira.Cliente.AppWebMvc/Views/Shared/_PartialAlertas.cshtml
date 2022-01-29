@@ -1,8 +1,8 @@
-﻿@using MinhaCarteira.Comum.Definicao.Modelo.Servico
+﻿@using MinhaCarteira.Comum.Definicao.Interface.Servico
 
 @if (ViewBag?.RetornoApi != null)
 {
-    var retornoApi = (Resposta<object>)ViewBag.RetornoApi;
+    var retornoApi = ViewBag.RetornoApi as IRespostaServico;
 
     if (retornoApi.BemSucedido && !string.IsNullOrWhiteSpace(retornoApi.Mensagem))
     {
@@ -18,7 +18,7 @@
             <span class="fa fa-check-circle" style="font-size:17px;"></span>
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong></strong> @Html.Raw(retornoApi.Mensagem)
-            <hr/>
+            <hr />
             <span>@Html.Raw(retornoApi.MensagemErro) </span>
         </div>
     }

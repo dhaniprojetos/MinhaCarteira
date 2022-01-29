@@ -12,7 +12,10 @@ namespace MinhaCarteira.Comum.Definicao.Interface.Servico
         
         [JsonProperty(Order = 2)]
         bool BemSucedido { get; set; }
-        
+
+        [JsonProperty(Order = 3)]
+        string MensagemErro { get; set; }
+
         //[JsonProperty(Order = 3)]
         //IList<Exception> Erros { get; set; }
     }

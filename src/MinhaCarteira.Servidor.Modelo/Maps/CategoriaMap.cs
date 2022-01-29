@@ -17,7 +17,8 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
             builder
                 .HasOne(s => s.CategoriaPai)
                 .WithMany(m => m.SubCategoria)
-                .HasForeignKey(f => f.IdCategoriaPai);
+                .HasForeignKey(f => f.IdCategoriaPai)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

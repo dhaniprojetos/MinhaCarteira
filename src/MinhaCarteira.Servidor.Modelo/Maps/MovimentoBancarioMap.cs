@@ -16,19 +16,23 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
 
             builder.HasOne(o => o.Pessoa)
                 .WithMany()
-                .HasForeignKey(f => f.PessoaId);
+                .HasForeignKey(f => f.PessoaId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(o => o.Categoria)
                 .WithMany()
-                .HasForeignKey(f => f.CategoriaId);
+                .HasForeignKey(f => f.CategoriaId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(o => o.CentroClassificacao)
                 .WithMany()
-                .HasForeignKey(f => f.CentroClassificacaoId);
+                .HasForeignKey(f => f.CentroClassificacaoId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(o => o.ContaBancaria)
                 .WithMany()
-                .HasForeignKey(f => f.ContaBancariaId);
+                .HasForeignKey(f => f.ContaBancariaId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

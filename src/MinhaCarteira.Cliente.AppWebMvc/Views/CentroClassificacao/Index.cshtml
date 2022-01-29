@@ -32,6 +32,8 @@
         </tr>
     </thead>
     <tbody>
+        @if (Model == null) return;
+
         @foreach (var item in Model)
         {
             <tr>

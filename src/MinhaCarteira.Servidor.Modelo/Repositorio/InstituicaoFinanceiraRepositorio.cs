@@ -6,8 +6,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
     public class InstituicaoFinanceiraRepositorio : RepositorioBase<InstituicaoFinanceira>
     {
-        public InstituicaoFinanceiraRepositorio(MinhaCarteiraContext contexto) : base(contexto)
-        {
-        }
+        public InstituicaoFinanceiraRepositorio(MinhaCarteiraContext contexto)
+            : base(contexto) { }
     }
 }

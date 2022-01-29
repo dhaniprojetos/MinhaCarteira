@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
 using MinhaCarteira.Cliente.AppWebMvc.Attributes;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+using System.Net.Mime;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
@@ -9,8 +12,17 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Icone { get; set; }
+        public string NomeArquivo { get; set; }
+        public string MimeType
+        {
+            get
+            {
+                new FileExtensionContentTypeProvider()
+                    .TryGetContentType(NomeArquivo, out string contentType);
 
-        public string PathImagens { get; set; }
+                return contentType ?? "image/png";
+            }
+        }
 
         [MaxFileSize("UploadTamanhoMaximo")]
         [AllowedExtensions("UploadExtensaoPermitida")]

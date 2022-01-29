@@ -88,7 +88,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             var itens = await IncluirRange(new List<TEntidade> { item });
             return itens[0];
         }
-
         public async Task<int> DeletarRange(int[] ids)
         {
             try
@@ -111,8 +110,25 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             {
                 var itensPreparados = await ExecutarAntesAlterar(itens);
                 if (itensPreparados == null) return null;
-
                 Tabela.UpdateRange(itensPreparados);
+                await Contexto.SaveChangesAsync();
+
+                itens.ToList().ForEach(f =>
+                    Contexto.Entry(f).State = EntityState.Detached);
+
+                return itens;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public virtual async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
+        {
+            try
+            {
+                await Tabela.AddRangeAsync(itens);
                 await Contexto.SaveChangesAsync();
 
                 itens.ToList().ForEach(f =>
@@ -141,24 +157,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
 
             var itens = await tab.ToListAsync();
             return itens;
-        }
-        public virtual async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
-        {
-            try
-            {
-                await Tabela.AddRangeAsync(itens);
-                await Contexto.SaveChangesAsync();
-
-                itens.ToList().ForEach(f =>
-                    Contexto.Entry(f).State = EntityState.Detached);
-
-                return itens;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
 
         public async Task<TEntidade> ObterPorId(int id)

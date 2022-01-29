@@ -44,7 +44,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
         protected override async Task<Tuple<CategoriaViewModel, Categoria>> ExecutarAntesSalvar(CategoriaViewModel viewModel, Categoria model)
         {
-            var itemDb = await ObterPorId(model.Id);
+            if (viewModel.Id == 0) 
+                return await base.ExecutarAntesSalvar(viewModel, model);
+
+            var itemDb = await ObterPorId(viewModel.Id);
             var itemMap = Mapper.Map<Categoria>(itemDb);
             model.SubCategoria = itemMap.SubCategoria;
 

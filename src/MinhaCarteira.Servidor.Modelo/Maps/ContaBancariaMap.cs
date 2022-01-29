@@ -18,7 +18,8 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
             builder
                 .HasOne(h => h.InstituicaoFinanceira)
                 .WithMany()
-                .HasForeignKey(f => f.IdInstituicaoFinanceira);
+                .HasForeignKey(f => f.IdInstituicaoFinanceira)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             catch (ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-                TempData["RetornoApi"] = retornoApi;
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
                 return null;
             }
         }
@@ -49,8 +49,20 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         {
             var resposta = await _servico.Navegar();
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
-
             return itens;
+
+            //try
+            //{
+            //    var resposta = await _servico.Navegar();
+            //    var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
+            //    return itens;
+            //}
+            //catch (ApiException ex)
+            //{
+            //    var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+            //    TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            //    return null;
+            //}
         }
         protected virtual async Task<Tuple<TEntidadeViewModel, TEntidade>> ExecutarAntesSalvar(
             TEntidadeViewModel viewModel, TEntidade model)
@@ -84,7 +96,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             catch (ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-                TempData["RetornoApi"] = retornoApi;
+                ViewBag.RetornoApi = retornoApi;
+
+                return View(default);
+            }
+            catch
+            {
                 return View(default);
             }
         }
@@ -115,7 +132,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             catch (ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-                TempData["RetornoApi"] = retornoApi;
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
             return RedirectToAction(nameof(Index));
@@ -141,14 +158,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             try
             {
                 var itemApi = _mapper.Map<TEntidade>(item);
-                var items = await ExecutarAntesSalvar (item, itemApi);
+                var items = await ExecutarAntesSalvar(item, itemApi);
                 var retornoApi = await _servico.Alterar(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
             catch (ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-                TempData["RetornoApi"] = retornoApi;
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
             return RedirectToAction(nameof(Index));
