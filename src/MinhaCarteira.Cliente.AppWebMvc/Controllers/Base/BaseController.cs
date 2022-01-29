@@ -16,18 +16,17 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         where TEntidadeViewModel : class, IEntidade
     {
         private readonly IMapper _mapper;
-        private readonly IServicoBase<TEntidade> _servico;
-
         protected IMapper Mapper => _mapper;
+        private readonly IServicoBase<TEntidade> _servico;
         protected IServicoBase<TEntidade> Servico => _servico;
 
-        protected virtual Tuple<TEntidadeViewModel, TEntidade> ExecutarAntesSalvar(
-            TEntidadeViewModel viewModel, TEntidade model)
+        public BaseController(IServicoBase<TEntidade> servico, IMapper mapper)
         {
-            return new Tuple<TEntidadeViewModel, TEntidade>(viewModel, model);
+            _mapper = mapper;
+            _servico = servico;
         }
 
-        protected async Task<TEntidadeViewModel> ObterPorId(int id)
+        protected virtual async Task<TEntidadeViewModel> ObterPorId(int id)
         {
             try
             {
@@ -46,16 +45,21 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 return null;
             }
         }
-
-        public BaseController(IServicoBase<TEntidade> servico, IMapper mapper)
+        protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos()
         {
-            _mapper = mapper;
-            _servico = servico;
-        }
+            var resposta = await _servico.Navegar();
+            var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
 
+            return itens;
+        }
+        protected virtual async Task<Tuple<TEntidadeViewModel, TEntidade>> ExecutarAntesSalvar(
+            TEntidadeViewModel viewModel, TEntidade model)
+        {
+            return await Task.FromResult(
+                new Tuple<TEntidadeViewModel, TEntidade>(viewModel, model));
+        }
         protected abstract Task<TEntidadeViewModel> InicializarViewModel(
             TEntidadeViewModel viewModel);
-
         protected abstract Task<bool> ValidarViewModel(TEntidadeViewModel viewModel);
 
         public virtual async Task<IActionResult> Detalhes(int id)
@@ -69,11 +73,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         {
             try
             {
-                IList<TEntidadeViewModel> itens = null;
-                var resposta = await _servico.Navegar();
-
-                if (resposta.Dados != null)
-                    itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
+                IList<TEntidadeViewModel> itens = await ObterTodos();
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itens);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
@@ -108,7 +108,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             try
             {
                 var itemApi = _mapper.Map<TEntidade>(item);
-                var items = ExecutarAntesSalvar(item, itemApi);
+                var items = await ExecutarAntesSalvar(item, itemApi);
                 var retornoApi = await _servico.Incluir(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
@@ -141,7 +141,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             try
             {
                 var itemApi = _mapper.Map<TEntidade>(item);
-                var items = ExecutarAntesSalvar(item, itemApi);
+                var items = await ExecutarAntesSalvar (item, itemApi);
                 var retornoApi = await _servico.Alterar(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
@@ -184,6 +184,5 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return RedirectToAction(nameof(Index));
 
         }
-
     }
 }

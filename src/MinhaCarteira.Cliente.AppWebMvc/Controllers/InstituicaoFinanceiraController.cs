@@ -8,32 +8,54 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class InstituicaoFinanceiraController :
         BaseController<InstituicaoFinanceira, InstituicaoFinanceiraViewModel>
     {
-        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public InstituicaoFinanceiraController(
             IServicoBase<InstituicaoFinanceira> servico,
             IMapper mapper,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IConfiguration config)
             : base(servico, mapper)
         {
-            this.webHostEnvironment = webHostEnvironment;
+            _config = config;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         protected override async Task<InstituicaoFinanceiraViewModel> InicializarViewModel(InstituicaoFinanceiraViewModel viewModel)
         {
+            var src = _config
+                .GetSection("DefinicaoArquivos")["UploadRepositorioImagens"];
+            
+            viewModel.PathImagens = Path.Combine(src, "instituicaoFinanceira");
+
             return await Task.FromResult(viewModel);
         }
-
         protected override async Task<bool> ValidarViewModel(InstituicaoFinanceiraViewModel viewModel)
         {
             return await Task.FromResult(true);
+        }
+        protected override async Task<IList<InstituicaoFinanceiraViewModel>> ObterTodos()
+        {
+            var src = _config
+                .GetSection("DefinicaoArquivos")["UploadRepositorioImagens"];
+
+            src = Path.Combine(src, "instituicaoFinanceira");
+            src = src.Replace("wwwroot/", "");
+            
+            var itens = await base.ObterTodos();
+            itens.ToList().ForEach(f => f.PathImagens = src);
+
+            return itens;
         }
 
         #region Métodos sobrescritos apenas manter as views
@@ -65,23 +87,36 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         private string UploadedFile(InstituicaoFinanceiraViewModel model)
         {
-            if (model.Icone == null) return null;
+            if (model.IconeForm == null) return null;
 
-            var uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-            var uniqueFileName = Guid.NewGuid() + "_" + model.Icone.FileName;
+            var destinoConfig = _config
+                .GetSection("DefinicaoArquivos")["UploadRepositorioImagens"]
+                .ToString();
+
+            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+            if (!string.IsNullOrWhiteSpace(destinoConfig))
+                uploadsFolder = destinoConfig;
+
+            uploadsFolder = Path.Combine(uploadsFolder, "instituicaoFinanceira");
+
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = Guid.NewGuid() + "_" + model.IconeForm.FileName;
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
             using var fileStream = new FileStream(filePath, FileMode.Create);
-            model.Icone.CopyTo(fileStream);
+            model.IconeForm.CopyTo(fileStream);
 
             return uniqueFileName;
         }
 
-        protected override Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira> ExecutarAntesSalvar(InstituicaoFinanceiraViewModel viewModel, InstituicaoFinanceira model)
+        protected override async Task<Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>> ExecutarAntesSalvar(InstituicaoFinanceiraViewModel viewModel, InstituicaoFinanceira model)
         {
             var uniqueFileName = UploadedFile(viewModel);
             model.Icone = uniqueFileName;
 
-            return new Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>(viewModel, model);
+            return await Task.FromResult(
+                new Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>(viewModel, model));
         }
     }
 }

@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Cliente.AppWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Cliente.Recursos", "MinhaCarteira.Cliente.Recursos\MinhaCarteira.Cliente.Recursos.csproj", "{A584A949-3AB6-42E5-85FA-2B2973B2C621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Servidor.Recursos", "MinhaCarteira.Servidor.Recursos\MinhaCarteira.Servidor.Recursos.csproj", "{087B00C0-C8DD-4170-8B59-90B64BA64118}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Servidor.Recursos", "MinhaCarteira.Servidor.Recursos\MinhaCarteira.Servidor.Recursos.csproj", "{087B00C0-C8DD-4170-8B59-90B64BA64118}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

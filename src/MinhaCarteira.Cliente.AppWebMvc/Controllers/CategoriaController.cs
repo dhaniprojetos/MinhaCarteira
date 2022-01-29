@@ -23,6 +23,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             _categoriaServico = categoriaServico;
         }
 
+        protected override async Task<IList<CategoriaViewModel>> ObterTodos()
+        {
+            var resposta = await Servico.Navegar();
+            var itens = Mapper.Map<List<CategoriaViewModel>>(
+                resposta.Dados);
+        
+            return itens?.OrderBy(o => o.Caminho).ToList();
+        }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
             var resp = await _categoriaServico.Navegar();
@@ -30,10 +38,17 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
             return await Task.FromResult(viewModel);
         }
-
         protected override async Task<bool> ValidarViewModel(CategoriaViewModel viewModel)
         {
             return await Task.FromResult(true);
+        }
+        protected override async Task<Tuple<CategoriaViewModel, Categoria>> ExecutarAntesSalvar(CategoriaViewModel viewModel, Categoria model)
+        {
+            var itemDb = await ObterPorId(model.Id);
+            var itemMap = Mapper.Map<Categoria>(itemDb);
+            model.SubCategoria = itemMap.SubCategoria;
+
+            return await base.ExecutarAntesSalvar(viewModel, model);
         }
 
         [HttpPost]
@@ -54,13 +69,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         #region Métodos sobrescritos apenas manter as views
         public override async Task<IActionResult> Index()
         {
-            var resposta = await Servico.Navegar();
-            IList<CategoriaViewModel> itens = null;
-
-            if (resposta.Dados != null)
-                itens = Mapper.Map<List<CategoriaViewModel>>(resposta.Dados);
-
-            return View(itens?.OrderBy(o => o.Caminho));
+            return await base.Index();
         }
 
         public override async Task<IActionResult> Criar()

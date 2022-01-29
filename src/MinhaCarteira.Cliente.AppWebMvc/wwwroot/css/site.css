@@ -72,6 +72,7 @@ body {
 
 
 .myAlert-bottom {
+    z-index: 999;
     position: fixed !important;
     bottom: 5px !important;
     left: 2% !important;

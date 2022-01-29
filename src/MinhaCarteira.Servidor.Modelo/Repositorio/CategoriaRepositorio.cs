@@ -71,7 +71,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .Select(s => s.Id)
                 .ToArray();
             var subIds = itens
-                .SelectMany(s => s.SubCategoria, (_, i) => i.Id)
+                .SelectMany(s => s.SubCategoria, (_, i) => i?.Id)
                 .Select(s => s)
                 .Where(w => w > 0)
                 .ToArray();

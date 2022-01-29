@@ -16,6 +16,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -28,6 +29,14 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(item.Icone))
+                    {
+                        <img src="@item.PathImagens/@item.Icone"
+                             height="32" width="32"
+                             asp-append-version="true" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)
