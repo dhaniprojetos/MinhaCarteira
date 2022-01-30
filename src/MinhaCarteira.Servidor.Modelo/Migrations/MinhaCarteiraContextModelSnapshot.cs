@@ -104,9 +104,15 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Icone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nome")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NomeArquivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -191,7 +197,8 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                 {
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Categoria", "CategoriaPai")
                         .WithMany("SubCategoria")
-                        .HasForeignKey("IdCategoriaPai");
+                        .HasForeignKey("IdCategoriaPai")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CategoriaPai");
                 });
@@ -201,7 +208,7 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.InstituicaoFinanceira", "InstituicaoFinanceira")
                         .WithMany()
                         .HasForeignKey("IdInstituicaoFinanceira")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("InstituicaoFinanceira");
@@ -212,24 +219,25 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.CentroClassificacao", "CentroClassificacao")
                         .WithMany()
                         .HasForeignKey("CentroClassificacaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.ContaBancaria", "ContaBancaria")
                         .WithMany()
                         .HasForeignKey("ContaBancariaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Pessoa", "Pessoa")
                         .WithMany()
-                        .HasForeignKey("PessoaId");
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Categoria");
 

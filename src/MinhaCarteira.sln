@@ -23,9 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Cliente", "01-Cliente", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Teste.Mock", "MinhaCarteira.Teste.Mock\MinhaCarteira.Teste.Mock.csproj", "{118957DE-3837-49C4-8B50-3561566B6804}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Comum.Recursos", "MinhaCarteira.Comum.Recursos\MinhaCarteira.Comum.Recursos.csproj", "{6DA1260F-FD1E-4278-A8D4-9580CBADD6FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Comum.Recursos", "MinhaCarteira.Comum.Recursos\MinhaCarteira.Comum.Recursos.csproj", "{6DA1260F-FD1E-4278-A8D4-9580CBADD6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhaCarteira.Cliente.AppWebMvc", "MinhaCarteira.Cliente.AppWebMvc\MinhaCarteira.Cliente.AppWebMvc.csproj", "{A8838364-4145-4660-9E4B-F27E798260E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Cliente.AppWebMvc", "MinhaCarteira.Cliente.AppWebMvc\MinhaCarteira.Cliente.AppWebMvc.csproj", "{A8838364-4145-4660-9E4B-F27E798260E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Cliente.Recursos", "MinhaCarteira.Cliente.Recursos\MinhaCarteira.Cliente.Recursos.csproj", "{A584A949-3AB6-42E5-85FA-2B2973B2C621}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaCarteira.Servidor.Recursos", "MinhaCarteira.Servidor.Recursos\MinhaCarteira.Servidor.Recursos.csproj", "{087B00C0-C8DD-4170-8B59-90B64BA64118}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,14 @@ Global
 		{A8838364-4145-4660-9E4B-F27E798260E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8838364-4145-4660-9E4B-F27E798260E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8838364-4145-4660-9E4B-F27E798260E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A584A949-3AB6-42E5-85FA-2B2973B2C621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A584A949-3AB6-42E5-85FA-2B2973B2C621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A584A949-3AB6-42E5-85FA-2B2973B2C621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A584A949-3AB6-42E5-85FA-2B2973B2C621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{087B00C0-C8DD-4170-8B59-90B64BA64118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087B00C0-C8DD-4170-8B59-90B64BA64118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087B00C0-C8DD-4170-8B59-90B64BA64118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087B00C0-C8DD-4170-8B59-90B64BA64118}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +90,8 @@ Global
 		{118957DE-3837-49C4-8B50-3561566B6804} = {9AE0BC35-114A-4DFC-BD4E-A05D0ABE1BC4}
 		{6DA1260F-FD1E-4278-A8D4-9580CBADD6FE} = {5653D47A-DB6B-4877-B864-0D4139051D42}
 		{A8838364-4145-4660-9E4B-F27E798260E5} = {66FECA09-14A9-4940-8105-4E55E200737F}
+		{A584A949-3AB6-42E5-85FA-2B2973B2C621} = {66FECA09-14A9-4940-8105-4E55E200737F}
+		{087B00C0-C8DD-4170-8B59-90B64BA64118} = {2B67C2DE-CAC3-45A8-AE59-4A52CDB3DD94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {208A5474-951B-4DB9-AC97-8EE05632206D}

@@ -5,38 +5,38 @@
 }
 
 <h1>Index</h1>
+@{await Html.RenderPartialAsync("_PartialAlertas");}
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Criar">Create New</a>
 </p>
-<table class="table">
+<table class="table table-responsive-sm">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TipoMovimento)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.DataMovimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdAuxiliar)
+                @Html.DisplayNameFor(model => model.Descricao)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValorReal)
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContaBancaria)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+        @if (Model == null) return;
+
         @foreach (var item in Model)
         {
             <tr>
@@ -44,22 +44,19 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TipoMovimento)
+                    @Html.DisplayFor(modelItem => item.DataMovimento)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DataMovimento)
+                    @Html.DisplayFor(modelItem => item.ValorReal)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Valor)
+                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdAuxiliar)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ValorReal)
+                    @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
                 </td>
                 <td>
                     @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |

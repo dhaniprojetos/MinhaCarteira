@@ -43,7 +43,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
         {
             Console.WriteLine(@"Inicializando a sequencia de inclusões");
             var itens = GerarItens(qtdTestes);
-            var itensDb = await Servico.Incluir(itens);
+            var itensDb = await Servico.IncluirRange(itens);
             var ids = string.Join(
                 ",",
                 itensDb.Select(s => s.Id).ToArray());
@@ -66,7 +66,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
         {
             Console.WriteLine(@"Inicializando a sequencia de alterações");
             itens = AlterarItens(itens);
-            var itensDb = await Servico.Alterar(itens);
+            var itensDb = await Servico.AlterarRange(itens);
 
             var ids = string.Join(
                 ",",
@@ -81,7 +81,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
         {
             Console.WriteLine(@"Inicializando a sequencia de remoções");
             var ids = itens.Select(s => s.Id).ToArray();
-            var linhasAfetadas = await Servico.Deletar(ids);
+            var linhasAfetadas = await Servico.DeletarRange(ids);
 
             _output.WriteLine($"Quantidade de {NomeTipoGenerico} removidos : {linhasAfetadas}");
 

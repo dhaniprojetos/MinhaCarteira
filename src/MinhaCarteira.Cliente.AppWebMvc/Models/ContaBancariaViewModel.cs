@@ -3,12 +3,25 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
     public class ContaBancariaViewModel : IEntidade
     {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Agencia { get; set; }
+        public string Conta { get; set; }
+
+        [Display(Name = "Instituição Financeira")]
+        public int IdInstituicaoFinanceira { get; set; }
+        public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
+        public string InstituicaoBancariaNome => InstituicaoFinanceira?.Nome;
+
+        public IEnumerable<SelectListItem> InstituicoesBancaria { get; set; }
+
         public ContaBancariaViewModel()
         {
             InstituicoesBancaria = new List<SelectListItem>();
@@ -30,15 +43,5 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
 
             InstituicoesBancaria = instituicoes;
         }
-
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Agencia { get; set; }
-        public string Conta { get; set; }
-
-        public int IdInstituicaoFinanceira { get; set; }
-        public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
-
-        public IEnumerable<SelectListItem> InstituicoesBancaria { get; set; }
     }
 }

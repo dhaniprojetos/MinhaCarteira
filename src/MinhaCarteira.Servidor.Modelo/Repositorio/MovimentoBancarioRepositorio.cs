@@ -17,8 +17,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             return source
                 .Include(i => i.CentroClassificacao)
                 .Include(i => i.Pessoa)
+                .Include(i => i.ContaBancaria)
                 .Include(i => i.Categoria)
-                .Include(i => i.ContaBancaria);
+                    .ThenInclude(ti => ti.CategoriaPai)
+                    .ThenInclude(ti => ti.CategoriaPai);
+
         }
     }
 }

@@ -11,9 +11,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper
         {
             CreateMap<Pessoa, PessoaViewModel>();
             CreateMap<PessoaViewModel, Pessoa>();
-            
+
             CreateMap<InstituicaoFinanceira, InstituicaoFinanceiraViewModel>();
+            //.ForMember(m => m.Icone, opt => opt.Ignore());
             CreateMap<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>();
+            //.ForMember(m => m.Icone, opt => opt.Ignore());
 
             CreateMap<ContaBancaria, ContaBancariaViewModel>();
             CreateMap<ContaBancariaViewModel, ContaBancaria>();

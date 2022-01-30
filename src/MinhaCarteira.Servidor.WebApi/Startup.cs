@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MinhaCarteira.Comum.Recursos.Helper;
 using MinhaCarteira.Servidor.Modelo.Data;
+using MinhaCarteira.Servidor.Recursos.Helper;
 using Newtonsoft.Json;
 
 namespace MinhaCarteira.Servidor.WebApi
@@ -59,11 +60,13 @@ namespace MinhaCarteira.Servidor.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint(
-                    "/swagger/v1/swagger.json",
-                    "MinhaCarteira.Servidor.WebApi v1"));
             }
+
+            Debug.WriteLine(Configuration["SwaggerEndpoint"]);
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint(
+                Configuration["SwaggerEndpoint"],
+                "MinhaCarteira.Servidor.WebApi v1"));
 
             app.UseHttpsRedirection();
 

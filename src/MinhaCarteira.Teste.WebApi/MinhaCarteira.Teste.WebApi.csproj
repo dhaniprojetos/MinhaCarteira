@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinhaCarteira.Comum.Recursos\MinhaCarteira.Comum.Recursos.csproj" />
+    <ProjectReference Include="..\MinhaCarteira.Servidor.Recursos\MinhaCarteira.Servidor.Recursos.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Servidor.Servico\MinhaCarteira.Servidor.Controle.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Teste.Mock\MinhaCarteira.Teste.Mock.csproj" />
   </ItemGroup>

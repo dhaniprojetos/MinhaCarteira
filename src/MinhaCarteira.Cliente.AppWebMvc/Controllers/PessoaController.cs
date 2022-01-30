@@ -4,7 +4,7 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.ViewModel;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using System.Threading.Tasks;
-using MinhaCarteira.Comum.Recursos.Refit.Base;
+using MinhaCarteira.Cliente.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {

@@ -18,6 +18,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
         {
             return source;
         }
+        protected virtual IQueryable<TEntidade> AdicionarOrdenacao(
+            IQueryable<TEntidade> source)
+        {
+            return source;
+        }
         protected virtual async Task<IList<TEntidade>> ExecutarAntesAlterar(
             IList<TEntidade> itens)
         {
@@ -68,7 +73,22 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             GC.SuppressFinalize(this);
         }
 
-        public async Task<int> Deletar(int[] ids)
+
+        public async Task<int> Deletar(int id)
+        {
+            return await DeletarRange(new[] { id });
+        }
+        public async Task<TEntidade> Alterar(TEntidade item)
+        {
+            var itens = await AlterarRange(new List<TEntidade> { item });
+            return itens[0];
+        }
+        public async Task<TEntidade> Incluir(TEntidade item)
+        {
+            var itens = await IncluirRange(new List<TEntidade> { item });
+            return itens[0];
+        }
+        public async Task<int> DeletarRange(int[] ids)
         {
             try
             {
@@ -84,14 +104,31 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public virtual async Task<IList<TEntidade>> Alterar(IList<TEntidade> itens)
+        public virtual async Task<IList<TEntidade>> AlterarRange(IList<TEntidade> itens)
         {
             try
             {
                 var itensPreparados = await ExecutarAntesAlterar(itens);
                 if (itensPreparados == null) return null;
-
                 Tabela.UpdateRange(itensPreparados);
+                await Contexto.SaveChangesAsync();
+
+                itens.ToList().ForEach(f =>
+                    Contexto.Entry(f).State = EntityState.Detached);
+
+                return itens;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public virtual async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
+        {
+            try
+            {
+                await Tabela.AddRangeAsync(itens);
                 await Contexto.SaveChangesAsync();
 
                 itens.ToList().ForEach(f =>
@@ -109,6 +146,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             ICriterio<TEntidade> criterio)
         {
             var tab = AdicionarIncludes(Tabela).AsNoTracking();
+            tab = AdicionarOrdenacao(tab);
 
             //var tab = criterio != null && criterio.AdicionarIncludes
             //    ? AdicionarIncludes(Tabela).AsNoTracking()
@@ -117,25 +155,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             //if (criterio?.Filtro != null)
             //    tab = criterio.Filtro.Filtrar(tab);
 
-            return await tab.ToListAsync();
-        }
-        public virtual async Task<IList<TEntidade>> Incluir(IList<TEntidade> itens)
-        {
-            try
-            {
-                await Tabela.AddRangeAsync(itens);
-                await Contexto.SaveChangesAsync();
-
-                itens.ToList().ForEach(f =>
-                    Contexto.Entry(f).State = EntityState.Detached);
-
-                return itens;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            var itens = await tab.ToListAsync();
+            return itens;
         }
 
         public async Task<TEntidade> ObterPorId(int id)

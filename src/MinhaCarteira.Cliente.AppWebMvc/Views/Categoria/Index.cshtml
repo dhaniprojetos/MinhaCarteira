@@ -5,11 +5,12 @@
 }
 
 <h1>Index</h1>
+@{await Html.RenderPartialAsync("_PartialAlertas");}
 
 <p>
     <a asp-action="Criar">Create New</a>
 </p>
-<table class="table">
+<table class="table table-responsive-sm">
     <thead>
         <tr>
             <th>
@@ -21,34 +22,30 @@
             <th>
                 @Html.DisplayNameFor(model => model.CategoriaPai)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdAuxiliar)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+        @if (Model == null) return;
+
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoriaPai.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdAuxiliar)
-            </td>
-            <td>
-                @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
-                @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
-                @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeCategoriaPai)
+                </td>
+                <td>
+                    @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
+                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                </td>
+            </tr>
         }
     </tbody>
 </table>

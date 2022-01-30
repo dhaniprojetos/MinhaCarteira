@@ -1,7 +1,6 @@
 ﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinhaCarteira.Comum.Definicao.Entidade
 {
@@ -30,13 +29,5 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
 
         public int ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
-
-        [NotMapped]
-        public decimal ValorReal
-        {
-            get => TipoMovimento == TipoMovimento.Credito
-                ? Valor
-                : Valor * (-1);
-        }
     }
 }

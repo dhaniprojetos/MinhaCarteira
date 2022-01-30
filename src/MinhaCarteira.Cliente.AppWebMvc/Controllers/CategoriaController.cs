@@ -1,33 +1,78 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.AppWebMvc.Models;
+using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class CategoriaController : BaseController<Categoria, CategoriaViewModel>
     {
-        public CategoriaController(IServicoBase<Categoria> servico, IMapper mapper) : base(servico, mapper)
+        private readonly IServicoBase<Categoria> _categoriaServico;
+
+        public CategoriaController(
+            IServicoBase<Categoria> servico,
+            IMapper mapper, IServicoBase<Categoria> categoriaServico)
+            : base(servico, mapper)
         {
+            _categoriaServico = categoriaServico;
         }
 
+        protected override async Task<IList<CategoriaViewModel>> ObterTodos()
+        {
+            var resposta = await Servico.Navegar();
+            var itens = Mapper.Map<List<CategoriaViewModel>>(
+                resposta.Dados);
+        
+            return itens?.OrderBy(o => o.Caminho).ToList();
+        }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
+            var resp = await _categoriaServico.Navegar();
+            viewModel.AdicionarCategorias(resp.Dados);
+
             return await Task.FromResult(viewModel);
         }
-
         protected override async Task<bool> ValidarViewModel(CategoriaViewModel viewModel)
         {
             return await Task.FromResult(true);
         }
+        protected override async Task<Tuple<CategoriaViewModel, Categoria>> ExecutarAntesSalvar(CategoriaViewModel viewModel, Categoria model)
+        {
+            if (viewModel.Id == 0) 
+                return await base.ExecutarAntesSalvar(viewModel, model);
+
+            var itemDb = await ObterPorId(viewModel.Id);
+            var itemMap = Mapper.Map<Categoria>(itemDb);
+            model.SubCategoria = itemMap.SubCategoria;
+
+            return await base.ExecutarAntesSalvar(viewModel, model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ObterCategorias(string prefix)
+        {
+            var resp = await _categoriaServico.Navegar();
+
+            var items = resp.Dados
+                .Select(s => new { label = s.Caminho, val = s.Id })
+                .Where(w => string.IsNullOrEmpty(prefix) ||
+                            w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(s => s.label)
+                .ToList();
+
+            return Json(items);
+        }
 
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override async Task<IActionResult> Index()
         {
-            return base.Index();
+            return await base.Index();
         }
 
         public override async Task<IActionResult> Criar()
