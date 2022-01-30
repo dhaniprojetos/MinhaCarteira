@@ -9,10 +9,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MinhaCarteira.Servidor.Modelo\MinhaCarteira.Servidor.Modelo.csproj" />
-    <ProjectReference Include="..\MinhaCarteira.Servidor.Servico\MinhaCarteira.Servidor.Controle.csproj" />
-    <ProjectReference Include="..\MinhaCarteira.Teste.Mock\MinhaCarteira.Teste.Mock.csproj" />
-  </ItemGroup>
-
 </Project>
