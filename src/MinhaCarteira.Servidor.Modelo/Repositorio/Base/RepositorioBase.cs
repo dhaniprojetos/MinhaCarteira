@@ -73,7 +73,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             GC.SuppressFinalize(this);
         }
 
-
         public async Task<int> Deletar(int id)
         {
             return await DeletarRange(new[] { id });

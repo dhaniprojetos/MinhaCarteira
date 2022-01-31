@@ -37,6 +37,9 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
             services.AddScoped<ICrud<MovimentoBancario>, MovimentoBancarioRepositorio>();
             services.AddScoped<IServicoCrud<MovimentoBancario>, MovimentoBancarioServico>();
 
+            services.AddScoped<ICrud<Agendamento>, AgendamentoRepositorio>();
+            services.AddScoped<IServicoCrud<Agendamento>, AgendamentoServico>();
+
             return services;
         }
     }

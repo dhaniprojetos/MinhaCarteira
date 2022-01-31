@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using Xunit.Abstractions;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.WebApi.Crud.Base
 {
@@ -42,7 +42,8 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
             int qtdTestes)
         {
             Console.WriteLine(@"Inicializando a sequencia de inclusões");
-            var itens = GerarItens(qtdTestes);
+            //var itens = GerarItens(qtdTestes);
+            var itens = Builder.DadosParaInsercao().Generate(qtdTestes).ToList();
             var itensDb = await Servico.IncluirRange(itens);
             var ids = string.Join(
                 ",",

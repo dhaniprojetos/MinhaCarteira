@@ -14,6 +14,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
     {
         [DisplayFormat(DataFormatString = "{0:d}", NullDisplayText = "Auto")]
         public int Id { get; set; }
+        public int? IdAuxiliar { get; set; }
         public TipoMovimento TipoMovimento { get; set; }
         [DisplayName("Data")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
@@ -22,7 +23,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public string Descricao { get; set; }
         [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
-        public int? IdAuxiliar { get; set; }
 
         [DisplayName("Centro de classificação")]
         public int CentroClassificacaoId { get; set; }

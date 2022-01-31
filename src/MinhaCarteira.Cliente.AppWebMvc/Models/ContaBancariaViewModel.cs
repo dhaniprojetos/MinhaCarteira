@@ -16,7 +16,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public string Conta { get; set; }
 
         [Display(Name = "Instituição Financeira")]
-        public int IdInstituicaoFinanceira { get; set; }
+        public int InstituicaoFinanceiraId { get; set; }
         public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
         public string InstituicaoBancariaNome => InstituicaoFinanceira?.Nome;
 

@@ -21,7 +21,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .Include(i => i.Categoria)
                     .ThenInclude(ti => ti.CategoriaPai)
                     .ThenInclude(ti => ti.CategoriaPai);
-
         }
     }
 }
