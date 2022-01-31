@@ -9,9 +9,6 @@ using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using static System.Net.WebRequestMethods;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {

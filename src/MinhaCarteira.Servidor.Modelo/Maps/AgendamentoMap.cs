@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using System;
 
 namespace MinhaCarteira.Servidor.Modelo.Maps
 {
