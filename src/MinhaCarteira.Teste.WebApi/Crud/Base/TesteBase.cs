@@ -34,16 +34,15 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
         {
             var itens = new List<TEntidade>();
             for (int i = 0; i < qtdItens; i++)
-                itens.Add(Builder.DadosParaInsercao(i));
-
+                itens.Add(Builder.DadosParaInsercao(i).Generate());
+        
             return itens;
         }
         protected async Task<TEntidade[]> IncluirItensAsync(
             int qtdTestes)
         {
             Console.WriteLine(@"Inicializando a sequencia de inclusões");
-            //var itens = GerarItens(qtdTestes);
-            var itens = Builder.DadosParaInsercao().Generate(qtdTestes).ToList();
+            var itens = GerarItens(qtdTestes);
             var itensDb = await Servico.IncluirRange(itens);
             var ids = string.Join(
                 ",",

@@ -95,6 +95,5 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return await base.Deletar(id);
         }
         #endregion
-
     }
 }

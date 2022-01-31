@@ -23,6 +23,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public string Descricao { get; set; }
         [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
+        public decimal ValorReal =>
+            TipoMovimento == TipoMovimento.Credito
+                ? Valor
+                : Valor * (-1);
 
         [DisplayName("Centro de classificação")]
         public int CentroClassificacaoId { get; set; }
@@ -57,11 +61,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
             ? ContaBancaria.Nome
             : string.Empty;
 
-        public decimal ValorReal =>
-            TipoMovimento == TipoMovimento.Credito
-                ? Valor
-                : Valor * (-1);
-
         public MovimentoBancarioViewModel()
         {
             var now = DateTime.Now;
@@ -86,7 +85,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
 
             Pessoas = valores;
         }
-
         public void AdicionarCentrosClassificacao(IList<CentroClassificacao> items)
         {
             var valores = items?
@@ -99,7 +97,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
 
             CentrosClassificacao = valores;
         }
-
         public void AdicionarCategorias(IList<Categoria> items)
         {
             var valores = items?
@@ -113,7 +110,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
 
             Categorias = valores;
         }
-
         public void AdicionarContasBancarias(IList<ContaBancaria> items)
         {
             var valores = items?

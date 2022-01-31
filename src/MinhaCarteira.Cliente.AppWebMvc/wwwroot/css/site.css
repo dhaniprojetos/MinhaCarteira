@@ -78,3 +78,13 @@ body {
     left: 2% !important;
     width: 96% !important;
 }
+
+body {
+    padding-top: 75px;
+}
+
+@media (max-width: 979px) {
+    body {
+        padding-top: 0px;
+    }
+}

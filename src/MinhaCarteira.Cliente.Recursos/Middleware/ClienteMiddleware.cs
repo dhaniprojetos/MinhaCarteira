@@ -44,6 +44,11 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/movimentobancario"));
 
+            services
+                .AddRefitClient<IServicoBase<Agendamento>>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "/agendamento"));
+
             return services;
         }
     }

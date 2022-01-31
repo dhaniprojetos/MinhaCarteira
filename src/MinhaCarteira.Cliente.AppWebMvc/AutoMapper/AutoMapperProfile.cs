@@ -28,6 +28,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper
 
             CreateMap<MovimentoBancario, MovimentoBancarioViewModel>();
             CreateMap<MovimentoBancarioViewModel, MovimentoBancario>();
+
+            CreateMap<Agendamento, AgendamentoViewModel>();
+            CreateMap<AgendamentoViewModel, Agendamento>();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Bogus;
-using Bogus.DataSets;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Teste.Mock.Interface;
 

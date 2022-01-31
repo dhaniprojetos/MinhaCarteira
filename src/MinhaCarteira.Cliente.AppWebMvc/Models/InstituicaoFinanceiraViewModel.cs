@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.StaticFiles;
 using MinhaCarteira.Cliente.AppWebMvc.Attributes;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using System.Net.Mime;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Models
 {
