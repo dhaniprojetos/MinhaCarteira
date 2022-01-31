@@ -10,9 +10,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
     public class CategoriaViewModel : IEntidade
     {
         public int Id { get; set; }
+        public int? IdAuxiliar { get; set; }
         public string Nome { get; set; }
         public string Caminho { get; set; }
-        public int? IdAuxiliar { get; set; }
 
         private int? idCategoriaPai;
         public int? IdCategoriaPai

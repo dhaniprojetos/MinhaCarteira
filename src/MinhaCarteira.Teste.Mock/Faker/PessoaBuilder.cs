@@ -1,13 +1,13 @@
 ﻿using Bogus;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using System;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.Mock.Faker
 {
     public class PessoaBuilder : IBuilder<Pessoa>
     {
-        public Pessoa DadosParaInsercao(params object[] args)
+        public Faker<Pessoa> DadosParaInsercao(params object[] args)
         {
             Randomizer.Seed = new Random();
 
@@ -18,8 +18,7 @@ namespace MinhaCarteira.Teste.Mock.Faker
                 .RuleFor(p => p.EhCliente, f => f.Random.Bool())
                 .RuleFor(p => p.EhFornecedor, f => f.Random.Bool());
 
-            var retorno = faker.Generate();
-            return retorno;
+            return faker;
         }
         
         public Pessoa DadosParaAlteracao(Pessoa item)

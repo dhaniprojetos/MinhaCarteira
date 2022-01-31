@@ -18,6 +18,8 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             modelBuilder.ApplyConfiguration(new CategoriaMap());
             modelBuilder.ApplyConfiguration(new CentroClassificacaoMap());
             modelBuilder.ApplyConfiguration(new MovimentoBancarioMap());
+            modelBuilder.ApplyConfiguration(new AgendamentoMap());
+            modelBuilder.ApplyConfiguration(new AgendamentoItemMap());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -28,5 +30,7 @@ namespace MinhaCarteira.Servidor.Modelo.Data
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Categoria> CentrosClassificacao { get; set; }
         public DbSet<Categoria> MovimentosBancarios { get; set; }
+        public DbSet<Agendamento> Agendamentos { get; set; }
+        public DbSet<AgendamentoItem> AgendamentoItens { get; set; }
     }
 }

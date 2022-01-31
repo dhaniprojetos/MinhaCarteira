@@ -6,8 +6,8 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
     public class Categoria : IEntidade
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
         public int? IdAuxiliar { get; set; }
+        public string Nome { get; set; }
 
         public int? IdCategoriaPai { get; set; }
         public Categoria CategoriaPai { get; set; }

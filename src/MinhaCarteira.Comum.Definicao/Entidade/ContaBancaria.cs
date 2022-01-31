@@ -9,7 +9,7 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
         public string Agencia { get; set; }
         public string Conta { get; set; }
 
-        public int IdInstituicaoFinanceira { get; set; }
+        public int InstituicaoFinanceiraId { get; set; }
         public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
     }
 }

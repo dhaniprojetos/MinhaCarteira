@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinhaCarteira.Servidor.Modelo.Data;
 
 namespace MinhaCarteira.Servidor.Modelo.Migrations
 {
     [DbContext(typeof(MinhaCarteiraContext))]
-    partial class MinhaCarteiraContextModelSnapshot : ModelSnapshot
+    [Migration("20220130194548_Agendamento")]
+    partial class Agendamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +36,6 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
 
                     b.Property<int?>("ContaBancariaId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("DataInicial")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(200)

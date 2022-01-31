@@ -4,9 +4,9 @@ using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
 using MinhaCarteira.Teste.WebApi.Crud.Base;
 using System.Threading.Tasks;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using Xunit;
 using Xunit.Abstractions;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.WebApi.Crud
 {
