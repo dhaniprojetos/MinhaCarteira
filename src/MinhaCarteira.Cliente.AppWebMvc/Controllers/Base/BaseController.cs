@@ -50,19 +50,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             var resposta = await _servico.Navegar();
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
             return itens;
-
-            //try
-            //{
-            //    var resposta = await _servico.Navegar();
-            //    var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
-            //    return itens;
-            //}
-            //catch (ApiException ex)
-            //{
-            //    var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-            //    TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
-            //    return null;
-            //}
         }
         protected virtual async Task<Tuple<TEntidadeViewModel, TEntidade>> ExecutarAntesSalvar(
             TEntidadeViewModel viewModel, TEntidade model)
@@ -98,11 +85,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(default);
+                return View(new List<TEntidadeViewModel>());
             }
             catch
             {
-                return View(default);
+                return View(new List<TEntidadeViewModel>());
             }
         }
 
