@@ -1,0 +1,160 @@
+﻿@using MinhaCarteira.Comum.Definicao.Modelo
+@model MinhaCarteira.Cliente.AppWebMvc.Models.AgendamentoViewModel
+
+@{
+    ViewData["Title"] = "AgendamentoViewModel";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @foreach (var c in Enum.GetValues(typeof(TipoMovimento)))
+            {
+                <input asp-for="Tipo" type="radio" value="@((int)c)" checked="@((TipoMovimento)c == Model.Tipo)" />
+                <label asp-for="Tipo" class="control-label">@c</label>
+            }
+            <span asp-validation-for="Tipo" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <input asp-for="Id" class="form-control" disabled />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="DataInicial" class="control-label"></label>
+            <input asp-for="DataInicial" class="form-control" />
+            <span asp-validation-for="DataInicial" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descricao" class="control-label"></label>
+            <input asp-for="Descricao" class="form-control" />
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Valor" class="control-label"></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">R$</span>
+                </div>
+                <input asp-for="Valor" class="form-control money" />
+            </div>
+            <span asp-validation-for="Valor" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdAuxiliar" class="control-label"></label>
+            <input asp-for="IdAuxiliar" class="form-control" />
+            <span asp-validation-for="IdAuxiliar" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="ContaBancariaId" class="control-label"></label>
+            <input type="hidden" asp-for="ContaBancariaId" class="form-control" />
+            <div class="input-group">
+                <input id="txtContaBancaria" asp-for="NomeContaBancaria" class="form-control" />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <span asp-validation-for="ContaBancariaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoriaId" class="control-label"></label>
+            <input type="hidden" asp-for="CategoriaId" class="form-control" />
+            <div class="input-group">
+                <input id="txtCategoria" asp-for="CaminhoCategoria" class="form-control" />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <span asp-validation-for="CategoriaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PessoaId" class="control-label"></label>
+            <input type="hidden" asp-for="PessoaId" class="form-control" />
+            <div class="input-group">
+                <input id="txtPessoa" asp-for="NomePessoa" class="form-control" />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <span asp-validation-for="PessoaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CentroClassificacaoId" class="control-label"></label>
+            <input type="hidden" asp-for="CentroClassificacaoId" class="form-control" />
+            <div class="input-group">
+                <input id="txtCentroClassificacao" asp-for="NomeCentroClassificacao" class="form-control" />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <span asp-validation-for="CentroClassificacaoId" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @foreach (var c in Enum.GetValues(typeof(TipoParcelas)))
+            {
+                <input asp-for="TipoParcelas" type="radio" value="@((int)c)" checked="@((TipoParcelas)c == Model.TipoParcelas)" />
+                <label asp-for="TipoParcelas" class="control-label">@c</label>
+            }
+            <span asp-validation-for="TipoParcelas" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Parcelas" class="control-label"></label>
+            <input asp-for="Parcelas" class="form-control" />
+            <span asp-validation-for="Parcelas" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @foreach (var c in Enum.GetValues(typeof(TipoRecorrencia)))
+            {
+                <input asp-for="TipoRecorrencia" type="radio" value="@((int)c)" checked="@((TipoRecorrencia)c == Model.TipoRecorrencia)" />
+                <label asp-for="TipoRecorrencia" class="control-label">@c</label>
+            }
+            <span asp-validation-for="TipoRecorrencia" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DataFinal" class="control-label"></label>
+            <input asp-for="DataFinal" class="form-control" />
+            <span asp-validation-for="DataFinal" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+<hr />
+<div class="form-group">
+    <input type="submit" value="Salvar" class="btn btn-primary" />
+</div>

@@ -25,6 +25,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
             Tipo == TipoMovimento.Credito
                 ? Valor
                 : Valor * (-1);
+        public int Parcelas { get; set; }
+        public DateTime? DataFinal { get; set; }
+        public TipoRecorrencia TipoRecorrencia { get; set; }
+        public TipoParcelas TipoParcelas { get; set; }
+        public IList<AgendamentoItemViewModel> Items { get; set; }
 
         [DisplayName("Categoria")]
         public int CategoriaId { get; set; }
@@ -62,8 +67,42 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         public AgendamentoViewModel()
         {
             var now = DateTime.Now;
+            Items = new List<AgendamentoItemViewModel>();
             DataInicial = new DateTime(now.Year, now.Month, now.Day);
+            DataFinal = new DateTime(now.Year, now.Month, now.Day + 5);
             Tipo = TipoMovimento.Debito;
         }
+
+        public void AdicionarParcela(DateTime data)
+        {
+            var parcela = new AgendamentoItemViewModel()
+            {
+                AgendamentoId = Id,
+                Data = data,
+                Valor = Valor,
+                Pessoa = Pessoa,
+                PessoaId = PessoaId,
+                ContaBancaria = ContaBancaria,
+                ContaBancariaId = ContaBancariaId
+            };
+
+            Items.Add(parcela);
+        }
+    }
+
+    public class AgendamentoItemViewModel
+    {
+        public int Id { get; set; }
+        public int AgendamentoId { get; set; }
+        public Agendamento Agendamento { get; set; }
+        public DateTime Data { get; set; }
+        public decimal Valor { get; set; }
+        public bool EstahPaga { get; set; }
+
+        public int? PessoaId { get; set; }
+        public Pessoa Pessoa { get; set; }
+
+        public int? ContaBancariaId { get; set; }
+        public ContaBancaria ContaBancaria { get; set; }
     }
 }
