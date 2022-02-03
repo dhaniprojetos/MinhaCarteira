@@ -25,10 +25,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
             Tipo == TipoMovimento.Credito
                 ? Valor
                 : Valor * (-1);
-        public int Parcelas { get; set; }
-        public DateTime? DataFinal { get; set; }
+
         public TipoRecorrencia TipoRecorrencia { get; set; }
         public TipoParcelas TipoParcelas { get; set; }
+        public int IntervaloParcelas { get; set; }
+        public DateTime? DataFinal { get; set; }
+        public int Parcelas { get; set; }
+
         public IList<AgendamentoItemViewModel> Items { get; set; }
 
         [DisplayName("Categoria")]
@@ -80,9 +83,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
                 AgendamentoId = Id,
                 Data = data,
                 Valor = Valor,
-                Pessoa = Pessoa,
                 PessoaId = PessoaId,
-                ContaBancaria = ContaBancaria,
                 ContaBancariaId = ContaBancariaId
             };
 
@@ -94,7 +95,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
     {
         public int Id { get; set; }
         public int AgendamentoId { get; set; }
-        public Agendamento Agendamento { get; set; }
+        public AgendamentoViewModel Agendamento { get; set; }
         public DateTime Data { get; set; }
         public decimal Valor { get; set; }
         public bool EstahPaga { get; set; }

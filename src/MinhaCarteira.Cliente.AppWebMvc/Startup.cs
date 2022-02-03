@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhaCarteira.Cliente.AppWebMvc.AutoMapper;
 using MinhaCarteira.Cliente.Recursos.Middleware;
+using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.AppWebMvc
 {
@@ -26,6 +28,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc
 
             services
                 .AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
                 .AddRazorRuntimeCompilation();
         }
 
