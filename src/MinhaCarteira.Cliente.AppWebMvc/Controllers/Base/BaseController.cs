@@ -87,18 +87,31 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 
                 return View(new List<TEntidadeViewModel>());
             }
-            catch
+            catch (Exception e)
             {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                ViewBag.RetornoApi = retornoApi;
+
                 return View(new List<TEntidadeViewModel>());
             }
         }
 
         public virtual async Task<IActionResult> Criar()
         {
-            var item = await InicializarViewModel(
-                Activator.CreateInstance<TEntidadeViewModel>());
+            try
+            {
+                var item = await InicializarViewModel(
+                    Activator.CreateInstance<TEntidadeViewModel>());
 
-            return await Task.Run(() => View(item));
+                return View(item);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                ViewBag.RetornoApi = retornoApi;
+
+                return View(Activator.CreateInstance<TEntidadeViewModel>());
+            }
         }
         [HttpPost]
         public virtual async Task<IActionResult> Criar(TEntidadeViewModel item)
@@ -119,6 +132,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             catch (ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
@@ -154,6 +172,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -184,9 +207,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
 
             return RedirectToAction(nameof(Index));
-
         }
     }
 }

@@ -9,6 +9,8 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using System;
 using System.Threading.Tasks;
+using MinhaCarteira.Comum.Definicao.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -26,30 +28,26 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 case Comum.Definicao.Modelo.TipoRecorrencia.Semanal:
                     return Recurs
                         .Starting(viewModel.DataInicial)
-                        .Every(viewModel.Parcelas)
+                        .Every(viewModel.IntervaloParcelas)
                         .Weeks()
-                        .Ending(viewModel.DataFinal ?? viewModel.DataInicial)
                         .Build();
                 case Comum.Definicao.Modelo.TipoRecorrencia.Mensal:
                     return Recurs
                         .Starting(viewModel.DataInicial)
-                        .Every(viewModel.Parcelas)
+                        .Every(viewModel.IntervaloParcelas)
                         .Months()
-                        .Ending(viewModel.DataFinal ?? viewModel.DataInicial)
                         .Build();
                 case Comum.Definicao.Modelo.TipoRecorrencia.Anual:
                     return Recurs
                         .Starting(viewModel.DataInicial)
-                        .Every(viewModel.Parcelas)
+                        .Every(viewModel.IntervaloParcelas)
                         .Years()
-                        .Ending(viewModel.DataFinal ?? viewModel.DataInicial)
                         .Build();
                 default:
                     return Recurs
                         .Starting(viewModel.DataInicial)
-                        .Every(viewModel.Parcelas)
+                        .Every(viewModel.IntervaloParcelas)
                         .Days()
-                        .Ending(viewModel.DataFinal ?? viewModel.DataInicial)
                         .Build();
             }
         }
@@ -71,7 +69,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             do
             {
                 viewModel.AdicionarParcela(data);
-                
+
                 proximo = agendamento.Next(data);
                 if (proximo.HasValue)
                     data = new DateTime(
@@ -79,7 +77,35 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                         proximo.Value.Month,
                         proximo.Value.Day);
 
+                switch (viewModel.TipoParcelas)
+                {
+                    case TipoParcelas.Parcelada:
+                        if (viewModel.Items.Count >= viewModel.Parcelas)
+                            proximo = null;
+
+                        break;
+                    case TipoParcelas.Recorrente:
+                        if (viewModel.DataFinal != null)
+                        {
+                            if (proximo >= viewModel.DataFinal)
+                                proximo = null;
+                        }
+                        else
+                        {
+                            if (proximo >= viewModel.DataInicial.AddYears(5))
+                                proximo = null;
+                        }
+
+                        break;
+                    case TipoParcelas.Unica:
+                    default:
+                        proximo = null;
+
+                        break;
+                }
             } while (proximo != null);
+
+            model = Mapper.Map<Agendamento>(viewModel);
 
             return await base.ExecutarAntesSalvar(viewModel, model);
         }
