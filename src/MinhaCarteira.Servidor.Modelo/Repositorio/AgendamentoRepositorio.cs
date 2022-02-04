@@ -32,19 +32,48 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
         protected override async Task<IList<Agendamento>> ExecutarAntesAlterar(IList<Agendamento> itens)
         {
-            var ids = itens.Select(s => s.Id).ToArray();
-            var itemIds = itens
+            var agendIds = itens.Select(s => s.Id).ToArray();
+            var agendDb = await AdicionarIncludes(Contexto.Agendamentos)
+                .AsNoTracking()
+                .Where(w => agendIds.Contains(w.Id))
+                .ToListAsync();
+
+            foreach (var agend in itens)
+            {
+                agend.Items.ToList().ForEach(f =>
+                {
+                    var agendItemDb = agendDb
+                        .SelectMany(s => s.Items, (_, agendItemDb) => agendItemDb)
+                        .SingleOrDefault(w => w.Data == f.Data);
+
+                    if (agendItemDb != null)
+                        f.Id = agendItemDb.Id;
+                });
+            }
+
+            var agendItemsIds = itens
                 .SelectMany(s => s.Items, (_, i) => i?.Id)
                 .Where(w => w > 0)
                 .ToArray();
 
-            var itensDb = await AdicionarIncludes(Contexto.Agendamentos)
-                .AsNoTracking()
-                .Where(w => ids.Contains(w.Id))
-                .ToListAsync();
+            var agendDbsItemsIds = agendDb
+                .SelectMany(s => s.Items, (_, i) => (int)i?.Id)
+                .Where(w => w > 0)
+                .ToArray();
 
+            var agendItemsRemovidos = agendDbsItemsIds
+                .Where(w => !agendItemsIds.Contains(w))
+                .ToArray();
 
-            return await base.ExecutarAntesAlterar(itens);
+            if (agendItemsRemovidos.Length > 0)
+            {
+                //await DeletarRange(agendItemsRemovidos);
+                var ids = string.Join(",", agendItemsRemovidos);
+                var cmdSql = $"delete from AgendamentoItem where id in ({ids});";
+                await Contexto.Database.ExecuteSqlRawAsync(cmdSql);
+            }
+
+            return itens;
         }
     }
 }
