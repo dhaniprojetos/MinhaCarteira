@@ -19,13 +19,13 @@
         delay: 200,
         minLength: 2,
         select: function (e, i) {
-            $("#IdInstituicaoFinanceira").val(i.item.val);
+            $("#InstituicaoFinanceiraId").val(i.item.val);
         }
     });
 
     $("#txtInstituicao").on('change keyup copy paste cut', function () {
         if (!this.value) {
-            $("#IdInstituicaoFinanceira").val('');
+            $("#InstituicaoFinanceiraId").val('');
         }
     });
 });

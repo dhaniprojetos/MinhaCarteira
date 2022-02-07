@@ -18,7 +18,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Models
         [Display(Name = "Instituição Financeira")]
         public int InstituicaoFinanceiraId { get; set; }
         public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
-        public string InstituicaoBancariaNome => InstituicaoFinanceira?.Nome;
+        public string InstituicaoFinanceiraNome => InstituicaoFinanceira?.Nome;
 
         public IEnumerable<SelectListItem> InstituicoesBancaria { get; set; }
 

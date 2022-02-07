@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Dates.Recurring;
-using Dates.Recurring.Builders;
 using Dates.Recurring.Type;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
@@ -10,7 +9,6 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using System;
 using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Modelo;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {

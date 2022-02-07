@@ -35,10 +35,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                 resposta = itens == null || itens.Count == 0
                     ? NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Nenhum registro localizado.")
-                    {
-                        BemSucedido = false
-                    })
+                        "Nenhum registro localizado."))
                     : Ok(new Resposta<IList<TEntidade>>(
                         itens,
                         "Itens localizados com sucesso."));
@@ -66,10 +63,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         "Item localizado com sucesso."))
                     : NotFound(new Resposta<TEntidade>(
                         default,
-                        "Nenhum registro localizado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Nenhum registro localizado."));
             }
             catch (Exception e)
             {
