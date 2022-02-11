@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BaseController<TEntidade> : ControllerBase
