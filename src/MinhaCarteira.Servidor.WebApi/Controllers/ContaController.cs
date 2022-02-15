@@ -11,6 +11,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
     [Route("[controller]")]
     public class ContaController : ControllerBase
     {
+        [Route("login")]
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login(Usuario usuario)
@@ -21,6 +22,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
                 return NotFound(new Resposta<Exception>(excecao, excecao.Message));
             }
 
+            usuario.Role = "Admin";
             usuario.Password = string.Empty;
             usuario.TokenAcesso = TokenServico.GerarToken(usuario);
 

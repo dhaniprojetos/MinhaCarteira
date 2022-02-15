@@ -5,6 +5,7 @@ using Refit;
 
 namespace MinhaCarteira.Cliente.Recursos.Refit.Base
 {
+    [Headers("Authorization: Bearer")]
     public interface IServicoBase<TEntidade>
     {
         [Get("")]
