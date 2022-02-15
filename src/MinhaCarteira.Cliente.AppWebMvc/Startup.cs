@@ -35,13 +35,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc
             services.AdicionarConexoesRefit(Configuration["BaseUrlApi"]);
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
-            services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-                {
-                    options.LoginPath = new PathString("/conta/logar");
-                    options.AccessDeniedPath = new PathString("/conta/acessonegado");
-                });
+            //services
+            //    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            //    {
+            //        options.LoginPath = new PathString("/conta/logar");
+            //        options.AccessDeniedPath = new PathString("/conta/acessonegado");
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +73,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

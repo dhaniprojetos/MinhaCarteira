@@ -27,7 +27,7 @@ namespace MinhaCarteira.Servidor.Recursos.Servico
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
     }
