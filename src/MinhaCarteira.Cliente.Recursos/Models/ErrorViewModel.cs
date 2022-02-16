@@ -1,4 +1,4 @@
-namespace MinhaCarteira.Cliente.AppWebMvc.Models
+namespace MinhaCarteira.Cliente.Recursos.Models
 {
     public class ErrorViewModel
     {

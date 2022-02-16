@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MinhaCarteira.Cliente.AppWebMvc.Models;
 using System.Diagnostics;
+using MinhaCarteira.Cliente.Recursos.Models;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {

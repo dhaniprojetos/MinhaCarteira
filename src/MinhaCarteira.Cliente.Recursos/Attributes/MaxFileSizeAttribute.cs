@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using MinhaCarteira.Cliente.AppWebMvc.Attributes.Base;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using MinhaCarteira.Cliente.Recursos.Attributes.Base;
 
-namespace MinhaCarteira.Cliente.AppWebMvc.Attributes
+namespace MinhaCarteira.Cliente.Recursos.Attributes
 {
     public class MaxFileSizeAttribute : AttributesBase
     {
@@ -13,22 +13,18 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Attributes
         }
         public MaxFileSizeAttribute(string chave)
         {
-            _maxFileSize = CarregarValorConfiguracao(null, chave, 0);
+            _maxFileSize = CarregarValorConfiguracao("DefinicaoArquivos", chave, 0);
         }
 
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
-            if (file != null)
-            {
-                if (file.Length > _maxFileSize)
-                {
-                    return new ValidationResult(GetErrorMessage());
-                }
-            }
+            if (value is not IFormFile file)
+                return ValidationResult.Success;
 
-            return ValidationResult.Success;
+            return file.Length > _maxFileSize
+                ? new ValidationResult(GetErrorMessage())
+                : ValidationResult.Success;
         }
 
         public string GetErrorMessage()

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
-using MinhaCarteira.Cliente.AppWebMvc.Attributes;
+using MinhaCarteira.Cliente.Recursos.Attributes;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
-namespace MinhaCarteira.Cliente.AppWebMvc.Models
+namespace MinhaCarteira.Cliente.Recursos.Models
 {
     public class InstituicaoFinanceiraViewModel : IEntidade
     {

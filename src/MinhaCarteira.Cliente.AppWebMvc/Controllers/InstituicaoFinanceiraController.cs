@@ -5,10 +5,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
-using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using Microsoft.Extensions.Configuration;
+using MinhaCarteira.Cliente.Recursos.Models;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
