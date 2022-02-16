@@ -21,33 +21,22 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         private RecurrenceType ObterRecorrenciaBuilder(AgendamentoViewModel viewModel)
         {
-            switch (viewModel.TipoRecorrencia)
+            return viewModel.TipoRecorrencia switch
             {
-                case Comum.Definicao.Modelo.TipoRecorrencia.Semanal:
-                    return Recurs
-                        .Starting(viewModel.DataInicial)
-                        .Every(viewModel.IntervaloParcelas)
-                        .Weeks()
-                        .Build();
-                case Comum.Definicao.Modelo.TipoRecorrencia.Mensal:
-                    return Recurs
-                        .Starting(viewModel.DataInicial)
-                        .Every(viewModel.IntervaloParcelas)
-                        .Months()
-                        .Build();
-                case Comum.Definicao.Modelo.TipoRecorrencia.Anual:
-                    return Recurs
-                        .Starting(viewModel.DataInicial)
-                        .Every(viewModel.IntervaloParcelas)
-                        .Years()
-                        .Build();
-                default:
-                    return Recurs
-                        .Starting(viewModel.DataInicial)
-                        .Every(viewModel.IntervaloParcelas)
-                        .Days()
-                        .Build();
-            }
+                Comum.Definicao.Modelo.TipoRecorrencia.Semanal => Recurs.Starting(viewModel.DataInicial)
+                    .Every(viewModel.IntervaloParcelas)
+                    .Weeks()
+                    .Build(),
+                Comum.Definicao.Modelo.TipoRecorrencia.Mensal => Recurs.Starting(viewModel.DataInicial)
+                    .Every(viewModel.IntervaloParcelas)
+                    .Months()
+                    .Build(),
+                Comum.Definicao.Modelo.TipoRecorrencia.Anual => Recurs.Starting(viewModel.DataInicial)
+                    .Every(viewModel.IntervaloParcelas)
+                    .Years()
+                    .Build(),
+                _ => Recurs.Starting(viewModel.DataInicial).Every(viewModel.IntervaloParcelas).Days().Build()
+            };
         }
 
         protected override async Task<AgendamentoViewModel> InicializarViewModel(AgendamentoViewModel viewModel)

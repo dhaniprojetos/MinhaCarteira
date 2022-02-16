@@ -2,7 +2,7 @@
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
 
-namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper
+namespace MinhaCarteira.Cliente.Recursos.AutoMapper
 {
     public class AutoMapperProfile : Profile
     {
@@ -33,6 +33,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper
 
             CreateMap<Agendamento, AgendamentoViewModel>();
             CreateMap<AgendamentoViewModel, Agendamento>();
+            
+            CreateMap<Usuario, UsuarioViewModel>();
+            CreateMap<UsuarioViewModel, Usuario>();
         }
     }
 }

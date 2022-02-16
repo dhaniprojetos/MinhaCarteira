@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Handler;
 using MinhaCarteira.Comum.Definicao.Entidade;
@@ -15,15 +17,14 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
         {
             if (baseUrlApi.EndsWith('/'))
                 baseUrlApi = baseUrlApi.Remove(baseUrlApi.Length - 1, 1);
-
-            //var  = new 
-            //{
-            //    AuthorizationHeaderValueGetter = async () =>
-            //        await Task.FromResult("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImhlbXBtYXgiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE2NDQ5NTA1NjMsImV4cCI6MTY0NDk1NDE2MywiaWF0IjoxNjQ0OTUwNTYzfQ.jEogrlEFNVKslcUsrheXtkIGVs_mUK-e8EIyN0ox_DA")
-            //};
             
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<AuthorizationMessageHandler>();
+
+            services
+                .AddRefitClient<IContaServico>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "/conta"));
 
             services
                 .AddRefitClient<IServicoBase<Pessoa>>()
