@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using MinhaCarteira.Cliente.AppWebMvc.Models;
-using MinhaCarteira.Cliente.AppWebMvc.ViewModel;
+using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.AutoMapper

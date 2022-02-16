@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
-    //[Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public abstract class BaseController<TEntidade, TEntidadeViewModel> : Controller
         where TEntidade : class, IEntidade
         where TEntidadeViewModel : class, IEntidade

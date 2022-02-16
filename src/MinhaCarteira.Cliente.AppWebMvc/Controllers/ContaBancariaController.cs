@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
-using MinhaCarteira.Cliente.AppWebMvc.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers

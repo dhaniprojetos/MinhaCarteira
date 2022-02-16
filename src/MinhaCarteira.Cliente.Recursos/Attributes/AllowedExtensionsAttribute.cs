@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using MinhaCarteira.Cliente.AppWebMvc.Attributes.Base;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using MinhaCarteira.Cliente.Recursos.Attributes.Base;
 
-namespace MinhaCarteira.Cliente.AppWebMvc.Attributes
+namespace MinhaCarteira.Cliente.Recursos.Attributes
 {
     public class AllowedExtensionsAttribute : AttributesBase
     {
@@ -16,7 +16,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Attributes
         }
         public AllowedExtensionsAttribute(string chave)
         {
-            var valor = CarregarValorConfiguracao(null, chave, string.Empty);
+            var valor = CarregarValorConfiguracao("DefinicaoArquivos", chave, string.Empty);
             _extensions = valor?
                 .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
@@ -26,17 +26,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Attributes
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
-            if (file != null)
-            {
-                var extension = Path.GetExtension(file.FileName);
-                if (!_extensions.Contains(extension.ToLower()))
-                {
-                    return new ValidationResult(GetErrorMessage());
-                }
-            }
+            if (value is not IFormFile file) 
+                return ValidationResult.Success;
 
-            return ValidationResult.Success;
+            var extension = Path.GetExtension(file.FileName);
+            return !_extensions.Contains(extension?.ToLower()) 
+                ? new ValidationResult(GetErrorMessage()) 
+                : ValidationResult.Success;
         }
 
         public string GetErrorMessage()

@@ -8,7 +8,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 
-namespace MinhaCarteira.Cliente.AppWebMvc.Models
+namespace MinhaCarteira.Cliente.Recursos.Models
 {
     public class MovimentoBancarioViewModel : IEntidade
     {
