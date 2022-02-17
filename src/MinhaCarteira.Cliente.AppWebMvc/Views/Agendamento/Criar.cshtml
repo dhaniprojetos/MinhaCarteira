@@ -1,0 +1,23 @@
+﻿@model MinhaCarteira.Cliente.Recursos.Models.AgendamentoViewModel
+
+@{
+    ViewData["Title"] = "Criar";
+}
+
+<h1>Criar</h1>
+
+<h4>AgendamentoViewModel</h4>
+<hr />
+
+<form asp-action="Criar">
+    @Html.EditorForModel()
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/autocomplete/movimentoBancarioAutoComplete.js" asp-append-version="true"></script>
+}

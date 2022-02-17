@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
-using Refit;
 using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
+    [Authorize(Roles = "Admin")]
     public abstract class BaseController<TEntidade, TEntidadeViewModel> : Controller
         where TEntidade : class, IEntidade
         where TEntidadeViewModel : class, IEntidade
@@ -38,7 +39,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 
                 return item;
             }
-            catch (ApiException ex)
+            catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
@@ -50,19 +51,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             var resposta = await _servico.Navegar();
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
             return itens;
-
-            //try
-            //{
-            //    var resposta = await _servico.Navegar();
-            //    var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
-            //    return itens;
-            //}
-            //catch (ApiException ex)
-            //{
-            //    var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-            //    TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
-            //    return null;
-            //}
         }
         protected virtual async Task<Tuple<TEntidadeViewModel, TEntidade>> ExecutarAntesSalvar(
             TEntidadeViewModel viewModel, TEntidade model)
@@ -93,26 +81,45 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 
                 return View(itens);
             }
-            catch (ApiException ex)
+            catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (!TempData.ContainsKey("RetornoApi"))
+                    ViewBag.RetornoApi = retornoApi;
+                else{
+                    var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                    ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+                }
+
+                return View(new List<TEntidadeViewModel>());
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(default);
-            }
-            catch
-            {
-                return View(default);
+                return View(new List<TEntidadeViewModel>());
             }
         }
 
         public virtual async Task<IActionResult> Criar()
         {
-            var item = await InicializarViewModel(
-                Activator.CreateInstance<TEntidadeViewModel>());
+            try
+            {
+                var item = await InicializarViewModel(
+                    Activator.CreateInstance<TEntidadeViewModel>());
 
-            return await Task.Run(() => View(item));
+                return View(item);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                ViewBag.RetornoApi = retornoApi;
+
+                return View(Activator.CreateInstance<TEntidadeViewModel>());
+            }
         }
+
         [HttpPost]
         public virtual async Task<IActionResult> Criar(TEntidadeViewModel item)
         {
@@ -129,9 +136,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var retornoApi = await _servico.Incluir(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
-            catch (ApiException ex)
+            catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
@@ -162,15 +174,21 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var retornoApi = await _servico.Alterar(items.Item2);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
-            catch (ApiException ex)
+            catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Super, Admin")]
         public virtual async Task<IActionResult> Deletar(int id)
         {
             var item = await ObterPorId(id);
@@ -179,6 +197,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(item);
         }
         [HttpPost]
+        [Authorize(Roles = "Super, Admin")]
         public virtual async Task<IActionResult> Deletar(TEntidadeViewModel item)
         {
             if (!ModelState.IsValid)
@@ -192,14 +211,18 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var retornoApi = await _servico.Deletar(item.Id);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
-            catch (ApiException ex)
+            catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
 
             return RedirectToAction(nameof(Index));
-
         }
     }
 }

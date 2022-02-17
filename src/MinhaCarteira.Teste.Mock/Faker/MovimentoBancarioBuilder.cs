@@ -1,8 +1,8 @@
 ﻿using System;
 using Bogus;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using MinhaCarteira.Comum.Definicao.Modelo;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.Mock.Faker
 {
@@ -25,7 +25,7 @@ namespace MinhaCarteira.Teste.Mock.Faker
             _centroClassificacao = centroClassificacao;
         }
 
-        public MovimentoBancario DadosParaInsercao(params object[] args)
+        public Faker<MovimentoBancario> DadosParaInsercao(params object[] args)
         {
             var now = DateTime.Now;
             var ultimoDia = DateTime.DaysInMonth(now.Year, now.Month);
@@ -44,8 +44,7 @@ namespace MinhaCarteira.Teste.Mock.Faker
                 .RuleFor(p => p.Categoria, _categoriaBuilder.DadosParaInsercao(0))
                 .RuleFor(p => p.ContaBancaria, _contaBancaria.DadosParaInsercao());
 
-            var retorno = faker.Generate();
-            return retorno;
+            return faker;
         }
 
         public MovimentoBancario DadosParaAlteracao(MovimentoBancario item)

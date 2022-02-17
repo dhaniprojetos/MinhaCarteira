@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using Xunit.Abstractions;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.WebApi.Crud.Base
 {
@@ -34,8 +34,8 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
         {
             var itens = new List<TEntidade>();
             for (int i = 0; i < qtdItens; i++)
-                itens.Add(Builder.DadosParaInsercao(i));
-
+                itens.Add(Builder.DadosParaInsercao(i).Generate());
+        
             return itens;
         }
         protected async Task<TEntidade[]> IncluirItensAsync(

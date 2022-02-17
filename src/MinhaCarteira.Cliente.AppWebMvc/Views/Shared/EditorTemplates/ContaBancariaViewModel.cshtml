@@ -1,4 +1,4 @@
-﻿@model MinhaCarteira.Cliente.AppWebMvc.Models.ContaBancariaViewModel
+﻿@model MinhaCarteira.Cliente.Recursos.Models.ContaBancariaViewModel
 
 @{
     ViewData["Title"] = "ContaBancariaViewModel";
@@ -13,10 +13,10 @@
             <span asp-validation-for="Id" class="text-danger"></span>
         </div>
         <div class="form-group col-md-9">
-            <label asp-for="IdInstituicaoFinanceira" class="control-label"></label>
-            <input type="hidden" asp-for="IdInstituicaoFinanceira" class="form-control" />
+            <label asp-for="InstituicaoFinanceiraId" class="control-label"></label>
+            <input type="hidden" asp-for="InstituicaoFinanceiraId" class="form-control" />
             <div class="input-group">
-                <input id="txtInstituicao" asp-for="InstituicaoBancariaNome" class="form-control" />
+                <input id="txtInstituicao" asp-for="InstituicaoFinanceiraNome" class="form-control" />
                 <div class="input-group-append">
                     <span class="input-group-text">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -25,7 +25,7 @@
                     </span>
                 </div>
             </div>
-            <span asp-validation-for="IdInstituicaoFinanceira" class="text-danger"></span>
+            <span asp-validation-for="InstituicaoFinanceiraId" class="text-danger"></span>
         </div>
     </div>
     <div class="row">

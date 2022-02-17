@@ -6,17 +6,12 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
 {
     public class MovimentoBancario : IEntidade
     {
-        public MovimentoBancario()
-        {
-            DataMovimento = DateTime.Now;
-        }
-
         public int Id { get; set; }
+        public int? IdAuxiliar { get; set; }
         public TipoMovimento TipoMovimento { get; set; }   
         public DateTime DataMovimento { get; set; }
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
-        public int? IdAuxiliar { get; set; }
 
         public int CentroClassificacaoId { get; set; }
         public CentroClassificacao CentroClassificacao { get; set; }
@@ -29,5 +24,8 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
 
         public int ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
+
+        public int? AgendamentoItemId { get; set; }
+        public AgendamentoItem AgendamentoItem { get; set; }
     }
 }

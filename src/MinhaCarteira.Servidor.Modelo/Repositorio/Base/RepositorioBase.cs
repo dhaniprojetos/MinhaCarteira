@@ -73,7 +73,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             GC.SuppressFinalize(this);
         }
 
-
         public async Task<int> Deletar(int id)
         {
             return await DeletarRange(new[] { id });
@@ -142,7 +141,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public async Task<IList<TEntidade>> Navegar(
+        public virtual async Task<IList<TEntidade>> Navegar(
             ICriterio<TEntidade> criterio)
         {
             var tab = AdicionarIncludes(Tabela).AsNoTracking();

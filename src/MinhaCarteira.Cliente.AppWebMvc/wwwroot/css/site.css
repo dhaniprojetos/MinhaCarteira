@@ -73,8 +73,18 @@ body {
 
 .myAlert-bottom {
     z-index: 999;
-    position: fixed !important;
-    bottom: 5px !important;
-    left: 2% !important;
-    width: 96% !important;
+    position: fixed;
+    bottom: 5px;
+    left: 2%;
+    width: 96%;
+}
+
+body {
+    padding-top: 75px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding-top: 55px;
+    }
 }

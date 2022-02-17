@@ -19,6 +19,104 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.Agendamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CentroClassificacaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ContaBancariaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataInicial")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("IdAuxiliar")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Parcelas")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PessoaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RegraRecorrencia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoParcelas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoRecorrencia")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("CentroClassificacaoId");
+
+                    b.HasIndex("ContaBancariaId");
+
+                    b.HasIndex("PessoaId");
+
+                    b.ToTable("Agendamento");
+                });
+
+            modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.AgendamentoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AgendamentoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ContaBancariaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("EstahPaga")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PessoaId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgendamentoId");
+
+                    b.HasIndex("ContaBancariaId");
+
+                    b.HasIndex("PessoaId");
+
+                    b.ToTable("AgendamentoItem");
+                });
+
             modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.Categoria", b =>
                 {
                     b.Property<int>("Id")
@@ -83,7 +181,7 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("IdInstituicaoFinanceira")
+                    b.Property<int>("InstituicaoFinanceiraId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -92,7 +190,7 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdInstituicaoFinanceira");
+                    b.HasIndex("InstituicaoFinanceiraId");
 
                     b.ToTable("ContaBancaria");
                 });
@@ -126,6 +224,9 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AgendamentoItemId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
@@ -156,6 +257,8 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("decimal(18,6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AgendamentoItemId");
 
                     b.HasIndex("CategoriaId");
 
@@ -193,6 +296,64 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.ToTable("Pessoa");
                 });
 
+            modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.Agendamento", b =>
+                {
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.CentroClassificacao", "CentroClassificacao")
+                        .WithMany()
+                        .HasForeignKey("CentroClassificacaoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.ContaBancaria", "ContaBancaria")
+                        .WithMany()
+                        .HasForeignKey("ContaBancariaId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Pessoa", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("CentroClassificacao");
+
+                    b.Navigation("ContaBancaria");
+
+                    b.Navigation("Pessoa");
+                });
+
+            modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.AgendamentoItem", b =>
+                {
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Agendamento", "Agendamento")
+                        .WithMany("Items")
+                        .HasForeignKey("AgendamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.ContaBancaria", "ContaBancaria")
+                        .WithMany()
+                        .HasForeignKey("ContaBancariaId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Pessoa", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Agendamento");
+
+                    b.Navigation("ContaBancaria");
+
+                    b.Navigation("Pessoa");
+                });
+
             modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.Categoria", b =>
                 {
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Categoria", "CategoriaPai")
@@ -207,7 +368,7 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                 {
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.InstituicaoFinanceira", "InstituicaoFinanceira")
                         .WithMany()
-                        .HasForeignKey("IdInstituicaoFinanceira")
+                        .HasForeignKey("InstituicaoFinanceiraId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -216,6 +377,11 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
 
             modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.MovimentoBancario", b =>
                 {
+                    b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.AgendamentoItem", "AgendamentoItem")
+                        .WithMany("Movimentos")
+                        .HasForeignKey("AgendamentoItemId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("MinhaCarteira.Comum.Definicao.Entidade.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
@@ -239,6 +405,8 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.Navigation("AgendamentoItem");
+
                     b.Navigation("Categoria");
 
                     b.Navigation("CentroClassificacao");
@@ -246,6 +414,16 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.Navigation("ContaBancaria");
 
                     b.Navigation("Pessoa");
+                });
+
+            modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.Agendamento", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.AgendamentoItem", b =>
+                {
+                    b.Navigation("Movimentos");
                 });
 
             modelBuilder.Entity("MinhaCarteira.Comum.Definicao.Entidade.Categoria", b =>

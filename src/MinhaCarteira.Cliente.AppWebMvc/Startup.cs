@@ -1,11 +1,14 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MinhaCarteira.Cliente.AppWebMvc.AutoMapper;
+using MinhaCarteira.Cliente.Recursos.AutoMapper;
 using MinhaCarteira.Cliente.Recursos.Middleware;
+using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.AppWebMvc
 {
@@ -21,12 +24,24 @@ namespace MinhaCarteira.Cliente.AppWebMvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AdicionarConexoesRefit(Configuration["BaseUrlApi"]);
-            services.AddAutoMapper(typeof(AutoMapperProfile));
-
             services
                 .AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
                 .AddRazorRuntimeCompilation();
+
+            services.AdicionarConexoesRefit(Configuration["BaseUrlApi"]);
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.LoginPath = new PathString("/conta/logar");
+                    options.AccessDeniedPath = new PathString("/conta/acessonegado");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +73,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

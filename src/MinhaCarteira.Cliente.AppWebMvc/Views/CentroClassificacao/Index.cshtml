@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MinhaCarteira.Cliente.AppWebMvc.Models.CentroClassificacaoViewModel>
+﻿@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.CentroClassificacaoViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -32,8 +32,6 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model == null) return;
-
         @foreach (var item in Model)
         {
             <tr>

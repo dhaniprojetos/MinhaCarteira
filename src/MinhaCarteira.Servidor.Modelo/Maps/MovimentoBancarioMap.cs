@@ -33,6 +33,11 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
                 .WithMany()
                 .HasForeignKey(f => f.ContaBancariaId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(o => o.AgendamentoItem)
+                .WithMany(m => m.Movimentos)
+                .HasForeignKey(f => f.AgendamentoItemId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

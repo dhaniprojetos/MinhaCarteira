@@ -9,3 +9,10 @@ let tempo = ehErro ? 7000 : 1500;
 $(".alert").fadeTo(tempo, 150).slideUp(150, function () {
     $("alert").slideUp(150);
 });
+
+/*
+ $(document).ready(function () {
+ 
+    $(".dropdown-toggle").dropdown();
+});
+*/

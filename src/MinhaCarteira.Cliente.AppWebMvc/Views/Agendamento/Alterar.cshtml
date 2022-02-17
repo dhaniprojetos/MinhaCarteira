@@ -1,0 +1,23 @@
+﻿@model MinhaCarteira.Cliente.Recursos.Models.AgendamentoViewModel
+
+@{
+    ViewData["Title"] = "Alterar";
+}
+
+<h1>Alterar</h1>
+
+<h4>AgendamentoViewModel</h4>
+<hr />
+<form asp-action="Alterar">
+
+    @Html.EditorForModel()
+
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

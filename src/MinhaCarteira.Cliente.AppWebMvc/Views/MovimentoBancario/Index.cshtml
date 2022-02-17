@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MinhaCarteira.Cliente.AppWebMvc.Models.MovimentoBancarioViewModel>
+﻿@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.MovimentoBancarioViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -35,8 +35,6 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model == null) return;
-
         @foreach (var item in Model)
         {
             <tr>

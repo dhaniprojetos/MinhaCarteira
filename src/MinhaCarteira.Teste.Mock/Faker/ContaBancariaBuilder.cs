@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.Mock.Faker
 {
@@ -13,7 +13,7 @@ namespace MinhaCarteira.Teste.Mock.Faker
             _financeiraBuilder = financeiraBuilder;
         }
 
-        public ContaBancaria DadosParaInsercao(params object[] args)
+        public Faker<ContaBancaria> DadosParaInsercao(params object[] args)
         {
             var instituicao = _financeiraBuilder.DadosParaInsercao(args);
 
@@ -22,10 +22,9 @@ namespace MinhaCarteira.Teste.Mock.Faker
                 .RuleFor(p => p.Nome, f => f.Finance.AccountName())
                 .RuleFor(p => p.Agencia, f => f.Lorem.Word())
                 .RuleFor(p => p.Conta, f => f.Finance.Account())
-                .RuleFor(p => p.InstituicaoFinanceira, instituicao);
+                .RuleFor(p => p.InstituicaoFinanceira, instituicao.Generate());
 
-            var retorno = faker.Generate();
-            return retorno;
+            return faker;
         }
 
         public ContaBancaria DadosParaAlteracao(ContaBancaria item)

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Teste;
 using MinhaCarteira.Servidor.Recursos.Helper;
 using MinhaCarteira.Teste.Mock.Faker;
+using MinhaCarteira.Teste.Mock.Interface;
 
 namespace MinhaCarteira.Teste.WebApi
 {
@@ -20,6 +20,7 @@ namespace MinhaCarteira.Teste.WebApi
             services.AddScoped<IBuilder<Categoria>, CategoriaBuilder>();
             services.AddScoped<IBuilder<CentroClassificacao>, CentroClassificacaoBuilder>();
             services.AddScoped<IBuilder<MovimentoBancario>, MovimentoBancarioBuilder>();
+            services.AddScoped<IBuilder<Agendamento>, AgendamentoBuilder>();
         }
     }
 }

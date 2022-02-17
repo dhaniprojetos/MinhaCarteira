@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BaseController<TEntidade> : ControllerBase
@@ -16,10 +18,10 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
             Servico = servico;
         }
 
-        private void DefinirCodigoStatus(ref IActionResult resposta)
+        private static void DefinirCodigoStatus(ref IActionResult resposta)
         {
             var objResult = (ObjectResult)resposta;
-            if (objResult.Value is IRespostaServico resp)
+            if (objResult != null && objResult.Value is IRespostaServico resp)
                 resp.StatusCode = objResult.StatusCode;
         }
 
@@ -32,8 +34,10 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
             try
             {
                 var itens = await Servico.Navegar(null);
-                resposta = itens == null
-                    ? NotFound()
+                resposta = itens == null || itens.Count == 0
+                    ? NotFound(new Resposta<IList<TEntidade>>(
+                        null,
+                        "Nenhum registro localizado."))
                     : Ok(new Resposta<IList<TEntidade>>(
                         itens,
                         "Itens localizados com sucesso."));
@@ -59,7 +63,9 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                     ? Ok(new Resposta<TEntidade>(
                         itemDb,
                         "Item localizado com sucesso."))
-                    : NotFound();
+                    : NotFound(new Resposta<TEntidade>(
+                        default,
+                        "Nenhum registro localizado."));
             }
             catch (Exception e)
             {
@@ -84,7 +90,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         new Resposta<IList<TEntidade>>(
                             itemDb,
                             "Itens cadastrados com sucesso."))
-                    : NotFound();
+                    : NotFound(new Resposta<IList<TEntidade>>(
+                        null,
+                        "Falha ao tentar cadastrar os itens enviados.")
+                    {
+                        BemSucedido = false
+                    });
             }
             catch (Exception e)
             {
@@ -107,7 +118,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                     ? Ok(new Resposta<IList<TEntidade>>(
                         itemDb,
                         "Itens alterados com sucesso."))
-                    : NotFound();
+                    : NotFound(new Resposta<IList<TEntidade>>(
+                        null,
+                        "Falha ao tentar alterar os itens enviados.")
+                    {
+                        BemSucedido = false
+                    });
             }
             catch (Exception e)
             {
@@ -132,7 +148,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         new Resposta<TEntidade>(
                             itemDb,
                             "Item cadastrado com sucesso."))
-                    : NotFound();
+                    : NotFound(new Resposta<IList<TEntidade>>(
+                        null,
+                        "Falha ao tentar cadastrar o item enviado.")
+                    {
+                        BemSucedido = false
+                    });
             }
             catch (Exception e)
             {
@@ -155,7 +176,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                     ? Ok(new Resposta<TEntidade>(
                         itemDb,
                         "Item alterado com sucesso."))
-                    : NotFound();
+                    : NotFound(new Resposta<IList<TEntidade>>(
+                        null,
+                        "Falha ao tentar alterar o item enviado.")
+                    {
+                        BemSucedido = false
+                    });
 
                 return resposta;
             }
@@ -183,7 +209,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                     ? Ok(new Resposta<int>(
                         linhasAfetadas,
                         $"{linhasAfetadas} {msg} com sucesso."))
-                    : NotFound();
+                    : NotFound(new Resposta<IList<TEntidade>>(
+                        null,
+                        "Falha ao tentar remover o item enviado.")
+                    {
+                        BemSucedido = false
+                    });
             }
             catch (Exception e)
             {

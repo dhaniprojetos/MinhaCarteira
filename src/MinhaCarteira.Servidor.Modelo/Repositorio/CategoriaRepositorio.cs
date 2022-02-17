@@ -10,9 +10,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
     public class CategoriaRepositorio : RepositorioBase<Categoria>
     {
-        public CategoriaRepositorio(MinhaCarteiraContext contexto) : base(contexto)
-        {
-        }
+        public CategoriaRepositorio(MinhaCarteiraContext contexto)
+            : base(contexto) { }
 
         protected override IQueryable<Categoria> AdicionarIncludes(IQueryable<Categoria> source)
         {
@@ -24,45 +23,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                     .ThenInclude(ti => ti.SubCategoria)
                     .ThenInclude(ti => ti.SubCategoria);
         }
-
-        //protected override IQueryable<Categoria> AdicionarOrdenacao(IQueryable<Categoria> source)
-        //{
-        //    return source.OrderBy(o => o.Caminho);
-        //}
-
-        //private void PrepararPersistencia(Categoria item)
-        //{
-        //    var ids = item.SubCategoria.Select(s => s.Id).ToArray();
-
-        //    var itemDb = ObterPorId(item.Id).Result;
-        //    var removidos = itemDb.SubCategoria
-        //        .Where(w => !ids.Contains(w.Id))
-        //        .ToList();
-
-        //    Contexto.RemoveRange(removidos);
-        //    foreach (var categoria in removidos)
-        //        Contexto.Entry(categoria).State = EntityState.Detached;
-        //}
-
-        //protected override async Task<IList<Categoria>> ExecutarAntesAlterar(IList<Categoria> itens)
-        //{
-        //    itens.ToList().ForEach(async f =>
-        //    {
-        //        var ids = f.SubCategoria.Select(s => s.Id).ToArray();
-        //
-        //        var itemDb = await ObterPorId(f.Id);
-        //        var removidos = itemDb.SubCategoria
-        //            .Where(w => !ids.Contains(w.Id))
-        //            .ToList();
-        //
-        //        Contexto.RemoveRange(removidos);
-        //        foreach (var categoria in removidos)
-        //            Contexto.Entry(categoria).State = EntityState.Detached;
-        //    });
-        //
-        //    return await Task.FromResult(itens);
-        //    //return await base.ExecutarAntesAlterar(itens);
-        //}
 
         protected override async Task<IList<Categoria>> ExecutarAntesAlterar(IList<Categoria> itens)
         {
