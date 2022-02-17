@@ -10,7 +10,7 @@
 <p>
     <a asp-action="Criar">Create New</a>
 </p>
-<table class="table table-responsive-sm">
+<table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
             <th>
@@ -38,28 +38,34 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.DataMovimento)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.ValorReal)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Categoria.Nome)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
                 </td>
-                <td>
-                    @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
-                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
-                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                <td class="align-middle">
+                    <a class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-lg fa-pen-to-square"></i>
+                    </a>
+                    <a class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-lg fa-info-circle"></i>
+                    </a>
+                    <a class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-lg fa-trash-can"></i>
+                    </a>
                 </td>
             </tr>
         }
