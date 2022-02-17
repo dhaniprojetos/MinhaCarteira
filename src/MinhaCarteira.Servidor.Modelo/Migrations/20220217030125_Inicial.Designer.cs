@@ -10,8 +10,8 @@ using MinhaCarteira.Servidor.Modelo.Data;
 namespace MinhaCarteira.Servidor.Modelo.Migrations
 {
     [DbContext(typeof(MinhaCarteiraContext))]
-    [Migration("20220130194548_Agendamento")]
-    partial class Agendamento
+    [Migration("20220217030125_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,11 +37,17 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.Property<int?>("ContaBancariaId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DataInicial")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<int?>("IdAuxiliar")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Parcelas")
                         .HasColumnType("int");
 
                     b.Property<int?>("PessoaId")
@@ -51,6 +57,12 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoParcelas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoRecorrencia")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
