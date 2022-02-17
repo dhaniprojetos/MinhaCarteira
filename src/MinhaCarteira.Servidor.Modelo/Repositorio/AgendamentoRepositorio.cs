@@ -12,7 +12,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
     {
         public AgendamentoRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }
-
+        
         protected override IQueryable<Agendamento> AdicionarIncludes(IQueryable<Agendamento> source)
         {
             return source
@@ -21,15 +21,15 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                     .ThenInclude(ti => ti.CategoriaPai)
                 .Include(i => i.CentroClassificacao)
                 .Include(i => i.Pessoa)
-                .Include(i => i.ContaBancaria)
-                .Include(i => i.Items)
-                    .ThenInclude(ti => ti.Movimentos)
-                .Include(i => i.Items)
-                    .ThenInclude(ti => ti.Pessoa)
-                .Include(i => i.Items)
-                    .ThenInclude(ti => ti.ContaBancaria);
+                .Include(i => i.ContaBancaria);
+                //.Include(i => i.Items)
+                //    .ThenInclude(ti => ti.Movimentos)
+                //.Include(i => i.Items)
+                //    .ThenInclude(ti => ti.Pessoa)
+                //.Include(i => i.Items)
+                //    .ThenInclude(ti => ti.ContaBancaria);
         }
-
+        
         protected override async Task<IList<Agendamento>> ExecutarAntesAlterar(IList<Agendamento> itens)
         {
             var agendIds = itens.Select(s => s.Id).ToArray();

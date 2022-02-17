@@ -84,7 +84,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-                ViewBag.RetornoApi = retornoApi;
+                if (!TempData.ContainsKey("RetornoApi"))
+                    ViewBag.RetornoApi = retornoApi;
+                else{
+                    var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                    ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+                }
 
                 return View(new List<TEntidadeViewModel>());
             }
@@ -138,7 +143,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             }
             catch (Exception e)
             {
-                var retornoApi = new Resposta<Exception>(e);
+                var retornoApi = new Resposta<Exception>(e, e.Message);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
@@ -176,7 +181,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             }
             catch (Exception e)
             {
-                var retornoApi = new Resposta<Exception>(e);
+                var retornoApi = new Resposta<Exception>(e, e.Message);
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
             }
 
