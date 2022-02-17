@@ -42,7 +42,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
         {
             return await Repositorio.Alterar(item);
         }
-        public async Task<TEntidade> Incluir(TEntidade item)
+        public virtual async Task<TEntidade> Incluir(TEntidade item)
         {
             return await Repositorio.Incluir(item);
         }

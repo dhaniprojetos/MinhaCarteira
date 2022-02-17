@@ -14,6 +14,9 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
         public string RegraRecorrencia { get; set; }
+        public int Parcelas { get; set; }
+        public TipoParcelas TipoParcelas { get; set; }
+        public TipoRecorrencia TipoRecorrencia { get; set; }
 
         public IList<AgendamentoItem> Items { get; set; }
 
@@ -28,5 +31,19 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
 
         public int? ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
+
+        public void AdicionarParcela(DateTime data)
+        {
+            var parcela = new AgendamentoItem()
+            {
+                AgendamentoId = Id,
+                Data = data,
+                Valor = Valor,
+                PessoaId = PessoaId,
+                ContaBancariaId = ContaBancariaId
+            };
+
+            Items.Add(parcela);
+        }
     }
 }
