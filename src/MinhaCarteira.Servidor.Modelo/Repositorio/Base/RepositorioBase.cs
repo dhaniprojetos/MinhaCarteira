@@ -141,7 +141,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public async Task<IList<TEntidade>> Navegar(
+        public virtual async Task<IList<TEntidade>> Navegar(
             ICriterio<TEntidade> criterio)
         {
             var tab = AdicionarIncludes(Tabela).AsNoTracking();

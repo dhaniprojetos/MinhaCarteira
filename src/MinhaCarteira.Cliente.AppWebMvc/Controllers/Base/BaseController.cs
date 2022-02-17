@@ -188,7 +188,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super, Admin")]
         public virtual async Task<IActionResult> Deletar(int id)
         {
             var item = await ObterPorId(id);
@@ -197,7 +197,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(item);
         }
         [HttpPost]
-        [Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super, Admin")]
         public virtual async Task<IActionResult> Deletar(TEntidadeViewModel item)
         {
             if (!ModelState.IsValid)
