@@ -96,7 +96,10 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public int Id { get; set; }
         public int AgendamentoId { get; set; }
         public AgendamentoViewModel Agendamento { get; set; }
+        [DisplayName("Data")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
         public DateTime Data { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Valor { get; set; }
         public bool EstahPaga { get; set; }
 

@@ -78,7 +78,9 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
         public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
         {
-            var itens = await Contexto.AgendamentoItens.AsNoTracking()
+            var itens = await Contexto.AgendamentoItens
+                .AsNoTracking()
+                .Include(i => i.Agendamento)
                 .Where(w => (
                         !w.EstahPaga &&
                         w.Data < System.DateTime.Now.AddDays(qtdDias)
