@@ -13,37 +13,43 @@
 <table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
-            <th>Ações</th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CategoriaPai)
             </th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td class="align-middle" style="width: 160px;">
-                <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
-                    <i class="fa-solid fa-lg fa-pen-to-square"></i>
-                </a>
-                <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
-                    <i class="fa-solid fa-lg fa-info-circle"></i>
-                </a>
-                <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
-                    <i class="fa-solid fa-lg fa-trash-can"></i>
-                </a>
-            </td>
-            <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td class="align-middle text-start">
-                @Html.DisplayFor(modelItem => item.NomeCategoriaPai)
-            </td>
-        </tr>
+            <tr>
+                <td class="align-middle p-0 pl-2" style="width: 50px;">
+                    <img src="data:@item.MimeType;base64,@item.IconeCategoria"
+                         height="42" width="42"
+                         asp-append-version="true" />
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td class="align-middle text-start">
+                    @Html.DisplayFor(modelItem => item.NomeCategoriaPai)
+                </td>
+                <td class="align-middle" style="width: 160px;">
+                    <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-lg fa-pen-to-square"></i>
+                    </a>
+                    <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-lg fa-info-circle"></i>
+                    </a>
+                    <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-lg fa-trash-can"></i>
+                    </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

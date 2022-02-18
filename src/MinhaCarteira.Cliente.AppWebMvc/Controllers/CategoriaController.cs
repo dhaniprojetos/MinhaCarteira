@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -44,6 +45,15 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
         protected override async Task<Tuple<CategoriaViewModel, Categoria>> ExecutarAntesSalvar(CategoriaViewModel viewModel, Categoria model)
         {
+            if (viewModel.IconeForm?.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                viewModel.IconeForm.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                model.Icone = Convert.ToBase64String(fileBytes);
+                model.NomeArquivo = viewModel.IconeForm.FileName;
+            }
+
             if (viewModel.Id == 0) 
                 return await base.ExecutarAntesSalvar(viewModel, model);
 

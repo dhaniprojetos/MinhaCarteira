@@ -99,7 +99,9 @@ namespace MinhaCarteira.Servidor.Controle.Servico
         public override async Task<Agendamento> Incluir(Agendamento item)
         {
             item = GerarParcelas(item);
-            return await base.Incluir(item);
+            var itemDb = await base.Incluir(item);
+            item.Items.Clear();
+            return itemDb;
         }
 
         public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)

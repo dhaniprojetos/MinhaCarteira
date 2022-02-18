@@ -36,7 +36,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
 
         [DisplayName("Categoria")]
         public int CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        public CategoriaViewModel Categoria { get; set; }
         public IEnumerable<SelectListItem> Categorias { get; set; }
         public string CaminhoCategoria => Categoria != null
             ? Categoria.Caminho
@@ -46,6 +46,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public int CentroClassificacaoId { get; set; }
         public CentroClassificacao CentroClassificacao { get; set; }
         public IEnumerable<SelectListItem> CentrosClassificacao { get; set; }
+        [DisplayName("Classificação")]
         public string NomeCentroClassificacao => CentroClassificacao != null
             ? CentroClassificacao.Nome
             : string.Empty;
@@ -108,5 +109,16 @@ namespace MinhaCarteira.Cliente.Recursos.Models
 
         public int? ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
+
+        public bool ContaVencida
+        {
+            get
+            {
+                var mesAnoConta = int.Parse($"{Data.Year}{Data.Month:d2}");
+                var mesAnoAtual = int.Parse($"{DateTime.Now.Year}{DateTime.Now.Month:d2}");
+
+                return !EstahPaga && mesAnoAtual > mesAnoConta;
+            }
+        }
     }
 }

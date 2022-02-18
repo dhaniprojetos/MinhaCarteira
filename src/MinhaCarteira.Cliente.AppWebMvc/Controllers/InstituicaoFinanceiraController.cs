@@ -2,12 +2,10 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using Microsoft.Extensions.Configuration;
 using MinhaCarteira.Cliente.Recursos.Models;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -15,44 +13,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
     public class InstituicaoFinanceiraController :
         BaseController<InstituicaoFinanceira, InstituicaoFinanceiraViewModel>
     {
-        private readonly IConfiguration _config;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
         public InstituicaoFinanceiraController(
             IServicoBase<InstituicaoFinanceira> servico,
-            IMapper mapper,
-            IWebHostEnvironment webHostEnvironment,
-            IConfiguration config)
-            : base(servico, mapper)
-        {
-            _config = config;
-            _webHostEnvironment = webHostEnvironment;
-        }
+            IMapper mapper)
+            : base(servico, mapper) { }
 
-        private string UploadedFile(InstituicaoFinanceiraViewModel model)
-        {
-            if (model.IconeForm == null) return null;
-
-            var destinoConfig = _config
-                .GetSection("DefinicaoArquivos")["UploadRepositorioImagens"]
-                .ToString();
-
-            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-            if (!string.IsNullOrWhiteSpace(destinoConfig))
-                uploadsFolder = destinoConfig;
-
-            uploadsFolder = Path.Combine(uploadsFolder, "instituicaoFinanceira");
-
-            if (!Directory.Exists(uploadsFolder))
-                Directory.CreateDirectory(uploadsFolder);
-
-            var uniqueFileName = Guid.NewGuid() + "_" + model.IconeForm.FileName;
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            using var fileStream = new FileStream(filePath, FileMode.Create);
-            model.IconeForm.CopyTo(fileStream);
-
-            return uniqueFileName;
-        }
         protected override async Task<Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>> ExecutarAntesSalvar(InstituicaoFinanceiraViewModel viewModel, InstituicaoFinanceira model)
         {
             //var uniqueFileName = UploadedFile(viewModel);
@@ -65,7 +30,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 model.Icone = Convert.ToBase64String(fileBytes);
                 model.NomeArquivo = viewModel.IconeForm.FileName;
             }
-            
+
             return await Task.FromResult(
                 new Tuple<InstituicaoFinanceiraViewModel, InstituicaoFinanceira>(viewModel, model));
         }

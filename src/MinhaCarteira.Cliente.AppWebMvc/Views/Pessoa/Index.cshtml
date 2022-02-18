@@ -13,7 +13,6 @@
 <table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
-            <th>Ações</th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -23,12 +22,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.EhFornecedor)
             </th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
         <tr>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.EhCliente)
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.EhFornecedor)
+            </td>
             <td class="align-middle" style="width: 160px;">
                 <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
                     <i class="fa-solid fa-lg fa-pen-to-square"></i>
@@ -39,15 +48,6 @@
                 <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
                     <i class="fa-solid fa-lg fa-trash-can"></i>
                 </a>
-            </td>
-            <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.EhCliente)
-            </td>
-            <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.EhFornecedor)
             </td>
         </tr>
         }

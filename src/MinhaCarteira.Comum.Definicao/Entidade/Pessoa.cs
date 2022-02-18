@@ -1,4 +1,5 @@
-﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+﻿using System.ComponentModel;
+using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Comum.Definicao.Entidade
 {
@@ -6,6 +7,7 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }
+        [DisplayName("Pessoa")]
         public string Nome { get; set; }
         public bool EhCliente { get; set; }
         public bool EhFornecedor { get; set; }

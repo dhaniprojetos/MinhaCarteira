@@ -38,7 +38,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
         {
             return await Repositorio.Deletar(id);
         }
-        public async Task<TEntidade> Alterar(TEntidade item)
+        public virtual async Task<TEntidade> Alterar(TEntidade item)
         {
             return await Repositorio.Alterar(item);
         }

@@ -65,13 +65,13 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .Where(w => !agendItemsIds.Contains(w))
                 .ToArray();
 
-            if (agendItemsRemovidos.Length > 0)
-            {
-                //await DeletarRange(agendItemsRemovidos);
-                var ids = string.Join(",", agendItemsRemovidos);
-                var cmdSql = $"delete from AgendamentoItem where id in ({ids});";
-                await Contexto.Database.ExecuteSqlRawAsync(cmdSql);
-            }
+            if (agendItemsRemovidos.Length <= 0)
+                return itens;
+
+            //await DeletarRange(agendItemsRemovidos);
+            var ids = string.Join(",", agendItemsRemovidos);
+            var cmdSql = $"delete from AgendamentoItem where id in ({ids});";
+            await Contexto.Database.ExecuteSqlRawAsync(cmdSql);
 
             return itens;
         }
@@ -80,13 +80,18 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
         {
             var itens = await Contexto.AgendamentoItens
                 .AsNoTracking()
+                .Include(i => i.Pessoa)
+                .Include(i => i.ContaBancaria)
                 .Include(i => i.Agendamento)
-                .Where(w => (
-                        !w.EstahPaga &&
-                        w.Data < System.DateTime.Now.AddDays(qtdDias)
-                    ) || (
-                        w.Data > System.DateTime.Now &&
-                        w.Data < System.DateTime.Now.AddDays(qtdDias)))
+                    .ThenInclude(ti => ti.CentroClassificacao)
+                .Include(i => i.Agendamento)
+                    .ThenInclude(ti => ti.Categoria)
+                    .ThenInclude(ti => ti.CategoriaPai)
+                    .ThenInclude(ti => ti.CategoriaPai)
+                .Where(w => !w.EstahPaga && w.Data < System.DateTime.Now.AddDays(qtdDias) ||
+                            w.Data > System.DateTime.Now && w.Data < System.DateTime.Now.AddDays(qtdDias))
+                .OrderBy(o => o.Data)
+                .ThenBy(tb => tb.ContaBancariaId)
                 .ToListAsync();
 
             return itens;

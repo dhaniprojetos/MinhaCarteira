@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using MinhaCarteira.Servidor.WebApi.Controllers.Base;
@@ -15,11 +14,11 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
         public AgendamentoController(IAgendamentoServico servico) : base(servico)
         {
         }
-        
+
         [Route("contas-a-vencer/{qtdDias:int}")]
         [HttpGet]
         public async Task<IActionResult> ContasAVencer(int qtdDias)
-{
+        {
             IActionResult resposta;
             try
             {
@@ -40,6 +39,6 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             DefinirCodigoStatus(ref resposta);
             return resposta;
         }
-        
+
     }
 }

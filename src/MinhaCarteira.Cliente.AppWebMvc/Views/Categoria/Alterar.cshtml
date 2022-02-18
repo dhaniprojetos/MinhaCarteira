@@ -8,7 +8,7 @@
 
 <h4>CategoriaViewModel</h4>
 <hr />
-<form asp-action="Alterar">
+<form asp-action="Alterar" enctype="multipart/form-data" method="post">
 
     @Html.EditorForModel()
 
@@ -21,4 +21,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/autocomplete/categoriaAutoComplete.js" asp-append-version="true"></script>
+    <script src="~/js/views/instituicaoFinanceiraView.js" asp-append-version="true"></script>
 }
