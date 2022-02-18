@@ -18,7 +18,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
             Servico = servico;
         }
 
-        private static void DefinirCodigoStatus(ref IActionResult resposta)
+        protected static void DefinirCodigoStatus(ref IActionResult resposta)
         {
             var objResult = (ObjectResult)resposta;
             if (objResult != null && objResult.Value is IRespostaServico resp)

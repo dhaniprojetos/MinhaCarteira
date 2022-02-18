@@ -2,14 +2,17 @@
 using Dates.Recurring.Type;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Controle.Servico.Base;
+using MinhaCarteira.Servidor.Modelo.Repositorio;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class AgendamentoServico : ServicoBase<Agendamento>
+    public class AgendamentoServico : ServicoBase<Agendamento>, IAgendamentoServico
     {
         private RecurrenceType ObterRecorrenciaBuilder(Agendamento agend)
         {
@@ -98,5 +101,14 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             item = GerarParcelas(item);
             return await base.Incluir(item);
         }
+
+        public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
+        {
+            var itens = await ((AgendamentoRepositorio)Repositorio)
+                .ContasAVencer(qtdDias);
+
+            return itens;
+        }
+
     }
 }

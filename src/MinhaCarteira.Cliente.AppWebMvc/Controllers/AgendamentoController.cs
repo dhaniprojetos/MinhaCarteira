@@ -5,13 +5,18 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System;
+using MinhaCarteira.Cliente.Recursos.Refit;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class AgendamentoController : BaseController<Agendamento, AgendamentoViewModel>
     {
         public AgendamentoController(
-            IServicoBase<Agendamento> servico,
+            IAgendamentoServico servico,
             IMapper mapper)
             : base(servico, mapper) { }
 
@@ -27,7 +32,37 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         #region Métodos sobrescritos apenas manter as views
         public override async Task<IActionResult> Index()
         {
-            return await base.Index();
+            try
+            {
+                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(30);
+                var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
+                
+                if (!TempData.ContainsKey("RetornoApi")) return View(itens);
+                var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+
+                return View(itens);
+            }
+            catch (Refit.ApiException ex)
+            {
+                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (!TempData.ContainsKey("RetornoApi"))
+                    ViewBag.RetornoApi = retornoApi;
+                else
+                {
+                    var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                    ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+                }
+
+                return View(new List<AgendamentoItemViewModel>());
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                ViewBag.RetornoApi = retornoApi;
+
+                return View(new List<AgendamentoItemViewModel>());
+            }
         }
 
         public override async Task<IActionResult> Criar()

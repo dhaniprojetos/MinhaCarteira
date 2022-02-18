@@ -12,7 +12,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
     {
         public AgendamentoRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }
-        
+
         protected override IQueryable<Agendamento> AdicionarIncludes(IQueryable<Agendamento> source)
         {
             return source
@@ -22,14 +22,14 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .Include(i => i.CentroClassificacao)
                 .Include(i => i.Pessoa)
                 .Include(i => i.ContaBancaria);
-                //.Include(i => i.Items)
-                //    .ThenInclude(ti => ti.Movimentos)
-                //.Include(i => i.Items)
-                //    .ThenInclude(ti => ti.Pessoa)
-                //.Include(i => i.Items)
-                //    .ThenInclude(ti => ti.ContaBancaria);
+            //.Include(i => i.Items)
+            //    .ThenInclude(ti => ti.Movimentos)
+            //.Include(i => i.Items)
+            //    .ThenInclude(ti => ti.Pessoa)
+            //.Include(i => i.Items)
+            //    .ThenInclude(ti => ti.ContaBancaria);
         }
-        
+
         protected override async Task<IList<Agendamento>> ExecutarAntesAlterar(IList<Agendamento> itens)
         {
             var agendIds = itens.Select(s => s.Id).ToArray();
@@ -72,6 +72,20 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 var cmdSql = $"delete from AgendamentoItem where id in ({ids});";
                 await Contexto.Database.ExecuteSqlRawAsync(cmdSql);
             }
+
+            return itens;
+        }
+
+        public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
+        {
+            var itens = await Contexto.AgendamentoItens.AsNoTracking()
+                .Where(w => (
+                        !w.EstahPaga &&
+                        w.Data < System.DateTime.Now.AddDays(qtdDias)
+                    ) || (
+                        w.Data > System.DateTime.Now &&
+                        w.Data < System.DateTime.Now.AddDays(qtdDias)))
+                .ToListAsync();
 
             return itens;
         }
