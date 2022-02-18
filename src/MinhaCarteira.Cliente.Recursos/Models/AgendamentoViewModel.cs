@@ -75,6 +75,9 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             DataInicial = new DateTime(now.Year, now.Month, now.Day);
             DataFinal = new DateTime(now.Year, now.Month, now.Day + 5);
             Tipo = TipoMovimento.Debito;
+            TipoRecorrencia = TipoRecorrencia.Mensal;
+            Parcelas = 1;
+            IntervaloParcelas = 1;
         }
 
         public void AdicionarParcela(DateTime data)
