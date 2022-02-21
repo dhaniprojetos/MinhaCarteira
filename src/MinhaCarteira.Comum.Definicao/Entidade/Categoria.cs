@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using static System.Net.WebRequestMethods;
 
 namespace MinhaCarteira.Comum.Definicao.Entidade
 {

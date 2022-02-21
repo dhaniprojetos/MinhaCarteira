@@ -40,5 +40,54 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             return resposta;
         }
 
+        [Route("obter-parcela/{id:int}")]
+        [HttpGet]
+        public async Task<IActionResult> ObterParcelaPorId(int id)
+        {
+            IActionResult resposta;
+            try
+            {
+                var itens = await ((IAgendamentoServico)Servico).ObterParcelaPorId(id);
+                resposta = itens == null 
+                    ? NotFound(new Resposta<AgendamentoItem>(
+                        null,
+                        "Nenhum registro localizado."))
+                    : Ok(new Resposta<AgendamentoItem>(
+                        itens,
+                        "Parcela localizada com sucesso."));
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
+        }
+
+        [Route("baixar-parcela")]
+        [HttpPost]
+        public async Task<IActionResult> BaixarParcela([FromBody]AgendamentoItem parcela)
+        {
+            IActionResult resposta;
+            try
+            {
+                var itens = await ((IAgendamentoServico)Servico).BaixarParcela(parcela);
+                resposta = itens == null
+                    ? NotFound(new Resposta<AgendamentoItem>(
+                        null,
+                        "Nenhum registro localizado."))
+                    : Ok(new Resposta<AgendamentoItem>(
+                        itens,
+                        "Parcela localizada com sucesso."));
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
+        }
     }
 }

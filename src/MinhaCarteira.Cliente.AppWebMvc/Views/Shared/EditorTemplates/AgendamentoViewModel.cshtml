@@ -8,7 +8,7 @@
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 <div class="row mb-3">
-    <div class="col-sm-3 col-lg-2">
+    <div class="col-sm-3 col-lg-1 d-flex flex-column">
         <input type="hidden" asp-for="Id" class="form-control" disabled />
         <label asp-for="Tipo" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo deste movimento (Débito ou Crédito)">
@@ -21,15 +21,15 @@
         <span asp-validation-for="Tipo" class="text-danger"></span>
     </div>
 
-    <div class="d-none d-lg-block col-lg-1"></div>
+    <div class="d-none d-lg-block col-lg-2"></div>
 
-    <div class="col-sm-5 col-lg-3">
+    <div class="col-sm-5 col-lg-3 d-flex flex-column">
         <label asp-for="TipoParcelas" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo das parcelas deste agendamento">
             @foreach (var c in Enum.GetValues(typeof(TipoParcelas)))
             {
                 <input type="radio" class="btn-check" name="btnTipoParcela" id="btnTipoParcela@((int)c)" autocomplete="off" checked="@((TipoParcelas)c == Model.TipoParcelas)"
-                       onchange="definirTipoParcelas(this)">
+                       onchange="definirTipoParcelas(this.id)">
                 <label class="btn btn-outline-primary" for="btnTipoParcela@((int)c)">@c</label>
             }
         </div>
@@ -44,7 +44,7 @@
         <span asp-validation-for="Parcelas" class="text-danger"></span>
     </div>
 
-    <div id="tipoRecorrencia" class="d-none col-sm-4 col-lg-3">
+    <div id="tipoRecorrencia" class="d-none col-sm-4 col-lg-3 d-flex flex-column">
         <label asp-for="TipoRecorrencia" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo das parcelas deste agendamento">
             @foreach (var c in Enum.GetValues(typeof(TipoRecorrencia)))

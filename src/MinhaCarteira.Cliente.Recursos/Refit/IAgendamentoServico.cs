@@ -12,5 +12,11 @@ namespace MinhaCarteira.Cliente.Recursos.Refit
     {
         [Get("/contas-a-vencer/{qtdDias}")]
         Task<Resposta<IList<AgendamentoItem>>> ContasAVencer(int qtdDias);
+        
+        [Get("/obter-parcela/{id}")]
+        Task<Resposta<AgendamentoItem>> ObterParcelaPorId(int id);
+        
+        [Post("/baixar-parcela")]
+        Task<Resposta<AgendamentoItem>> BaixarParcela(AgendamentoItem item);
     }
 }

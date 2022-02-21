@@ -12,9 +12,9 @@
         classFont = "fa-circle-exclamation";
     }
 
-    <div class="alert @classAlert myAlert-bottom">
+    <div class="alert @classAlert myAlert-bottom alert-dismissible fade show" role="alert">
         <span class="fa @classFont" style="font-size:17px;"></span>
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         <strong></strong> @Html.Raw(retornoApi.Mensagem)
         @if (!string.IsNullOrWhiteSpace(retornoApi.MensagemErro))
         {

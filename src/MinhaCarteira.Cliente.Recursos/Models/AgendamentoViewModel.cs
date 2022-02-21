@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MinhaCarteira.Cliente.Recursos.Models.Enum;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
@@ -106,27 +107,41 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Valor { get; set; }
         public bool EstahPaga { get; set; }
+        public bool EstahConciliada { get; set; }
 
         public int? PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
+        public string NomePessoa => Pessoa != null
+            ? Pessoa.Nome
+            : string.Empty;
 
         public int? ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
+        public string NomeContaBancaria => ContaBancaria != null
+            ? ContaBancaria.Nome
+            : string.Empty;
 
-        public bool ContaVencida
+        public StatusParcela StatusParcela
         {
             get
             {
                 var mesAnoConta = int.Parse($"{Data.Year}{Data.Month:d2}");
                 var mesAnoAtual = int.Parse($"{DateTime.Now.Year}{DateTime.Now.Month:d2}");
 
-                return !EstahPaga && mesAnoAtual > mesAnoConta;
+                return EstahPaga switch
+                {
+                    true when EstahConciliada => StatusParcela.Conciliada,
+                    true when !EstahConciliada => StatusParcela.Paga,
+                    false when mesAnoAtual > mesAnoConta => StatusParcela.Vencida,
+                    _ => StatusParcela.Aberta
+                };
             }
         }
 
         public AgendamentoItemViewModel()
         {
             Data = DateTime.Now;
+            Agendamento = new AgendamentoViewModel();
         }
     }
 }

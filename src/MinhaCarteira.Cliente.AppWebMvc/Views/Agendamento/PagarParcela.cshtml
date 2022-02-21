@@ -1,0 +1,184 @@
+﻿@using MinhaCarteira.Comum.Definicao.Modelo
+@model MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel
+
+@{
+    ViewData["Title"] = "PagarParcela";
+}
+
+<h1>PagarParcela</h1>
+@{await Html.RenderPartialAsync("_PartialAlertas");}
+
+<h4>AgendamentoItemViewModel</h4>
+<hr />
+<form asp-action="PagarParcela">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3 col-lg-1 d-flex flex-column">
+            <input type="hidden" asp-for="Id" class="form-control" disabled />
+            <label asp-for="Agendamento.Tipo" class="form-label"></label>
+            <div class="btn-group" role="group" aria-label="Tipo deste movimento (Débito ou Crédito)">
+                @foreach (var c in Enum.GetValues(typeof(TipoMovimento)))
+                {
+                    <input disabled type="radio" class="btn-check" name="btnTipoMovimento" id="btnTipoMovimento@((int)c)" autocomplete="off" checked="@((TipoMovimento)c == Model.Agendamento.Tipo)">
+                    <label class="btn btn-outline-primary" for="btnTipoMovimento@((int)c)">@c</label>
+                }
+            </div>
+            <span asp-validation-for="Agendamento.Tipo" class="text-danger"></span>
+        </div>
+
+        <div class="d-none d-lg-block col-lg-2"></div>
+
+        <div class="col-sm-5 col-lg-3 d-flex flex-column">
+            <label asp-for="Agendamento.TipoParcelas" class="form-label"></label>
+            <div class="btn-group" role="group" aria-label="Tipo das parcelas deste agendamento">
+                @foreach (var c in Enum.GetValues(typeof(TipoParcelas)))
+                {
+                    <input disabled type="radio" class="btn-check" name="btnTipoParcela" id="btnTipoParcela@((int)c)" autocomplete="off" checked="@((TipoParcelas)c == Model.Agendamento.TipoParcelas)"
+                           onchange="definirTipoParcelas(this.id)">
+                    <label class="btn btn-outline-primary" for="btnTipoParcela@((int)c)">@c</label>
+                }
+            </div>
+            <span asp-validation-for="Agendamento.TipoParcelas" class="text-danger"></span>
+        </div>
+
+        <div class="d-none d-xl-none d-lg-block col-lg-1"></div>
+
+        <div id="numeroParcelas" class="d-none col-sm-4 col-lg-3">
+            <label asp-for="Agendamento.Parcelas" class="form-label"></label>
+            <input disabled asp-for="Agendamento.Parcelas" class="form-control" />
+            <span asp-validation-for="Agendamento.Parcelas" class="text-danger"></span>
+        </div>
+
+        <div id="tipoRecorrencia" class="d-none col-sm-4 col-lg-3 d-flex flex-column">
+            <label asp-for="Agendamento.TipoRecorrencia" class="form-label"></label>
+            <div class="btn-group" role="group" aria-label="Tipo das parcelas deste agendamento">
+                @foreach (var c in Enum.GetValues(typeof(TipoRecorrencia)))
+                {
+                    <input disabled type="radio" class="btn-check" name="btnTipoRecorrencia" id="btnTipoRecorrencia@((int)c)" autocomplete="off" checked="@((TipoRecorrencia)c == Model.Agendamento.TipoRecorrencia)">
+                    <label class="btn btn-outline-primary" for="btnTipoRecorrencia@((int)c)">@c</label>
+                }
+            </div>
+            <span asp-validation-for="Agendamento.TipoRecorrencia" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label asp-for="Data" class="form-label"></label>
+            <input asp-for="Data" class="form-control" />
+            <span asp-validation-for="Data" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-3">
+            <label asp-for="Valor" class="form-label"></label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">R$</span>
+                </div>
+                <input asp-for="Valor" class="form-control money" />
+            </div>
+            <span asp-validation-for="Valor" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Agendamento.Descricao" class="form-label"></label>
+            <input disabled asp-for="Agendamento.Descricao" class="form-control" />
+            <span asp-validation-for="Agendamento.Descricao" class="text-danger"></span>
+        </div>
+
+        <div class="form-check form-switch col-sm-12 ms-3">
+            <input disabled checked="checked" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Conta já paga?</label>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <label asp-for="Agendamento.CategoriaId" class="form-label"></label>
+            <input type="hidden" asp-for="Agendamento.CategoriaId" class="form-control" />
+            <div class="input-group">
+                <input disabled id="txtCategoria" asp-for="Agendamento.CaminhoCategoria" class="form-control" />
+                <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                </span>
+            </div>
+            <span asp-validation-for="Agendamento.CategoriaId" class="text-danger"></span>
+        </div>
+        <div class="col-sm-6">
+            <label asp-for="Agendamento.CentroClassificacaoId" class="form-label"></label>
+            <input type="hidden" asp-for="Agendamento.CentroClassificacaoId" class="form-control" />
+            <div class="input-group">
+                <input disabled id="txtCentroClassificacao" asp-for="Agendamento.NomeCentroClassificacao" class="form-control" />
+                <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                </span>
+            </div>
+            <span asp-validation-for="Agendamento.CentroClassificacaoId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <label asp-for="PessoaId" class="form-label"></label>
+            <input type="hidden" asp-for="PessoaId" class="form-control" />
+            <div class="input-group">
+                <input id="txtPessoa" asp-for="NomePessoa" class="form-control" />
+                <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                </span>
+            </div>
+            <span asp-validation-for="PessoaId" class="text-danger"></span>
+        </div>
+
+        <div class="col-sm-6">
+            <label asp-for="ContaBancariaId" class="form-label"></label>
+            <input type="hidden" asp-for="ContaBancariaId" class="form-control" />
+            <div class="input-group">
+                <input id="txtContaBancaria" asp-for="NomeContaBancaria" class="form-control" />
+                <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                </span>
+            </div>
+            <span asp-validation-for="ContaBancariaId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <hr />
+    <div class="mb-3">
+        <input type="submit" value="Salvar" class="btn btn-primary" />
+    </div>
+
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/views/agendamentoView.js" asp-append-version="true"></script>
+    <script src="~/js/autocomplete/movimentoBancarioAutoComplete.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        @{
+            var opcao = "btnTipoParcela" + Model.Agendamento.TipoParcelas switch 
+            {
+                TipoParcelas.Parcelada => "1",
+                TipoParcelas.Recorrente => "2",
+                _ => "0"
+            };
+        }
+        let opcao = "@opcao";
+        definirTipoParcelas(opcao);
+    </script>
+}

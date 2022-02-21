@@ -112,5 +112,20 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             return itens;
         }
 
+        public async Task<AgendamentoItem> ObterParcelaPorId(int id)
+        {
+            var item = await ((AgendamentoRepositorio)Repositorio)
+                .ObterParcelaPorId(id);
+
+            return item;
+        }
+
+        public async Task<AgendamentoItem> BaixarParcela(AgendamentoItem parcela)
+        {
+            var item = await ((AgendamentoRepositorio)Repositorio)
+                .BaixarParcela(parcela);
+
+            return item;
+        }
     }
 }

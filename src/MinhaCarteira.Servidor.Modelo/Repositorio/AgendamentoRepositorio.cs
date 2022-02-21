@@ -30,6 +30,19 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             //    .ThenInclude(ti => ti.ContaBancaria);
         }
 
+        protected IQueryable<AgendamentoItem> AdicionarIncludesParcela(IQueryable<AgendamentoItem> source)
+        {
+            return source
+                .Include(i => i.Pessoa)
+                .Include(i => i.ContaBancaria)
+                .Include(i => i.Agendamento)
+                    .ThenInclude(ti => ti.CentroClassificacao)
+                .Include(i => i.Agendamento)
+                    .ThenInclude(ti => ti.Categoria)
+                    .ThenInclude(ti => ti.CategoriaPai)
+                    .ThenInclude(ti => ti.CategoriaPai);
+        }
+
         protected override async Task<IList<Agendamento>> ExecutarAntesAlterar(IList<Agendamento> itens)
         {
             var agendIds = itens.Select(s => s.Id).ToArray();
@@ -78,16 +91,9 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
         public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
         {
-            var itens = await Contexto.AgendamentoItens
+            var itens = await 
+                AdicionarIncludesParcela(Contexto.AgendamentoItens)
                 .AsNoTracking()
-                .Include(i => i.Pessoa)
-                .Include(i => i.ContaBancaria)
-                .Include(i => i.Agendamento)
-                    .ThenInclude(ti => ti.CentroClassificacao)
-                .Include(i => i.Agendamento)
-                    .ThenInclude(ti => ti.Categoria)
-                    .ThenInclude(ti => ti.CategoriaPai)
-                    .ThenInclude(ti => ti.CategoriaPai)
                 .Where(w => !w.EstahPaga && w.Data < System.DateTime.Now.AddDays(qtdDias) ||
                             w.Data > System.DateTime.Now && w.Data < System.DateTime.Now.AddDays(qtdDias))
                 .OrderBy(o => o.Data)
@@ -95,6 +101,34 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .ToListAsync();
 
             return itens;
+        }
+
+        public async Task<AgendamentoItem> ObterParcelaPorId(int id)
+        {
+            var item = await 
+                AdicionarIncludesParcela(Contexto.AgendamentoItens)
+                .AsNoTracking()
+                .Where(w => w.Id == id)
+                .FirstOrDefaultAsync();
+
+            return item;
+        }
+
+        public async Task<AgendamentoItem> BaixarParcela(AgendamentoItem parcela)
+        {
+            var itemDb = await ObterParcelaPorId(parcela.Id);
+            itemDb.EstahPaga = true;
+            itemDb.Data = parcela.Data;
+            itemDb.Valor = parcela.Valor;
+            itemDb.PessoaId = parcela.PessoaId;
+            itemDb.ContaBancariaId = parcela.ContaBancariaId;
+
+            Contexto.AgendamentoItens.Update(itemDb);
+            await Contexto.SaveChangesAsync();
+
+            Contexto.Entry(itemDb).State = EntityState.Detached;
+
+            return null;
         }
     }
 }

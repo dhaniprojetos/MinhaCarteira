@@ -1,7 +1,5 @@
 ﻿function definirTipoParcelas(el) {
-    var value = el.id;
-
-    switch (value) {
+    switch (el) {
         case 'btnTipoParcela1':
             $('#numeroParcelas').removeClass('d-none');
             $('#tipoRecorrencia').addClass('d-none');
