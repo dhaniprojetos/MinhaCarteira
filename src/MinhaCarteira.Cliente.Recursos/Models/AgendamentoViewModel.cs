@@ -123,5 +123,10 @@ namespace MinhaCarteira.Cliente.Recursos.Models
                 return !EstahPaga && mesAnoAtual > mesAnoConta;
             }
         }
+
+        public AgendamentoItemViewModel()
+        {
+            Data = DateTime.Now;
+        }
     }
 }

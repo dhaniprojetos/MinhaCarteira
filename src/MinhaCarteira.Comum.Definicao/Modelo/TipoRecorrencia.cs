@@ -2,7 +2,7 @@
 {
     public enum TipoRecorrencia
     {
-        Diario,
+        //Diario,
         Semanal,
         Mensal,
         Anual
