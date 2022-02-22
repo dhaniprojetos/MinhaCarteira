@@ -154,6 +154,9 @@
     </div>
 
     <hr />
+    <select id="destino" asp-for="MovimentosId" asp-items="Model.Movimentos" class="form-select h-100 font-monospace" multiple>
+        <option value="5">Helton - Pré Controle</option>
+    </select>
     <div class="mb-3">
         <input type="submit" value="Salvar" class="btn btn-primary" />
     </div>
@@ -171,13 +174,9 @@
 
     <script type="text/javascript">
         @{
-            var opcao = "btnTipoParcela" + Model.Agendamento.TipoParcelas switch 
-            {
-                TipoParcelas.Parcelada => "1",
-                TipoParcelas.Recorrente => "2",
-                _ => "0"
-            };
+            var opcao = "tipoParcela" + Model.Agendamento.TipoParcelas;
         }
+
         let opcao = "@opcao";
         definirTipoParcelas(opcao);
     </script>

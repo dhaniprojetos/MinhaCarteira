@@ -8,48 +8,53 @@
 
 <h4>AgendamentoItemViewModel</h4>
 <hr />
-<form>
-    <div class="row">
+<form asp-action="ConciliarParcela">
+    <input asp-for="Id" type="hidden" />
+
+    <div class="row mb-3">
+        <button type="button" class="btn btn-primary" id="buscar">
+            Buscar<br /><i class="fa fa-search"></i>
+        </button>
+    </div>
+    <div class="row mb-3">
         <div class="col-sm-5">
-            <select id="origem" class="form-select form-select-lg" multiple style="height: 300px;">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <select id="origem" class="form-select h-100 font-monospace" multiple>
             </select>
         </div>
 
         <div class="col-sm-2 p-0 d-flex flex-column align-items-center">
+            <button type="button" class="col-sm-6 ps-0 pe-0 btn btn-success" id="addTodos">
+                Adicionar Todos <i class="fa fa-arrow-alt-circle-right"></i>
+            </button>
+
             <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-primary" id="add">
                 Adicionar<br /><i class="fa fa-arrow-alt-circle-right"></i>
             </button>
-            <button type="button" class="col-sm-6 mt-3 btn btn-primary" id="remove">
-                Remover<br/><i class="fa fa-arrow-alt-circle-left"></i>
+
+            <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-primary" id="remove">
+                Remover<br /><i class="fa fa-arrow-alt-circle-left"></i>
             </button>
 
-            <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-success" id="addTodos">
-                Adicionar Todos <i class="fa fa-arrow-alt-circle-right"></i>
-            </button>
             <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-success" id="removerTodos">
                 Remover Todos <i class="fa fa-arrow-alt-circle-left"></i>
             </button>
         </div>
 
         <div class="col-sm-5">
-            <select id="destino" class="form-select" multiple style="height: 300px;">
-            </select>
+            @*<select id="destino" asp-for="MovimentosId" asp-items="Model.Movimentos" class="form-select h-100 font-monospace" multiple>
+            <option value="5">Helton - Pré Controle</option>
+        </select>*@
+            @Html.DropDownListFor(
+                m => m.MovimentosId, 
+                new SelectList(Model.Movimentos, "Value", "Text"), 
+                new { @multiple = "multiple", @placeholder = "Please select country", @id="destino", @class = "ddlMultiSlectBox" })
         </div>
     </div>
 
+    <hr />
+    <div class="mb-3">
+        <input type="submit" value="Salvar" class="btn btn-primary" />
+    </div>
 </form>
 
 <div>
@@ -57,59 +62,5 @@
 </div>
 
 @section Scripts {
-    <script type="text/javascript">
-        $("#add").click(adicionar);
-        $("#remove").click(remover);
-        $("#origem").dblclick(adicionar);
-        $("#destino").dblclick(remover);
-        $("#addTodos").click(adicionarTodos);
-        $("#removerTodos").click(removerTodos);
-
-        function adicionarTodos(e) {
-            const selectedOpts = $("#origem option");
-            if (selectedOpts.length === 0) {
-                alert("Nothing to move.");
-                e.preventDefault();
-            }
-
-            $("#destino").append($(selectedOpts).clone());
-            $(selectedOpts).remove();
-            e.preventDefault();
-        };
-
-        function removerTodos(e) {
-            const selectedOpts = $("#destino option");
-            if (selectedOpts.length === 0) {
-                alert("Nothing to move.");
-                e.preventDefault();
-            }
-
-            $("#origem").append($(selectedOpts).clone());
-            $(selectedOpts).remove();
-            e.preventDefault();
-        };
-
-        function adicionar(e) {
-            const selectedOpts = $("#origem option:selected");
-            if (selectedOpts.length === 0) {
-                alert("Nothing to move.");
-                e.preventDefault();
-            }
-            $("#destino").append($(selectedOpts).clone());
-            $(selectedOpts).remove();
-            e.preventDefault();
-        }
-
-        function remover(e) {
-            const selectedOpts = $("#destino option:selected");
-            if (selectedOpts.length === 0) {
-                alert("Nothing to move.");
-                e.preventDefault();
-            }
-            $("#origem").append($(selectedOpts).clone());
-            $(selectedOpts).remove();
-            e.preventDefault();
-        }
-
-    </script>
+    <script src="~/js/views/conciliarParcela.js"></script>
 }

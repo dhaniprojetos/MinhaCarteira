@@ -95,7 +95,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 AdicionarIncludesParcela(Contexto.AgendamentoItens)
                 .AsNoTracking()
                 .Where(w => !w.EstahPaga && w.Data < System.DateTime.Now.AddDays(qtdDias) ||
-                            w.Data > System.DateTime.Now && w.Data < System.DateTime.Now.AddDays(qtdDias))
+                            w.Data > System.DateTime.Now.AddDays(qtdDias * -1) && w.Data < System.DateTime.Now.AddDays(qtdDias))
                 .OrderBy(o => o.Data)
                 .ThenBy(tb => tb.ContaBancariaId)
                 .ToListAsync();

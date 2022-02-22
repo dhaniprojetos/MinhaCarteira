@@ -98,6 +98,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico
 
         public override async Task<Agendamento> Incluir(Agendamento item)
         {
+            item.TipoRecorrencia = item.TipoParcelas == TipoParcelas.Parcelada
+                ? TipoRecorrencia.Mensal
+                : item.TipoRecorrencia;
+
             item = GerarParcelas(item);
             var itemDb = await base.Incluir(item);
             item.Items.Clear();

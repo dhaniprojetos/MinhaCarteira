@@ -12,10 +12,10 @@
         <input type="hidden" asp-for="Id" class="form-control" disabled />
         <label asp-for="Tipo" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo deste movimento (Débito ou Crédito)">
-            @foreach (var c in Enum.GetValues(typeof(TipoMovimento)))
+            @foreach (var c in Enum.GetValues(typeof(TipoMovimento)).Cast<TipoMovimento>())
             {
-                <input type="radio" class="btn-check" name="btnTipoMovimento" id="btnTipoMovimento@((int)c)" autocomplete="off" checked="@((TipoMovimento)c == Model.Tipo)">
-                <label class="btn btn-outline-primary" for="btnTipoMovimento@((int)c)">@c</label>
+                <input asp-for="Tipo" type="radio" value="@c" id="tipoMovimento@(c)" checked="@(c == Model.Tipo)" autocomplete="off" class="btn-check" />
+                <label class="btn btn-outline-primary" for="tipoMovimento@(c)">@c</label>
             }
         </div>
         <span asp-validation-for="Tipo" class="text-danger"></span>
@@ -26,11 +26,11 @@
     <div class="col-sm-5 col-lg-3 d-flex flex-column">
         <label asp-for="TipoParcelas" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo das parcelas deste agendamento">
-            @foreach (var c in Enum.GetValues(typeof(TipoParcelas)))
+            @foreach (var c in Enum.GetValues(typeof(TipoParcelas)).Cast<TipoParcelas>())
             {
-                <input type="radio" class="btn-check" name="btnTipoParcela" id="btnTipoParcela@((int)c)" autocomplete="off" checked="@((TipoParcelas)c == Model.TipoParcelas)"
+                <input asp-for="TipoParcelas" type="radio" value="@c" id="tipoParcela@(c)" checked="@(c == Model.TipoParcelas)" autocomplete="off" class="btn-check" 
                        onchange="definirTipoParcelas(this.id)">
-                <label class="btn btn-outline-primary" for="btnTipoParcela@((int)c)">@c</label>
+                <label class="btn btn-outline-primary" for="tipoParcela@(c)">@c</label>
             }
         </div>
         <span asp-validation-for="Tipo" class="text-danger"></span>
@@ -47,10 +47,10 @@
     <div id="tipoRecorrencia" class="d-none col-sm-4 col-lg-3 d-flex flex-column">
         <label asp-for="TipoRecorrencia" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo das parcelas deste agendamento">
-            @foreach (var c in Enum.GetValues(typeof(TipoRecorrencia)))
+            @foreach (var c in Enum.GetValues(typeof(TipoRecorrencia)).Cast<TipoRecorrencia>())
             {
-                <input type="radio" class="btn-check" name="btnTipoRecorrencia" id="btnTipoRecorrencia@((int)c)" autocomplete="off" checked="@((TipoRecorrencia)c == Model.TipoRecorrencia)">
-                <label class="btn btn-outline-primary" for="btnTipoRecorrencia@((int)c)">@c</label>
+                <input asp-for="TipoRecorrencia" type="radio" value="@c" id="tipoRecorrencia@(c)" checked="@(c == Model.TipoRecorrencia)" autocomplete="off" class="btn-check">
+                <label class="btn btn-outline-primary" for="tipoRecorrencia@(c)">@c</label>
             }
         </div>
         <span asp-validation-for="Tipo" class="text-danger"></span>

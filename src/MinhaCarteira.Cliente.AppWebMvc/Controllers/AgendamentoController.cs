@@ -9,15 +9,24 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
+using MinhaCarteira.Cliente.Recursos.Refit.Base;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class AgendamentoController : BaseController<Agendamento, AgendamentoViewModel>
     {
+        private readonly IServicoBase<MovimentoBancario> _movimentoServico;
+
         public AgendamentoController(
             IAgendamentoServico servico,
-            IMapper mapper)
-            : base(servico, mapper) { }
+            IMapper mapper,
+            IServicoBase<MovimentoBancario> movimentoServico)
+            : base(servico, mapper)
+        {
+            _movimentoServico = movimentoServico;
+        }
 
         protected override async Task<AgendamentoViewModel> InicializarViewModel(AgendamentoViewModel viewModel)
         {
@@ -69,6 +78,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<IActionResult> PagarParcela(int id)
         {
             var item = await ObterParcelaPorId(id);
+            item.Movimentos = new List<SelectListItem>
+            {
+                new SelectListItem("Helton", "5")
+            };
+
             return View(item);
         }
 
@@ -86,7 +100,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
             catch (Refit.ApiException ex)
             {
-                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>() 
+                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>()
                               ?? new Resposta<Exception>(ex, ex.Message);
 
                 TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
@@ -100,9 +114,40 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ObterMovimentos(string prefix)
+        {
+            var resp = await _movimentoServico.Navegar();
+
+            return Json(resp.Dados);
+            //var resp = await _categoriaServico.Navegar();
+            //
+            //var items = resp.Dados
+            //    .Select(s => new { label = s.Caminho, val = s.Id })
+            //    .Where(w => string.IsNullOrEmpty(prefix) ||
+            //                w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
+            //    .OrderBy(s => s.label)
+            //    .ToList();
+            //
+            //return Json(items);
+        }
+
         public async Task<IActionResult> ConciliarParcela(int id)
         {
             var item = await ObterParcelaPorId(id);
+            item.Movimentos = new List<SelectListItem>
+            {
+                new SelectListItem("Helton", "5")
+            };
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConciliarParcela(AgendamentoItemViewModel item)
+        {
+            var ok = await Task.FromResult(true);
+
             return View(item);
         }
 
