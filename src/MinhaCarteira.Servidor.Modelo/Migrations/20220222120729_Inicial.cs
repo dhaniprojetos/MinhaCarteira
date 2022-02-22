@@ -15,6 +15,8 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdAuxiliar = table.Column<int>(type: "int", nullable: true),
                     Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Icone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NomeArquivo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdCategoriaPai = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -147,9 +149,12 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AgendamentoId = table.Column<int>(type: "int", nullable: false),
-                    Data = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Data = table.Column<DateTime>(type: "datetime2(0)", precision: 0, nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
-                    EstahPaga = table.Column<bool>(type: "bit", nullable: false),
+                    EstahPaga = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    EstahConciliada = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DataPagamento = table.Column<DateTime>(type: "datetime2(0)", precision: 0, nullable: true),
+                    ValorPago = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: true),
                     PessoaId = table.Column<int>(type: "int", nullable: true),
                     ContaBancariaId = table.Column<int>(type: "int", nullable: true)
                 },

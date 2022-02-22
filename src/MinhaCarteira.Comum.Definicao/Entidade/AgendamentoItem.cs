@@ -12,6 +12,9 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
         public DateTime Data { get; set; }
         public decimal Valor { get; set; }
         public bool EstahPaga { get; set; }
+        public bool EstahConciliada { get; set; }
+        public DateTime? DataPagamento { get; set; }
+        public decimal? ValorPago { get; set; }
 
         public int? PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
