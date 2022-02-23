@@ -13,6 +13,7 @@
 <table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.DataMovimento)
             </th>
@@ -34,23 +35,29 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td class="align-middle">
+            <tr class="align-middle">
+                <td>
+                    @if (item.AgendamentoItemId != null)
+                    {
+                        <i class="fa fa-link"></i>
+                    }
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.DataMovimento)
                 </td>
-                <td class="align-middle">
+                <td>
                     @Html.DisplayFor(modelItem => item.ValorReal)
                 </td>
-                <td class="align-middle">
+                <td>
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
-                <td class="align-middle">
+                <td>
                     @Html.DisplayFor(modelItem => item.Categoria.Nome)
                 </td>
-                <td class="align-middle">
+                <td>
                     @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
                 </td>
-                <td class="align-middle" style="width: 160px;">
+                <td style="width: 160px;">
                     <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
                         <i class="fa-solid fa-lg fa-pen-to-square"></i>
                     </a>

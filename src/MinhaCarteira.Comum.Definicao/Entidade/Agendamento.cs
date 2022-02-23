@@ -7,6 +7,11 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
 {
     public class Agendamento : IEntidade
     {
+        public Agendamento()
+        {
+            Items = new List<AgendamentoItem>();
+        }
+
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }
         public TipoMovimento Tipo { get; set; }

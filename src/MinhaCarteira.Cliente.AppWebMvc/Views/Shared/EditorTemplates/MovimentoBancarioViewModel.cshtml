@@ -12,10 +12,10 @@
         <input type="hidden" asp-for="Id" class="form-control" disabled />
         <label asp-for="TipoMovimento" class="form-label"></label>
         <div class="btn-group" role="group" aria-label="Tipo deste movimento (Débito ou Crédito)">
-            @foreach (var c in Enum.GetValues(typeof(TipoMovimento)))
+            @foreach (var c in Enum.GetValues(typeof(TipoMovimento)).Cast<TipoMovimento>())
             {
-                <input type="radio" class="btn-check" name="btnTipoMovimento" id="btnTipoMovimento@((int)c)" autocomplete="off" checked="@((TipoMovimento)c == Model.TipoMovimento)">
-                <label class="btn btn-outline-primary" for="btnTipoMovimento@((int)c)">@c</label>
+                <input asp-for="TipoMovimento" type="radio" value="@c" id="tipoMovimento@(c)" checked="@(c == Model.TipoMovimento)" autocomplete="off" class="btn-check" />
+                <label class="btn btn-outline-primary" for="tipoMovimento@(c)">@c</label>
             }
         </div>
         <span asp-validation-for="TipoMovimento" class="text-danger"></span>

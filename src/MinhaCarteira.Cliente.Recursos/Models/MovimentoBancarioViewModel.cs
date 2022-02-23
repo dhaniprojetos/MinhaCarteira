@@ -28,6 +28,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
                 ? Valor
                 : Valor * (-1);
 
+        [Range(1, int.MaxValue)]
         [DisplayName("Centro de classificação")]
         public int CentroClassificacaoId { get; set; }
         public CentroClassificacao CentroClassificacao { get; set; }
@@ -36,6 +37,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             ? CentroClassificacao.Nome
             : string.Empty;
 
+        [Range(1, int.MaxValue)]
         [DisplayName("Pessoa")]
         public int? PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
@@ -44,6 +46,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             ? Pessoa.Nome
             : string.Empty;
 
+        [Range(1, int.MaxValue)]
         [DisplayName("Categoria")]
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
@@ -52,6 +55,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             ? Categoria.Caminho
             : string.Empty;
 
+        [Range(1, int.MaxValue)]
         [DisplayName("Conta")]
         public int ContaBancariaId { get; set; }
         [DisplayName("Conta")]
@@ -60,6 +64,9 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public string NomeContaBancaria => ContaBancaria != null
             ? ContaBancaria.Nome
             : string.Empty;
+
+        public int? AgendamentoItemId { get; set; }
+        public AgendamentoItem AgendamentoItem { get; set; }
 
         public MovimentoBancarioViewModel()
         {

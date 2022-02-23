@@ -27,9 +27,36 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 if (item.InstituicaoFinanceira?.Id > 0)
                     Contexto.Entry(item.InstituicaoFinanceira).State =
                         EntityState.Unchanged;
+
+                item.ValorSaldoAtual = item.ValorSaldoInicial;
             });
 
             return await base.IncluirRange(itens);
+        }
+
+        public async Task<bool> AtualizarSaldoConta(string id)
+        {
+            var filtro = !string.IsNullOrWhiteSpace(id)
+                ? $"where conta.id in ({id})"
+                : string.Empty;
+            var cmdSql = $@"
+update ContaBancaria
+   set ValorSaldoAtual = ValorSaldoInicial + tmp.Saldo
+from ContaBancaria conta
+inner join (
+	select conta.Id
+		 , sum(case when mov.TipoMovimento = 0 then Valor * -1 else Valor end) Saldo
+	from MovimentoBancario mov
+	inner join ContaBancaria conta on conta.Id = mov.ContaBancariaId
+	where mov.DataMovimento > conta.DataSaldoInicial
+	group by conta.Id
+)tmp on tmp.Id = conta.Id
+{filtro}
+";
+
+            var afetadas = await Contexto.Database.ExecuteSqlRawAsync(cmdSql);
+
+            return await Task.FromResult(afetadas > 0);
         }
 
     }

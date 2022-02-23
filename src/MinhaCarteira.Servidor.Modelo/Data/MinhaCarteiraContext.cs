@@ -28,8 +28,8 @@ namespace MinhaCarteira.Servidor.Modelo.Data
         public DbSet<InstituicaoFinanceira> InstituicoesFinanceira { get; set; }
         public DbSet<ContaBancaria> ContasBancaria { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
-        public DbSet<Categoria> CentrosClassificacao { get; set; }
-        public DbSet<Categoria> MovimentosBancarios { get; set; }
+        public DbSet<CentroClassificacao> CentrosClassificacao { get; set; }
+        public DbSet<MovimentoBancario> MovimentosBancarios { get; set; }
         public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<AgendamentoItem> AgendamentoItens { get; set; }
     }

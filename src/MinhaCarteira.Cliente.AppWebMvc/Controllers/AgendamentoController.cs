@@ -9,18 +9,17 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
-using MinhaCarteira.Cliente.Recursos.Refit.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class AgendamentoController : BaseController<Agendamento, AgendamentoViewModel>
     {
-        private readonly IServicoBase<MovimentoBancario> _movimentoServico;
+        private readonly IMovimentoServico _movimentoServico;
 
         public AgendamentoController(
             IAgendamentoServico servico,
             IMapper mapper,
-            IServicoBase<MovimentoBancario> movimentoServico)
+            IMovimentoServico movimentoServico)
             : base(servico, mapper)
         {
             _movimentoServico = movimentoServico;
@@ -83,7 +82,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> PagarParcela(AgendamentoItemViewModel item)
         {
-            if (!ModelState.IsValid) return View(item);
+            if (!ModelState.IsValid)
+            {
+                var itemDb = await ObterParcelaPorId(item.Id);
+                itemDb.Data = item.Data;
+                itemDb.Valor = item.Valor;
+
+                return View(itemDb);
+            }
 
             try
             {
@@ -111,19 +117,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterMovimentos(string prefix)
         {
-            var resp = await _movimentoServico.Navegar();
+            var resp = await _movimentoServico.ObterMovimentosParaConciliacao();
 
             return Json(resp.Dados);
-            //var resp = await _categoriaServico.Navegar();
-            //
-            //var items = resp.Dados
-            //    .Select(s => new { label = s.Caminho, val = s.Id })
-            //    .Where(w => string.IsNullOrEmpty(prefix) ||
-            //                w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
-            //    .OrderBy(s => s.label)
-            //    .ToList();
-            //
-            //return Json(items);
         }
 
         public async Task<IActionResult> ConciliarParcela(int id)

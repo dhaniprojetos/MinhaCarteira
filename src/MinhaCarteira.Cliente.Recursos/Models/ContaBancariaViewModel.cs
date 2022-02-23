@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,7 +15,15 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public string Nome { get; set; }
         public string Agencia { get; set; }
         public string Conta { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DataSaldoInicial { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal ValorSaldoInicial { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal ValorSaldoAtual { get; set; }
 
+        [Range(1, int.MaxValue)]
         [Display(Name = "Instituição Financeira")]
         public int InstituicaoFinanceiraId { get; set; }
         public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
@@ -25,6 +34,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public ContaBancariaViewModel()
         {
             InstituicoesBancaria = new List<SelectListItem>();
+            DataSaldoInicial = DateTime.Now;
         }
         public ContaBancariaViewModel(Resposta<IList<InstituicaoFinanceira>> resposta)
         {

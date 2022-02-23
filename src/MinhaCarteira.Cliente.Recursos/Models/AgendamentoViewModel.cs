@@ -52,7 +52,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             : string.Empty;
 
         [DisplayName("Pessoa")]
-        public int? PessoaId { get; set; }
+        public int PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
         public IEnumerable<SelectListItem> Pessoas { get; set; }
         public string NomePessoa => Pessoa != null

@@ -203,12 +203,23 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("DataSaldoInicial")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("InstituicaoFinanceiraId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("ValorSaldoAtual")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal>("ValorSaldoInicial")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.HasKey("Id");
 

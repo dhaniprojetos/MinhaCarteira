@@ -85,6 +85,9 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Agencia = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Conta = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DataSaldoInicial = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ValorSaldoInicial = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
+                    ValorSaldoAtual = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
                     InstituicaoFinanceiraId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

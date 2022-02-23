@@ -45,7 +45,7 @@
             };
 
             <tr class="@classLinha align-middle">
-                <td class="align-middle p-0 ps-2">
+                <td class="p-0 ps-2">
                     <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
                          title="@item.Agendamento.Categoria.Nome"
                          height="42" width="42"
@@ -53,16 +53,16 @@
                          asp-append-version="true" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Data)
+                    @Html.DisplayFor(modelItem => item.DataPagamento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Valor)
+                    @Html.DisplayFor(modelItem => item.ValorPago)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Pessoa.Nome)
+                    @Html.DisplayFor(modelItem => item.NomePessoa)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Agendamento.NomeCentroClassificacao)

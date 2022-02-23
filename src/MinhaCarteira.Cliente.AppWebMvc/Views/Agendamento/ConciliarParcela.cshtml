@@ -8,7 +8,7 @@
 
 <h4>AgendamentoItemViewModel</h4>
 <hr />
-<form asp-action="ConciliarParcela" id="formConciliar">
+<form id="formConciliar">
     <input asp-for="Id" type="hidden" />
 
     <div class="row mb-3">
@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-sm-5">
-            <select id="destino" asp-for="MovimentosId" asp-items="Model.Movimentos" class="form-select h-100 font-monospace" multiple>
+            <select id="destino" class="form-select h-100 font-monospace" multiple>
             </select>
         </div>
     </div>

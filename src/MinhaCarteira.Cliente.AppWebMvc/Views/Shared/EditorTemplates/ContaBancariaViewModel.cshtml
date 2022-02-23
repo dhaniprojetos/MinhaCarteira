@@ -43,6 +43,22 @@
             <span asp-validation-for="Conta" class="text-danger"></span>
         </div>
     </div>
+    <div class="row">
+        <div class="mb-3 col-md-3">
+            <label asp-for="DataSaldoInicial" class="form-label"></label>
+            <input type="datetime-local" asp-for="DataSaldoInicial" class="form-control" />
+            <span asp-validation-for="DataSaldoInicial" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-md-3">
+            <label asp-for="ValorSaldoInicial" class="form-label"></label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">R$</span>
+                <input asp-for="ValorSaldoInicial" class="form-control money" />
+            </div>
+            <span asp-validation-for="ValorSaldoInicial" class="text-danger"></span>
+        </div>
+    </div>
 </div>
 
 <hr />

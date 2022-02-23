@@ -38,9 +38,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                 .Include(i => i.Agendamento)
                     .ThenInclude(ti => ti.CentroClassificacao)
                 .Include(i => i.Agendamento)
+                    .ThenInclude(ti => ti.Pessoa)
+                .Include(i => i.Agendamento)
                     .ThenInclude(ti => ti.Categoria)
-                    .ThenInclude(ti => ti.CategoriaPai)
-                    .ThenInclude(ti => ti.CategoriaPai);
+                        .ThenInclude(ti => ti.CategoriaPai)
+                        .ThenInclude(ti => ti.CategoriaPai);
         }
 
         protected override async Task<IList<Agendamento>> ExecutarAntesAlterar(IList<Agendamento> itens)

@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using MinhaCarteira.Cliente.Recursos.Models.Enum;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
@@ -21,17 +18,30 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public decimal Valor { get; set; }
         public bool EstahPaga { get; set; }
         public bool EstahConciliada { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
-        public DateTime DataPagamento { get; set; }
-        [DisplayFormat(DataFormatString = "{0:C2}")]
-        public decimal ValorPago { get; set; }
 
+        private DateTime? dataPagamento;
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
+        public DateTime? DataPagamento
+        {
+            get => dataPagamento ?? Data;
+            set => dataPagamento = value;
+        }
+        private decimal? valorPago;
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal? ValorPago
+        {
+            get => valorPago ?? Valor;
+            set => valorPago = value;
+        }
+
+        [Range(1, int.MaxValue)]
         public int? PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
         public string NomePessoa => Pessoa != null
             ? Pessoa.Nome
-            : string.Empty;
+            : Agendamento?.NomePessoa ?? string.Empty;
 
+        [Range(1, int.MaxValue)]
         public int? ContaBancariaId { get; set; }
         public ContaBancaria ContaBancaria { get; set; }
         public string NomeContaBancaria => ContaBancaria != null
@@ -54,13 +64,10 @@ namespace MinhaCarteira.Cliente.Recursos.Models
                 };
             }
         }
-        public IList<int> MovimentosId { get; set; }
-        public IEnumerable<SelectListItem> Movimentos { get; set; }
 
         public AgendamentoItemViewModel()
         {
             Data = DateTime.Now;
-            //MovimentosId = new List<int>();
             Agendamento = new AgendamentoViewModel();
         }
     }

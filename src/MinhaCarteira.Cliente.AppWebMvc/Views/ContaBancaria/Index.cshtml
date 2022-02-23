@@ -13,6 +13,9 @@
 <table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
+            <th class="text-end">
+                Saldo
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -31,20 +34,23 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td class="align-middle">
+        <tr class="align-middle">
+            <td class="text-end">
+                @Html.DisplayFor(modelItem => item.ValorSaldoAtual)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
-            <td class="align-middle">
+            <td>
                 @Html.DisplayFor(modelItem => item.Agencia)
             </td>
-            <td class="align-middle">
+            <td>
                 @Html.DisplayFor(modelItem => item.Conta)
             </td>
-            <td class="align-middle">
+            <td>
                 @Html.DisplayFor(modelItem => item.InstituicaoFinanceira.Nome)
             </td>
-            <td class="align-middle" style="width: 160px;">
+            <td style="width: 200px;">
                 <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
                     <i class="fa-solid fa-lg fa-pen-to-square"></i>
                 </a>
@@ -53,6 +59,9 @@
                 </a>
                 <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
                     <i class="fa-solid fa-lg fa-trash-can"></i>
+                </a>
+                <a title="Atualizar saldo da conta" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="AtualizarSaldoConta" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-lg fa-refresh"></i>
                 </a>
             </td>
         </tr>

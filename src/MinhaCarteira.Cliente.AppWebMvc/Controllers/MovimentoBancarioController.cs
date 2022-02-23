@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 
@@ -15,15 +16,15 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         private readonly IServicoBase<Pessoa> _pessoaServico;
         private readonly IServicoBase<CentroClassificacao> _centroClassificacaoServico;
         private readonly IServicoBase<Categoria> _categoriaServico;
-        private readonly IServicoBase<ContaBancaria> _contaBancariaServico;
+        private readonly IContaBancariaServico _contaBancariaServico;
 
         public MovimentoBancarioController(
-            IServicoBase<MovimentoBancario> servico,
+            IMovimentoServico servico,
             IMapper mapper,
             IServicoBase<Pessoa> pessoaServico,
             IServicoBase<CentroClassificacao> centroClassificacaoServico,
             IServicoBase<Categoria> categoriaServico,
-            IServicoBase<ContaBancaria> contaBancariaServico)
+            IContaBancariaServico contaBancariaServico)
             : base(servico, mapper)
         {
             _pessoaServico = pessoaServico;
