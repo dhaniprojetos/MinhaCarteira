@@ -21,7 +21,6 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public decimal Valor { get; set; }
         public bool EstahPaga { get; set; }
         public bool EstahConciliada { get; set; }
-        [DisplayName("Data")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
         public DateTime DataPagamento { get; set; }
         [DisplayFormat(DataFormatString = "{0:C2}")]

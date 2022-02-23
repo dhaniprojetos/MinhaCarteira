@@ -82,3 +82,27 @@ function carregarMovimentos(e) {
         }
     });
 }
+
+$("#formConciliar").submit(function (e) {
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+
+    var form = $(this);
+    var idParcela = $("#Id").val();
+    var idMovimentos = "";
+
+    $("#destino option").each(function () {
+        idMovimentos += $(this).val() + ",";
+        // Add $(this).val() to your list
+    });
+
+    $.ajax({
+        url: window.siteRoot + 'agendamento/ConciliarParcela',
+        data: { "id": idParcela, "idMovimentos": idMovimentos },
+        type: "POST",
+        success: function (data) {
+            window.location.href = data.redirectToUrl;
+        }
+    });
+
+});

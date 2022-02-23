@@ -8,13 +8,10 @@
 
 <h4>AgendamentoItemViewModel</h4>
 <hr />
-<form asp-action="ConciliarParcela">
+<form asp-action="ConciliarParcela" id="formConciliar">
     <input asp-for="Id" type="hidden" />
 
     <div class="row mb-3">
-        <button type="button" class="btn btn-primary" id="buscar">
-            Buscar<br /><i class="fa fa-search"></i>
-        </button>
     </div>
     <div class="row mb-3">
         <div class="col-sm-5">
@@ -23,7 +20,11 @@
         </div>
 
         <div class="col-sm-2 p-0 d-flex flex-column align-items-center">
-            <button type="button" class="col-sm-6 ps-0 pe-0 btn btn-success" id="addTodos">
+            <button type="button" class="col-sm-6 ps-0 pe-0 btn btn-success" id="buscar">
+                Buscar<br /><i class="fa fa-search"></i>
+            </button>
+
+            <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-warning" id="addTodos">
                 Adicionar Todos <i class="fa fa-arrow-alt-circle-right"></i>
             </button>
 
@@ -35,19 +36,14 @@
                 Remover<br /><i class="fa fa-arrow-alt-circle-left"></i>
             </button>
 
-            <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-success" id="removerTodos">
+            <button type="button" class="col-sm-6 ps-0 pe-0 mt-3 btn btn-warning" id="removerTodos">
                 Remover Todos <i class="fa fa-arrow-alt-circle-left"></i>
             </button>
         </div>
 
         <div class="col-sm-5">
-            @*<select id="destino" asp-for="MovimentosId" asp-items="Model.Movimentos" class="form-select h-100 font-monospace" multiple>
-            <option value="5">Helton - Pré Controle</option>
-        </select>*@
-            @Html.DropDownListFor(
-                m => m.MovimentosId, 
-                new SelectList(Model.Movimentos, "Value", "Text"), 
-                new { @multiple = "multiple", @placeholder = "Please select country", @id="destino", @class = "ddlMultiSlectBox" })
+            <select id="destino" asp-for="MovimentosId" asp-items="Model.Movimentos" class="form-select h-100 font-monospace" multiple>
+            </select>
         </div>
     </div>
 

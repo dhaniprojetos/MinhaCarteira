@@ -11,7 +11,6 @@
 <h4>AgendamentoItemViewModel</h4>
 <hr />
 <form asp-action="PagarParcela">
-
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row mb-3">
@@ -154,9 +153,7 @@
     </div>
 
     <hr />
-    <select id="destino" asp-for="MovimentosId" asp-items="Model.Movimentos" class="form-select h-100 font-monospace" multiple>
-        <option value="5">Helton - Pré Controle</option>
-    </select>
+
     <div class="mb-3">
         <input type="submit" value="Salvar" class="btn btn-primary" />
     </div>

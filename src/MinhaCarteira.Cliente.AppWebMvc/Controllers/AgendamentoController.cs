@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -78,10 +76,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<IActionResult> PagarParcela(int id)
         {
             var item = await ObterParcelaPorId(id);
-            item.Movimentos = new List<SelectListItem>
-            {
-                new SelectListItem("Helton", "5")
-            };
 
             return View(item);
         }
@@ -135,20 +129,37 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<IActionResult> ConciliarParcela(int id)
         {
             var item = await ObterParcelaPorId(id);
-            item.Movimentos = new List<SelectListItem>
-            {
-                new SelectListItem("Helton", "5")
-            };
-
             return View(item);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConciliarParcela(AgendamentoItemViewModel item)
+        public async Task<IActionResult> ConciliarParcela(int id, string idMovimentos)
         {
-            var ok = await Task.FromResult(true);
+            if (!ModelState.IsValid)
+            {
+                var item = await ObterParcelaPorId(id);
+                return View(item);
+            }
 
-            return View(item);
+            try
+            {
+                var retornoApi = await ((IAgendamentoServico)Servico).ConciliarParcela(id, idMovimentos);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            catch (Refit.ApiException ex)
+            {
+                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>()
+                              ?? new Resposta<Exception>(ex, ex.Message);
+
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+
+            return Json(new { redirectToUrl = Url.Action("Index", "Agendamento") });
         }
 
         #region Métodos sobrescritos apenas manter as views

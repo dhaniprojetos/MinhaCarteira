@@ -89,5 +89,30 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             DefinirCodigoStatus(ref resposta);
             return resposta;
         }
+
+        [Route("conciliar-parcela")]
+        [HttpPost]
+        public async Task<IActionResult> ConciliarParcela(int id, string idMovimentos)
+        {
+            IActionResult resposta;
+            try
+            {
+                var itens = await ((IAgendamentoServico)Servico).ConciliarParcela(id, idMovimentos);
+                resposta = itens == null
+                    ? NotFound(new Resposta<AgendamentoItem>(
+                        null,
+                        "Nenhum registro localizado."))
+                    : Ok(new Resposta<AgendamentoItem>(
+                        itens,
+                        "Parcela localizada com sucesso."));
+            }
+            catch (Exception e)
+            {
+                resposta = BadRequest(new Resposta<Exception>(e, e.Message));
+            }
+
+            DefinirCodigoStatus(ref resposta);
+            return resposta;
+        }
     }
 }

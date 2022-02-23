@@ -14,6 +14,16 @@ namespace MinhaCarteira.Servidor.Controle.Servico
 {
     public class AgendamentoServico : ServicoBase<Agendamento>, IAgendamentoServico
     {
+        private readonly ICrud<MovimentoBancario> _movimentoRepositorio;
+
+        public AgendamentoServico(
+            ICrud<Agendamento> repositorio,
+            ICrud<MovimentoBancario> movimentoRepositorio)
+            : base(repositorio)
+        {
+            _movimentoRepositorio = movimentoRepositorio;
+        }
+
         private RecurrenceType ObterRecorrenciaBuilder(Agendamento agend)
         {
             return agend.TipoRecorrencia switch
@@ -93,9 +103,6 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             return agend;
         }
 
-        public AgendamentoServico(ICrud<Agendamento> repositorio)
-            : base(repositorio) { }
-
         public override async Task<Agendamento> Incluir(Agendamento item)
         {
             item.TipoRecorrencia = item.TipoParcelas == TipoParcelas.Parcelada
@@ -130,6 +137,17 @@ namespace MinhaCarteira.Servidor.Controle.Servico
                 .BaixarParcela(parcela);
 
             return item;
+        }
+
+        public async Task<AgendamentoItem> ConciliarParcela(int id, string idMovimentos)
+        {
+            var movimentoConciliado = await ((MovimentoBancarioRepositorio)_movimentoRepositorio)
+                .ConciliarParcela(id, idMovimentos);
+            
+            var item = await ((AgendamentoRepositorio)Repositorio)
+                .ConciliarParcela(id);
+
+            return null;
         }
     }
 }

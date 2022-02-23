@@ -118,8 +118,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
         {
             var itemDb = await ObterParcelaPorId(parcela.Id);
             itemDb.EstahPaga = true;
-            itemDb.Data = parcela.Data;
-            itemDb.Valor = parcela.Valor;
+            itemDb.DataPagamento = parcela.Data;
+            itemDb.ValorPago = parcela.Valor;
             itemDb.PessoaId = parcela.PessoaId;
             itemDb.ContaBancariaId = parcela.ContaBancariaId;
 
@@ -129,6 +129,14 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             Contexto.Entry(itemDb).State = EntityState.Detached;
 
             return null;
+        }
+
+        public async Task<bool> ConciliarParcela(int id)
+        {
+            var cmdSql = $"update AgendamentoItem set EstahConciliada=1 where Id={id}";
+            var afetados = await Contexto.Database.ExecuteSqlRawAsync(cmdSql);
+
+            return await Task.FromResult(afetados > 0);
         }
     }
 }

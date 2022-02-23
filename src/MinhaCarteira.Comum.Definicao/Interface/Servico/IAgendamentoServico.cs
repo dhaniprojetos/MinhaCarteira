@@ -9,5 +9,6 @@ namespace MinhaCarteira.Comum.Definicao.Interface.Servico
         Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias);
         Task<AgendamentoItem> ObterParcelaPorId(int id);
         Task<AgendamentoItem> BaixarParcela(AgendamentoItem id);
+        Task<AgendamentoItem> ConciliarParcela(int id, string idMovimentos);
     }
 }

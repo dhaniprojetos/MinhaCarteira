@@ -40,7 +40,7 @@
             {
                 StatusParcela.Paga => "table-info",
                 StatusParcela.Vencida => "table-warning",
-                StatusParcela.Conciliada => "table-success",
+                StatusParcela.Conciliada => "table-active",
                 _ => ""
             };
 
@@ -70,11 +70,11 @@
                 <td>
                     @if (item.StatusParcela == StatusParcela.Paga)
                     {
-                    <a class="btn btn-success" asp-action="ConciliarParcela" asp-route-id="@item.Id">
-                        <i class="fa fa-link"></i> Conciliar
-                    </a>
+                        <a class="btn btn-success" asp-action="ConciliarParcela" asp-route-id="@item.Id">
+                            <i class="fa fa-link"></i> Conciliar
+                        </a>
                     }
-                    else
+                    else if (item.StatusParcela != StatusParcela.Conciliada)
                     {
                         <a class="btn btn-primary" asp-action="PagarParcela" asp-route-id="@item.Id">
                             <i class="fa fa-check-circle"></i> Pagar
