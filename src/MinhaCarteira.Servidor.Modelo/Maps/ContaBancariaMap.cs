@@ -12,8 +12,10 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
 
             builder.HasKey(k => k.Id);
             builder.Property(p => p.Nome).HasMaxLength(200);
-            builder.Property(p => p.Agencia).HasMaxLength(50);
             builder.Property(p => p.Conta).HasMaxLength(50);
+            builder.Property(p => p.Agencia).HasMaxLength(50);
+            builder.Property(p => p.ValorSaldoAtual).HasPrecision(18, 6);
+            builder.Property(p => p.ValorSaldoInicial).HasPrecision(18, 6);
 
             builder
                 .HasOne(h => h.InstituicaoFinanceira)

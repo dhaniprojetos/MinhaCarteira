@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Handler;
@@ -39,7 +38,7 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
                     c.BaseAddress = new Uri(baseUrlApi + "/instituicaofinanceira"));
 
             services
-                .AddRefitClient<IServicoBase<ContaBancaria>>()
+                .AddRefitClient<IContaBancariaServico>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/contabancaria"));
@@ -57,13 +56,13 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
                     c.BaseAddress = new Uri(baseUrlApi + "/centroclassificacao"));
 
             services
-                .AddRefitClient<IServicoBase<MovimentoBancario>>()
+                .AddRefitClient<IMovimentoServico>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/movimentobancario"));
 
             services
-                .AddRefitClient<IServicoBase<Agendamento>>()
+                .AddRefitClient<IAgendamentoServico>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/agendamento"));

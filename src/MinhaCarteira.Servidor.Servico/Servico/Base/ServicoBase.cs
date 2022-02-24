@@ -38,7 +38,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
         {
             return await Repositorio.Deletar(id);
         }
-        public async Task<TEntidade> Alterar(TEntidade item)
+        public virtual async Task<TEntidade> Alterar(TEntidade item)
         {
             return await Repositorio.Alterar(item);
         }
@@ -62,7 +62,15 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
         }
         public async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
         {
-            return await Repositorio.IncluirRange(itens);
+            var retorno = new List<TEntidade>();
+
+            foreach (var item in itens)
+            {
+                var itemDb = await Incluir(item);
+                retorno.Add(itemDb);
+            }
+            
+            return retorno;
         }
 
         public async Task<TEntidade> ObterPorId(int id)

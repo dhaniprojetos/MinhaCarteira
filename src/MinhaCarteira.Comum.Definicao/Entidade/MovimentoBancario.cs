@@ -12,6 +12,10 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
         public DateTime DataMovimento { get; set; }
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
+        public decimal ValorReal =>
+            TipoMovimento == TipoMovimento.Credito
+                ? Valor
+                : Valor * (-1);
 
         public int CentroClassificacaoId { get; set; }
         public CentroClassificacao CentroClassificacao { get; set; }

@@ -26,7 +26,7 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
             services.AddScoped<IServicoCrud<InstituicaoFinanceira>, InstituicaoFinanceiraServico>();
 
             services.AddScoped<ICrud<ContaBancaria>, ContaBancariaRepositorio>();
-            services.AddScoped<IServicoCrud<ContaBancaria>, ContaBancariaServico>();
+            services.AddScoped<IContaBancariaServico, ContaBancariaServico>();
 
             services.AddScoped<ICrud<Categoria>, CategoriaRepositorio>();
             services.AddScoped<IServicoCrud<Categoria>, CategoriaServico>();
@@ -35,10 +35,10 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
             services.AddScoped<IServicoCrud<CentroClassificacao>, CentroClassificacaoServico>();
 
             services.AddScoped<ICrud<MovimentoBancario>, MovimentoBancarioRepositorio>();
-            services.AddScoped<IServicoCrud<MovimentoBancario>, MovimentoBancarioServico>();
+            services.AddScoped<IMovimentoBancarioServico, MovimentoBancarioServico>();
 
             services.AddScoped<ICrud<Agendamento>, AgendamentoRepositorio>();
-            services.AddScoped<IServicoCrud<Agendamento>, AgendamentoServico>();
+            services.AddScoped<IAgendamentoServico, AgendamentoServico>();
 
             return services;
         }

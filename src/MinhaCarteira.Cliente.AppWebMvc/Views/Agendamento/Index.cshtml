@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.AgendamentoViewModel>
+﻿@using MinhaCarteira.Cliente.Recursos.Models.Enum
+@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,50 +11,78 @@
 <p>
     <a asp-action="Criar">Create New</a>
 </p>
-<table class="table table-responsive-sm">
+<table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
+            <th style="width: 50px;"></th>
+            <th style="width: 80px;">
+                @Html.DisplayNameFor(model => model.Data)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValorReal)
+                @Html.DisplayNameFor(model => model.Agendamento.Descricao)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataInicial)
+            <th class="text-end" style="width: 140px;">
+                @Html.DisplayNameFor(model => model.Valor)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
+            <th style="width: 180px;">
+                @Html.DisplayNameFor(model => model.Agendamento.Categoria.Nome)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeCentroClassificacao)
+            <th style="width: 100px;">
+                @Html.DisplayNameFor(model => model.Agendamento.NomeCentroClassificacao)
             </th>
-            <th></th>
+            <th style="width: 130px;">Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            var classLinha = item.StatusParcela switch
+            {
+                StatusParcela.Paga => "table-info",
+                StatusParcela.Vencida => "table-warning",
+                StatusParcela.Conciliada => "table-active",
+                _ => ""
+            };
+            var corFont = item.Agendamento.Tipo == MinhaCarteira.Comum.Definicao.Modelo.TipoMovimento.Credito
+                ? "text-primary"
+                : "text-danger";
+
+            <tr class="@classLinha align-middle">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
+                         title="@item.Agendamento.Categoria.Nome"
+                         height="42" width="42"
+                         alt="@item.Agendamento.Categoria.Nome"
+                         asp-append-version="true" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ValorReal)
+                    @Html.DisplayFor(modelItem => item.DataPagamento)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DataInicial)
+                    @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
+                </td>
+                <td class="text-end fw-bold @corFont">
+                    @Html.DisplayFor(modelItem => item.ValorPago)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
+                    @Html.DisplayFor(modelItem => item.NomePessoa)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NomeCentroClassificacao)
+                    @Html.DisplayFor(modelItem => item.Agendamento.NomeCentroClassificacao)
                 </td>
                 <td>
-                    @Html.ActionLink("Alterar", "Alterar", new { id = item.Id }) |
-                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
-                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                    @if (item.StatusParcela == StatusParcela.Paga)
+                    {
+                        <a class="btn btn-success" asp-action="ConciliarParcela" asp-route-id="@item.Id">
+                            <i class="fa fa-link"></i> Conciliar
+                        </a>
+                    }
+                    else if (item.StatusParcela != StatusParcela.Conciliada)
+                    {
+                        <a class="btn btn-primary" asp-action="PagarParcela" asp-route-id="@item.Id">
+                            <i class="fa fa-check-circle"></i> Pagar
+                        </a>
+                    }
                 </td>
             </tr>
         }

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
+using MinhaCarteira.Cliente.Recursos.Attributes;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
@@ -13,6 +16,24 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public int? IdAuxiliar { get; set; }
         public string Nome { get; set; }
         public string Caminho { get; set; }
+        public string Icone { get; set; }
+        public string IconeCategoria { get; set; }
+        public string NomeArquivo { get; set; }
+        public string NomeArquivoCategoria { get; set; }
+        public string MimeType
+        {
+            get
+            {
+                new FileExtensionContentTypeProvider()
+                    .TryGetContentType(NomeArquivoCategoria, out string contentType);
+
+                return contentType ?? "image/svg+xml";
+            }
+        }
+
+        [MaxFileSize("UploadTamanhoMaximo")]
+        [AllowedExtensions("UploadExtensaoPermitida")]
+        public IFormFile IconeForm { get; set; }
 
         private int? idCategoriaPai;
         public int? IdCategoriaPai

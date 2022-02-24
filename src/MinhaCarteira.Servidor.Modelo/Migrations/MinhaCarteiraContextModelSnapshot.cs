@@ -94,15 +94,31 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
+                        .HasPrecision(0)
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<DateTime?>("DataPagamento")
+                        .HasPrecision(0)
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<bool>("EstahConciliada")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("EstahPaga")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int?>("PessoaId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal?>("ValorPago")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
@@ -124,6 +140,9 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Icone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("IdAuxiliar")
                         .HasColumnType("int");
 
@@ -133,6 +152,9 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.Property<string>("Nome")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NomeArquivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -181,12 +203,23 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("DataSaldoInicial")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("InstituicaoFinanceiraId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("ValorSaldoAtual")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal>("ValorSaldoInicial")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.HasKey("Id");
 

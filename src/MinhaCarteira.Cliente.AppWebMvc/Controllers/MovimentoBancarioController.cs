@@ -5,8 +5,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -15,15 +17,15 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         private readonly IServicoBase<Pessoa> _pessoaServico;
         private readonly IServicoBase<CentroClassificacao> _centroClassificacaoServico;
         private readonly IServicoBase<Categoria> _categoriaServico;
-        private readonly IServicoBase<ContaBancaria> _contaBancariaServico;
+        private readonly IContaBancariaServico _contaBancariaServico;
 
         public MovimentoBancarioController(
-            IServicoBase<MovimentoBancario> servico,
+            IMovimentoServico servico,
             IMapper mapper,
             IServicoBase<Pessoa> pessoaServico,
             IServicoBase<CentroClassificacao> centroClassificacaoServico,
             IServicoBase<Categoria> categoriaServico,
-            IServicoBase<ContaBancaria> contaBancariaServico)
+            IContaBancariaServico contaBancariaServico)
             : base(servico, mapper)
         {
             _pessoaServico = pessoaServico;
@@ -114,15 +116,28 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return Json(items);
         }
 
+        public async Task<IActionResult> Clonar(string id)
+        {
+            try
+            {
+                MovimentoBancarioViewModel item = await ObterPorId(int.Parse(id));
+
+                return View(nameof(Criar), item);
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                ViewBag.RetornoApi = retornoApi;
+
+                return View(nameof(Criar), new MovimentoBancarioViewModel());
+            }
+        }
+
+
         #region Métodos sobrescritos apenas manter as views
         public override Task<IActionResult> Index()
         {
             return base.Index();
-        }
-
-        public override async Task<IActionResult> Criar()
-        {
-            return await base.Criar();
         }
 
         public override async Task<IActionResult> Detalhes(int id)

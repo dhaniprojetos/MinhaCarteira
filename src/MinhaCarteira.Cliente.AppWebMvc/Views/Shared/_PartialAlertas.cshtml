@@ -3,14 +3,18 @@
 @if (ViewBag?.RetornoApi != null)
 {
     var retornoApi = ViewBag.RetornoApi as IRespostaServico;
-    var classes = "alert-success";
+    var classAlert = "alert-success";
+    var classFont = "fa-check-circle";
 
     if (!retornoApi.BemSucedido && !string.IsNullOrWhiteSpace(retornoApi.Mensagem))
-        classes = "alert-danger";
+    {
+        classAlert = "alert-danger";
+        classFont = "fa-circle-exclamation";
+    }
 
-    <div class="alert @classes myAlert-bottom">
-        <span class="fa fa-check-circle" style="font-size:17px;"></span>
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <div class="alert @classAlert myAlert-bottom alert-dismissible fade show" role="alert">
+        <span class="fa @classFont" style="font-size:17px;"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         <strong></strong> @Html.Raw(retornoApi.Mensagem)
         @if (!string.IsNullOrWhiteSpace(retornoApi.MensagemErro))
         {

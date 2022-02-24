@@ -17,7 +17,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     {
         public AgendamentoTesteCrud(
             IBuilder<Agendamento> builder,
-            IServicoCrud<Agendamento> servico,
+            IAgendamentoServico servico,
             ITestOutputHelper output)
             : base(builder, servico, output) { }
 
@@ -29,9 +29,9 @@ namespace MinhaCarteira.Teste.WebApi.Crud
             var qtdItensAdicionados = itens.Length;
             Assert.Equal(qtdTeste, qtdItensAdicionados);
 
-            itens = await AlterarIntesAsync(itens);
-            var qtdItensAlterados = itens.Length;
-            Assert.Equal(qtdItensAdicionados, qtdItensAlterados);
+            //itens = await AlterarIntesAsync(itens);
+            //var qtdItensAlterados = itens.Length;
+            //Assert.Equal(qtdItensAdicionados, qtdItensAlterados);
 
             //var removidos = await DeletarAsync(itens);
             //Assert.Equal(qtdItensAlterados, removidos);

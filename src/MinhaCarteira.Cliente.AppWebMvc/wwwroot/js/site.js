@@ -10,6 +10,10 @@ $(".alert").fadeTo(tempo, 150).slideUp(150, function () {
     $("alert").slideUp(150);
 });
 
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
 /*
  $(document).ready(function () {
  

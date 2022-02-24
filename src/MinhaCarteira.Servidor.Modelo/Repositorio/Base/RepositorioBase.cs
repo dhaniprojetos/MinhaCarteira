@@ -87,7 +87,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             var itens = await IncluirRange(new List<TEntidade> { item });
             return itens[0];
         }
-        public async Task<int> DeletarRange(int[] ids)
+        public virtual async Task<int> DeletarRange(int[] ids)
         {
             try
             {

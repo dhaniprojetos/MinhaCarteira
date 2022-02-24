@@ -39,12 +39,16 @@ namespace MinhaCarteira.Teste.Mock.Faker
                 .RuleFor(p => p.Tipo, f => f.PickRandom<TipoMovimento>())
                 .RuleFor(p => p.DataInicial, f => f.Date.Between(dataInicial, dataFinal))
                 .RuleFor(p => p.Descricao, f => f.Random.Words(5))
-                .RuleFor(p => p.Valor, f => f.Random.Decimal())
+                .RuleFor(p => p.Valor, f => f.Random.Decimal(0, 9999))
                 .RuleFor(p => p.IdAuxiliar, f => f.Random.Int(0, 500).OrNull(f, .8f))
                 .RuleFor(p => p.Categoria, _categoriaBuilder.DadosParaInsercao(0))
                 .RuleFor(p => p.CentroClassificacao, _centroClassificacao.DadosParaInsercao())
                 .RuleFor(p => p.Pessoa, f => _pessoaBuilder.DadosParaInsercao())
-                .RuleFor(p => p.ContaBancaria, _contaBancaria.DadosParaInsercao());
+                .RuleFor(p => p.ContaBancaria, _contaBancaria.DadosParaInsercao())
+                .RuleFor(p => p.Tipo, f => f.PickRandom<TipoMovimento>())
+                .RuleFor(p => p.TipoParcelas, f => (TipoParcelas)f.Random.Int(1, 2))
+                .RuleFor(p => p.Parcelas, f => f.Random.Int(1, 20))
+                .RuleFor(p => p.TipoRecorrencia, f => f.PickRandom<TipoRecorrencia>());
 
             return faker;
         }

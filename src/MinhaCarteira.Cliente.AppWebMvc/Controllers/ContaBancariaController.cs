@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
+using MinhaCarteira.Cliente.Recursos.Refit;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -16,7 +17,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         private readonly IServicoBase<InstituicaoFinanceira> _instituicaoFinanceiraServico;
 
         public ContaBancariaController(
-            IServicoBase<ContaBancaria> servico,
+            IContaBancariaServico servico,
             IMapper mapper,
             IServicoBase<InstituicaoFinanceira> instituicaoFinanceiraServico)
             : base(servico, mapper)
@@ -34,7 +35,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<bool> ValidarViewModel(ContaBancariaViewModel conta)
         {
-            if (!string.IsNullOrWhiteSpace(conta.Nome)) 
+            if (!string.IsNullOrWhiteSpace(conta.Nome))
                 return await Task.FromResult(true);
 
             ModelState.AddModelError(
@@ -46,7 +47,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         [HttpPost]
         public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
-{
+        {
             var resp = await _instituicaoFinanceiraServico.Navegar();
 
             var items = resp.Dados
@@ -57,6 +58,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 .ToList();
 
             return Json(items);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AtualizarSaldoConta(string idsContaBancaria)
+        {
+            var resp = await ((IContaBancariaServico)Servico).AtualizarSaldoConta(idsContaBancaria);
+
+            return RedirectToAction(nameof(Index));
         }
 
         #region Métodos sobrescritos apenas manter as views

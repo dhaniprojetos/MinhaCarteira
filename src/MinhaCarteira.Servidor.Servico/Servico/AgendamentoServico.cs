@@ -2,15 +2,28 @@
 using Dates.Recurring.Type;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Controle.Servico.Base;
+using MinhaCarteira.Servidor.Modelo.Repositorio;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class AgendamentoServico : ServicoBase<Agendamento>
+    public class AgendamentoServico : ServicoBase<Agendamento>, IAgendamentoServico
     {
+        private readonly ICrud<MovimentoBancario> _movimentoRepositorio;
+
+        public AgendamentoServico(
+            ICrud<Agendamento> repositorio,
+            ICrud<MovimentoBancario> movimentoRepositorio)
+            : base(repositorio)
+        {
+            _movimentoRepositorio = movimentoRepositorio;
+        }
+
         private RecurrenceType ObterRecorrenciaBuilder(Agendamento agend)
         {
             return agend.TipoRecorrencia switch
@@ -90,13 +103,51 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             return agend;
         }
 
-        public AgendamentoServico(ICrud<Agendamento> repositorio)
-            : base(repositorio) { }
-
         public override async Task<Agendamento> Incluir(Agendamento item)
         {
+            item.TipoRecorrencia = item.TipoParcelas == TipoParcelas.Parcelada
+                ? TipoRecorrencia.Mensal
+                : item.TipoRecorrencia;
+
             item = GerarParcelas(item);
-            return await base.Incluir(item);
+            var itemDb = await base.Incluir(item);
+            item.Items.Clear();
+            return itemDb;
+        }
+
+        public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
+        {
+            var itens = await ((AgendamentoRepositorio)Repositorio)
+                .ContasAVencer(qtdDias);
+
+            return itens;
+        }
+
+        public async Task<AgendamentoItem> ObterParcelaPorId(int id)
+        {
+            var item = await ((AgendamentoRepositorio)Repositorio)
+                .ObterParcelaPorId(id);
+
+            return item;
+        }
+
+        public async Task<AgendamentoItem> BaixarParcela(AgendamentoItem parcela)
+        {
+            var item = await ((AgendamentoRepositorio)Repositorio)
+                .BaixarParcela(parcela);
+
+            return item;
+        }
+
+        public async Task<AgendamentoItem> ConciliarParcela(int id, string idMovimentos)
+        {
+            var movimentoConciliado = await ((MovimentoBancarioRepositorio)_movimentoRepositorio)
+                .ConciliarParcela(id, idMovimentos);
+            
+            var item = await ((AgendamentoRepositorio)Repositorio)
+                .ConciliarParcela(id);
+
+            return null;
         }
     }
 }

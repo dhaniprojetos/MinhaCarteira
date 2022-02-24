@@ -11,7 +11,12 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
             builder.ToTable(nameof(AgendamentoItem));
             builder.HasKey(k => k.Id);
 
+            builder.Property(p => p.EstahPaga).HasDefaultValue(false);
+            builder.Property(p => p.EstahConciliada).HasDefaultValue(false);
             builder.Property(p => p.Valor).HasPrecision(18, 6);
+            builder.Property(p => p.ValorPago).HasPrecision(18, 6);
+            builder.Property(p => p.Data).HasColumnType("datetime2").HasPrecision(0);
+            builder.Property(p => p.DataPagamento).HasColumnType("datetime2").HasPrecision(0);
 
             builder.HasOne(o => o.Agendamento)
                 .WithMany(m => m.Items)

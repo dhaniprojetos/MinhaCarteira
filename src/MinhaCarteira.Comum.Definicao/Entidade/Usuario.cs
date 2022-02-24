@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Comum.Definicao.Entidade
 {

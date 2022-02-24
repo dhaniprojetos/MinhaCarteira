@@ -36,7 +36,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
 
         [DisplayName("Categoria")]
         public int CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        public CategoriaViewModel Categoria { get; set; }
         public IEnumerable<SelectListItem> Categorias { get; set; }
         public string CaminhoCategoria => Categoria != null
             ? Categoria.Caminho
@@ -46,12 +46,13 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public int CentroClassificacaoId { get; set; }
         public CentroClassificacao CentroClassificacao { get; set; }
         public IEnumerable<SelectListItem> CentrosClassificacao { get; set; }
+        [DisplayName("Classificação")]
         public string NomeCentroClassificacao => CentroClassificacao != null
             ? CentroClassificacao.Nome
             : string.Empty;
 
         [DisplayName("Pessoa")]
-        public int? PessoaId { get; set; }
+        public int PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
         public IEnumerable<SelectListItem> Pessoas { get; set; }
         public string NomePessoa => Pessoa != null
@@ -72,8 +73,11 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             var now = DateTime.Now;
             Items = new List<AgendamentoItemViewModel>();
             DataInicial = new DateTime(now.Year, now.Month, now.Day);
-            DataFinal = new DateTime(now.Year, now.Month, now.Day + 5);
+            DataFinal = DataInicial.AddDays(5);
             Tipo = TipoMovimento.Debito;
+            TipoRecorrencia = TipoRecorrencia.Mensal;
+            Parcelas = 1;
+            IntervaloParcelas = 1;
         }
 
         public void AdicionarParcela(DateTime data)
@@ -89,21 +93,5 @@ namespace MinhaCarteira.Cliente.Recursos.Models
 
             Items.Add(parcela);
         }
-    }
-
-    public class AgendamentoItemViewModel
-    {
-        public int Id { get; set; }
-        public int AgendamentoId { get; set; }
-        public AgendamentoViewModel Agendamento { get; set; }
-        public DateTime Data { get; set; }
-        public decimal Valor { get; set; }
-        public bool EstahPaga { get; set; }
-
-        public int? PessoaId { get; set; }
-        public Pessoa Pessoa { get; set; }
-
-        public int? ContaBancariaId { get; set; }
-        public ContaBancaria ContaBancaria { get; set; }
     }
 }

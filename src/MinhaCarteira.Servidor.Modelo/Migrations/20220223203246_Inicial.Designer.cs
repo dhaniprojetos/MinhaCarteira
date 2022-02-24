@@ -10,8 +10,8 @@ using MinhaCarteira.Servidor.Modelo.Data;
 namespace MinhaCarteira.Servidor.Modelo.Migrations
 {
     [DbContext(typeof(MinhaCarteiraContext))]
-    [Migration("20220130194548_Agendamento")]
-    partial class Agendamento
+    [Migration("20220223203246_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,11 +37,17 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.Property<int?>("ContaBancariaId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DataInicial")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<int?>("IdAuxiliar")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Parcelas")
                         .HasColumnType("int");
 
                     b.Property<int?>("PessoaId")
@@ -51,6 +57,12 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoParcelas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoRecorrencia")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
@@ -84,15 +96,31 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
+                        .HasPrecision(0)
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<DateTime?>("DataPagamento")
+                        .HasPrecision(0)
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<bool>("EstahConciliada")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("EstahPaga")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int?>("PessoaId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal?>("ValorPago")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
 
@@ -114,6 +142,9 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Icone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("IdAuxiliar")
                         .HasColumnType("int");
 
@@ -123,6 +154,9 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                     b.Property<string>("Nome")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NomeArquivo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -171,12 +205,23 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("DataSaldoInicial")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("InstituicaoFinanceiraId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("ValorSaldoAtual")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
+
+                    b.Property<decimal>("ValorSaldoInicial")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)");
 
                     b.HasKey("Id");
 

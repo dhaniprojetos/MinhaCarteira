@@ -11,8 +11,8 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
             builder.ToTable(nameof(MovimentoBancario));
             builder.HasKey(k => k.Id);
 
-            builder.Property(p => p.Descricao).HasMaxLength(200);
             builder.Property(p => p.Valor).HasPrecision(18, 6);
+            builder.Property(p => p.Descricao).HasMaxLength(200);
 
             builder.HasOne(o => o.Pessoa)
                 .WithMany()
