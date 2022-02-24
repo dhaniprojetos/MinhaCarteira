@@ -73,7 +73,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             var now = DateTime.Now;
             Items = new List<AgendamentoItemViewModel>();
             DataInicial = new DateTime(now.Year, now.Month, now.Day);
-            DataFinal = new DateTime(now.Year, now.Month, now.Day + 5);
+            DataFinal = DataInicial.AddDays(5);
             Tipo = TipoMovimento.Debito;
             TipoRecorrencia = TipoRecorrencia.Mensal;
             Parcelas = 1;
