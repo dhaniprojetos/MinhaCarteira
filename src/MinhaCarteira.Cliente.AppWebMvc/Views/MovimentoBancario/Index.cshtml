@@ -13,62 +13,73 @@
 <table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
-            <th></th>
-            <th>
+            <th style="width:50px;"></th>
+            <th style="width:10px;"></th>
+            <th style="width:80px;">
                 @Html.DisplayNameFor(model => model.DataMovimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
+            <th class="text-end" style="width:140px;">
+                @Html.DisplayNameFor(model => model.Valor)
             </th>
-            <th>
+            <th style="width: 190px;">
                 @Html.DisplayNameFor(model => model.ContaBancaria)
             </th>
-            <th>Ações</th>
+            <th style="width: 190px;">Ações</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="align-middle">
-                <td>
-                    @if (item.AgendamentoItemId != null)
-                    {
-                        <i class="fa fa-link"></i>
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataMovimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ValorReal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
-                </td>
-                <td style="width: 160px;">
-                    <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
-                        <i class="fa-solid fa-lg fa-pen-to-square"></i>
-                    </a>
-                    <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
-                        <i class="fa-solid fa-lg fa-info-circle"></i>
-                    </a>
-                    <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
-                        <i class="fa-solid fa-lg fa-trash-can"></i>
-                    </a>
-                </td>
-            </tr>
+            var corFont = item.ValorReal > 0
+                ? "text-primary"
+                : item.ValorReal < 0
+                    ? "text-danger"
+                    : "text-secondary";
+
+        <tr class="align-middle">
+            <td class="p-0 ps-2">
+                <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
+                     title="@item.Categoria.Nome"
+                     height="42" width="42"
+                     alt="@item.Categoria.Nome"
+                     asp-append-version="true" />
+            </td>
+            <td class="p-0 ps-2">
+                @if (item.AgendamentoItemId != null)
+                {
+                    <i class="fa fa-link"></i>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataMovimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td class="text-end fw-bold fs-6 @corFont">
+                @Html.DisplayFor(modelItem => item.ValorReal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
+            </td>
+            <td style="width: 160px;">
+                <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-lg fa-pen-to-square"></i>
+                </a>
+                <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-lg fa-info-circle"></i>
+                </a>
+                <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-lg fa-trash-can"></i>
+                </a>
+                <a title="Clonar registro" class="btn btn-outline-info p-0 pt-1 pb-1" style="width: 40px;" asp-action="Clonar" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-lg fa-clone"></i>
+                </a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

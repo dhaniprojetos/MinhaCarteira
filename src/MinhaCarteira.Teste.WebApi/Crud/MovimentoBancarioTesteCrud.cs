@@ -17,7 +17,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     {
         public MovimentoBancarioTesteCrud(
             IBuilder<MovimentoBancario> builder,
-            IServicoCrud<MovimentoBancario> servico,
+            IMovimentoBancarioServico servico,
             ITestOutputHelper output)
             : base(builder, servico, output) { }
 

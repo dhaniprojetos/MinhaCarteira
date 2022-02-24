@@ -12,7 +12,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
     public class MovimentoBancarioController : BaseController<MovimentoBancario>
     {
-        public MovimentoBancarioController(IMovimentoServico servico)
+        public MovimentoBancarioController(IMovimentoBancarioServico servico)
             : base(servico) { }
 
         [HttpGet("obter-movimentos-para-conciliacao")]
@@ -21,7 +21,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             IActionResult resposta;
             try
             {
-                var itens = await ((IMovimentoServico)Servico).ObterMovimentosParaConciliacao();
+                var itens = await ((IMovimentoBancarioServico)Servico).ObterMovimentosParaConciliacao();
                 resposta = itens == null || itens.Count == 0
                     ? NotFound(new Resposta<IList<MovimentoBancario>>(
                         null,

@@ -163,7 +163,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             try
             {
-                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(30);
+                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(90);
                 var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itens);

@@ -23,6 +23,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public string Descricao { get; set; }
         [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
+        [DataType(DataType.Currency)]
         public decimal ValorReal =>
             TipoMovimento == TipoMovimento.Credito
                 ? Valor
@@ -31,7 +32,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         [Range(1, int.MaxValue)]
         [DisplayName("Centro de classificação")]
         public int CentroClassificacaoId { get; set; }
-        public CentroClassificacao CentroClassificacao { get; set; }
+        public CentroClassificacaoViewModel CentroClassificacao { get; set; }
         public IEnumerable<SelectListItem> CentrosClassificacao { get; set; }
         public string NomeCentroClassificacao => CentroClassificacao != null
             ? CentroClassificacao.Nome
@@ -40,7 +41,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         [Range(1, int.MaxValue)]
         [DisplayName("Pessoa")]
         public int? PessoaId { get; set; }
-        public Pessoa Pessoa { get; set; }
+        public PessoaViewModel Pessoa { get; set; }
         public IEnumerable<SelectListItem> Pessoas { get; set; }
         public string NomePessoa => Pessoa != null
             ? Pessoa.Nome
@@ -49,7 +50,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         [Range(1, int.MaxValue)]
         [DisplayName("Categoria")]
         public int CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        public CategoriaViewModel Categoria { get; set; }
         public IEnumerable<SelectListItem> Categorias { get; set; }
         public string CaminhoCategoria => Categoria != null
             ? Categoria.Caminho
@@ -59,7 +60,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         [DisplayName("Conta")]
         public int ContaBancariaId { get; set; }
         [DisplayName("Conta")]
-        public ContaBancaria ContaBancaria { get; set; }
+        public ContaBancariaViewModel ContaBancaria { get; set; }
         public IEnumerable<SelectListItem> ContasBancarias { get; set; }
         public string NomeContaBancaria => ContaBancaria != null
             ? ContaBancaria.Nome

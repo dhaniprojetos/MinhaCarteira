@@ -17,7 +17,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     {
         public ContaBancariaTesteCrud(
             IBuilder<ContaBancaria> builder,
-            IServicoCrud<ContaBancaria> servico,
+            IContaBancariaServico servico,
             ITestOutputHelper output)
             : base(builder, servico, output) { }
 

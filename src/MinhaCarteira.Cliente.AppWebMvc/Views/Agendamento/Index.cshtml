@@ -21,7 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Agendamento.Descricao)
             </th>
-            <th style="width: 100px;">
+            <th class="text-end" style="width: 140px;">
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th style="width: 180px;">
@@ -43,9 +43,12 @@
                 StatusParcela.Conciliada => "table-active",
                 _ => ""
             };
+            var corFont = item.Agendamento.Tipo == MinhaCarteira.Comum.Definicao.Modelo.TipoMovimento.Credito
+                ? "text-primary"
+                : "text-danger";
 
             <tr class="@classLinha align-middle">
-                <td class="p-0 ps-2">
+                <td>
                     <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
                          title="@item.Agendamento.Categoria.Nome"
                          height="42" width="42"
@@ -58,7 +61,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
                 </td>
-                <td>
+                <td class="text-end fw-bold @corFont">
                     @Html.DisplayFor(modelItem => item.ValorPago)
                 </td>
                 <td>

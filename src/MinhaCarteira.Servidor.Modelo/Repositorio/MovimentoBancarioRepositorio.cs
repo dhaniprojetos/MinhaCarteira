@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
     {
         public MovimentoBancarioRepositorio(MinhaCarteiraContext contexto) : base(contexto)
         {
+        }
+
+        protected override IQueryable<MovimentoBancario> AdicionarOrdenacao(IQueryable<MovimentoBancario> source)
+        {
+            return source.OrderByDescending(o => o.DataMovimento).ThenBy(tb => tb.Id);
         }
 
         protected override IQueryable<MovimentoBancario> AdicionarIncludes(IQueryable<MovimentoBancario> source)
@@ -49,7 +55,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
         private async Task<bool> AtualizarSaldoConta(MovimentoBancario movimento)
         {
-            var valor = movimento.ValorReal.ToString();
+            var valor = movimento.ValorReal
+                .ToString(CultureInfo.CreateSpecificCulture("pt-BR"));
             valor = valor.Replace(".", string.Empty).Replace(",", ".");
 
             var cmdSql = @$"
