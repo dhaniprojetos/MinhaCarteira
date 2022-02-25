@@ -74,11 +74,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             try
             {
                 IList<TEntidadeViewModel> itens = await ObterTodos();
-
+                
                 if (!TempData.ContainsKey("RetornoApi")) return View(itens);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
                 ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
-
+                
                 return View(itens);
             }
             catch (Refit.ApiException ex)
@@ -213,8 +213,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             }
             catch (Refit.ApiException ex)
             {
-                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
-                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+                //var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                TempData["RetornoApi"] = ex.Content;
             }
             catch (Exception e)
             {

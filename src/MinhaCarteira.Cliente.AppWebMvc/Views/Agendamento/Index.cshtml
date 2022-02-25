@@ -11,80 +11,83 @@
 <p>
     <a asp-action="Criar">Create New</a>
 </p>
-<table class="table table-hover table-responsive-sm">
-    <thead>
-        <tr>
-            <th style="width: 50px;"></th>
-            <th style="width: 80px;">
-                @Html.DisplayNameFor(model => model.Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Agendamento.Descricao)
-            </th>
-            <th class="text-end" style="width: 140px;">
-                @Html.DisplayNameFor(model => model.Valor)
-            </th>
-            <th style="width: 180px;">
-                @Html.DisplayNameFor(model => model.Agendamento.Categoria.Nome)
-            </th>
-            <th style="width: 100px;">
-                @Html.DisplayNameFor(model => model.Agendamento.NomeCentroClassificacao)
-            </th>
-            <th style="width: 130px;">Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            var classLinha = item.StatusParcela switch
-            {
-                StatusParcela.Paga => "table-info",
-                StatusParcela.Vencida => "table-warning",
-                StatusParcela.Conciliada => "table-active",
-                _ => ""
-            };
-            var corFont = item.Agendamento.Tipo == MinhaCarteira.Comum.Definicao.Modelo.TipoMovimento.Credito
-                ? "text-primary"
-                : "text-danger";
 
-            <tr class="@classLinha align-middle">
-                <td>
-                    <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
-                         title="@item.Agendamento.Categoria.Nome"
-                         height="42" width="42"
-                         alt="@item.Agendamento.Categoria.Nome"
-                         asp-append-version="true" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataPagamento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
-                </td>
-                <td class="text-end fw-bold @corFont">
-                    @Html.DisplayFor(modelItem => item.ValorPago)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomePessoa)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Agendamento.NomeCentroClassificacao)
-                </td>
-                <td>
-                    @if (item.StatusParcela == StatusParcela.Paga)
-                    {
-                        <a class="btn btn-success" asp-action="ConciliarParcela" asp-route-id="@item.Id">
-                            <i class="fa fa-link"></i> Conciliar
-                        </a>
-                    }
-                    else if (item.StatusParcela != StatusParcela.Conciliada)
-                    {
-                        <a class="btn btn-primary" asp-action="PagarParcela" asp-route-id="@item.Id">
-                            <i class="fa fa-check-circle"></i> Pagar
-                        </a>
-                    }
-                </td>
+<div class="table-responsive-sm">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 80px;">
+                    @Html.DisplayNameFor(model => model.Data)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Agendamento.Descricao)
+                </th>
+                <th class="text-end" style="width: 140px;">
+                    @Html.DisplayNameFor(model => model.Valor)
+                </th>
+                <th style="width: 180px;">
+                    @Html.DisplayNameFor(model => model.Agendamento.Categoria.Nome)
+                </th>
+                <th style="width: 100px;">
+                    @Html.DisplayNameFor(model => model.Agendamento.NomeCentroClassificacao)
+                </th>
+                <th style="width: 130px;">Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var classLinha = item.StatusParcela switch
+                {
+                    StatusParcela.Paga => "table-info",
+                    StatusParcela.Vencida => "table-warning",
+                    StatusParcela.Conciliada => "table-active",
+                    _ => ""
+                };
+                var corFont = item.Agendamento.Tipo == MinhaCarteira.Comum.Definicao.Modelo.TipoMovimento.Credito
+                    ? "text-primary"
+                    : "text-danger";
+
+                <tr class="@classLinha align-middle">
+                    <td>
+                        <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
+                             title="@item.Agendamento.Categoria.Nome"
+                             height="42" width="42"
+                             alt="@item.Agendamento.Categoria.Nome"
+                             asp-append-version="true" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataPagamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
+                    </td>
+                    <td class="text-end fw-bold @corFont">
+                        @Html.DisplayFor(modelItem => item.ValorPago)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomePessoa)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Agendamento.NomeCentroClassificacao)
+                    </td>
+                    <td>
+                        @if (item.StatusParcela == StatusParcela.Paga)
+                        {
+                            <a class="btn btn-success" asp-action="ConciliarParcela" asp-route-id="@item.Id">
+                                <i class="fa fa-link"></i> Conciliar
+                            </a>
+                        }
+                        else if (item.StatusParcela != StatusParcela.Conciliada)
+                        {
+                            <a class="btn btn-primary" asp-action="PagarParcela" asp-route-id="@item.Id">
+                                <i class="fa fa-check-circle"></i> Pagar
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

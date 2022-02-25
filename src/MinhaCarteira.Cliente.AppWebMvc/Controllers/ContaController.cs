@@ -8,6 +8,10 @@ using AutoMapper;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using Microsoft.AspNetCore.Http;
+using System;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -34,7 +38,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(conta);
+
+            try
             {
                 var itemMap = _mapper.Map<Usuario>(conta);
                 var resposta = await _servico.Logar(itemMap);
@@ -49,19 +56,36 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await Request.HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme, 
+                    CookieAuthenticationDefaults.AuthenticationScheme,
                     claimsPrincipal);
 
                 Response.Cookies.Append("Bearer", userDb.TokenAcesso);
-                
+
                 return Url.IsLocalUrl(returnUrl)
                     ? Redirect(returnUrl)
                     : RedirectToAction("Index", "Home");
             }
+            catch (Refit.ApiException ex)
+            {
+                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (!TempData.ContainsKey("RetornoApi"))
+                    ViewBag.RetornoApi = retornoApi;
+                else
+                {
+                    var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                    ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+                }
 
-            // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            return View(conta);
+                return View(new UsuarioViewModel());
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                ViewBag.RetornoApi = retornoApi;
+
+                return View(new UsuarioViewModel());
+            }
+
         }
 
         public async Task<IActionResult> Sair()

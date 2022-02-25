@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -61,17 +64,30 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AtualizarSaldoConta(string idsContaBancaria)
+        public async Task<IActionResult> AtualizarSaldoConta(string id)
         {
-            var resp = await ((IContaBancariaServico)Servico).AtualizarSaldoConta(idsContaBancaria);
-
+            try
+            {
+                var resp = await ((IContaBancariaServico)Servico).AtualizarSaldoConta(id);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(resp);
+            }
+            catch (Refit.ApiException ex)
+            {
+                TempData["RetornoApi"] = ex.Content;
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override async Task<IActionResult> Index()
         {
-            return base.Index();
+            return await base.Index();
         }
 
         public override async Task<IActionResult> Criar()

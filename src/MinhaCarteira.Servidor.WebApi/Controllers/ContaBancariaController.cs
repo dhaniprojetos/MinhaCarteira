@@ -17,7 +17,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
 
         [HttpPost]
         [Route("atualizar-saldo-conta")]
-        public async Task<IActionResult> AtualizarSaldoConta(string idsContaBancaria = null)
+        public async Task<IActionResult> AtualizarSaldoConta(string idsContaBancaria)
         {
             IActionResult resposta;
             try
@@ -29,7 +29,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
                         "Não foi possível atualizar o saldo da conta."))
                     : Ok(new Resposta<bool>(
                         bemSucedido,
-                        "Saldos atualizados com sucesso."));
+                        $"Saldos da conta {idsContaBancaria} atualizados com sucesso."));
             }
             catch (Exception e)
             {

@@ -22,7 +22,11 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
         {
             var objResult = (ObjectResult)resposta;
             if (objResult != null && objResult.Value is IRespostaServico resp)
+            {
                 resp.StatusCode = objResult.StatusCode;
+                if (resp.StatusCode >= 400 && resp.Mensagem != "Nenhum registro localizado.")
+                    resp.BemSucedido = false;
+            }
         }
 
         protected IServicoCrud<TEntidade> Servico { get; }
@@ -92,10 +96,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                             "Itens cadastrados com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar cadastrar os itens enviados.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar cadastrar os itens enviados."));
             }
             catch (Exception e)
             {
@@ -120,10 +121,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         "Itens alterados com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar alterar os itens enviados.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar alterar os itens enviados."));
             }
             catch (Exception e)
             {
@@ -150,10 +148,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                             "Item cadastrado com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar cadastrar o item enviado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar cadastrar o item enviado."));
             }
             catch (Exception e)
             {
@@ -178,10 +173,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         "Item alterado com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar alterar o item enviado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar alterar o item enviado."));
 
                 return resposta;
             }
@@ -211,10 +203,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         $"{linhasAfetadas} {msg} com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar remover o item enviado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar remover o item enviado."));
             }
             catch (Exception e)
             {

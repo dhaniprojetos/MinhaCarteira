@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -133,11 +134,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
         }
 
-
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override async Task<IActionResult> Index()
         {
-            return base.Index();
+            return await base.Index();
         }
 
         public override async Task<IActionResult> Detalhes(int id)
