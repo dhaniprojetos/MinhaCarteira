@@ -7,6 +7,7 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -14,7 +15,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         BaseController<InstituicaoFinanceira, InstituicaoFinanceiraViewModel>
     {
         public InstituicaoFinanceiraController(
-            IServicoBase<InstituicaoFinanceira> servico,
+            IServicoBase<InstituicaoFinanceira, ICriterio<InstituicaoFinanceira>> servico,
             IMapper mapper)
             : base(servico, mapper) { }
 

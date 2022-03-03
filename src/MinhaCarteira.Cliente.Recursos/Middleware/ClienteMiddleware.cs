@@ -5,6 +5,8 @@ using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Handler;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using Refit;
 
 namespace MinhaCarteira.Cliente.Recursos.Middleware
@@ -16,9 +18,11 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
         {
             if (baseUrlApi.EndsWith('/'))
                 baseUrlApi = baseUrlApi.Remove(baseUrlApi.Length - 1, 1);
-            
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<AuthorizationMessageHandler>();
+
+            services.AddTransient(typeof(ICriterio<>), typeof(FiltroBase<>));
 
             services
                 .AddRefitClient<IContaServico>()
@@ -26,13 +30,13 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
                     c.BaseAddress = new Uri(baseUrlApi + "/conta"));
 
             services
-                .AddRefitClient<IServicoBase<Pessoa>>()
+                .AddRefitClient<IServicoBase<Pessoa, ICriterio<Pessoa>>>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                         c.BaseAddress = new Uri(baseUrlApi + "/pessoa"));
 
             services
-                .AddRefitClient<IServicoBase<InstituicaoFinanceira>>()
+                .AddRefitClient<IServicoBase<InstituicaoFinanceira, ICriterio<InstituicaoFinanceira>>>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/instituicaofinanceira"));
@@ -44,13 +48,13 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
                     c.BaseAddress = new Uri(baseUrlApi + "/contabancaria"));
 
             services
-                .AddRefitClient<IServicoBase<Categoria>>()
+                .AddRefitClient<IServicoBase<Categoria, ICriterio<Categoria>>>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/categoria"));
 
             services
-                .AddRefitClient<IServicoBase<CentroClassificacao>>()
+                .AddRefitClient<IServicoBase<CentroClassificacao, ICriterio<CentroClassificacao>>>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/centroclassificacao"));

@@ -5,12 +5,13 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class PessoaController : BaseController<Pessoa, PessoaViewModel>
     {
-        public PessoaController(IServicoBase<Pessoa> servico, IMapper mapper)
+        public PessoaController(IServicoBase<Pessoa, ICriterio<Pessoa>> servico, IMapper mapper)
             : base(servico, mapper) { }
 
         protected override async Task<PessoaViewModel> InicializarViewModel(PessoaViewModel viewModel)

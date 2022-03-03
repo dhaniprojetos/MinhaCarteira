@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico.Base
 {
-    public class ServicoBase<TEntidade> : IServicoCrud<TEntidade>
+    public class ServicoBase<TEntidade> : IServicoCrud<TEntidade, TCriterio<TEntidade>>
         where TEntidade : class, IEntidade
+        where TCriterio: ICriterio<TEntidade>
     {
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
