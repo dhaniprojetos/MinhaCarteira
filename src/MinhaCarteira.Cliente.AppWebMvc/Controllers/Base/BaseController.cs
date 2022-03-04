@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
@@ -19,10 +18,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
     {
         private readonly IMapper _mapper;
         protected IMapper Mapper => _mapper;
-        private readonly IServicoBase<TEntidade, ICriterio<TEntidade>> _servico;
-        protected IServicoBase<TEntidade, ICriterio<TEntidade>> Servico => _servico;
+        private readonly IServicoBase<TEntidade> _servico;
+        protected IServicoBase<TEntidade> Servico => _servico;
 
-        public BaseController(IServicoBase<TEntidade, ICriterio<TEntidade>> servico, IMapper mapper)
+        public BaseController(IServicoBase<TEntidade> servico, IMapper mapper)
         {
             _mapper = mapper;
             _servico = servico;
@@ -47,9 +46,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 return null;
             }
         }
-        protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos(ICriterio<TEntidade> criterio = null)
+        protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos()
         {
-            var resposta = await _servico.Navegar(criterio);
+            var resposta = await _servico.Navegar(null);
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
             return itens;
         }

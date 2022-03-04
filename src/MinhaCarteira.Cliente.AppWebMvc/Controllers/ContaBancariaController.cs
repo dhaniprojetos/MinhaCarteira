@@ -10,19 +10,18 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class ContaBancariaController
         : BaseController<ContaBancaria, ContaBancariaViewModel>
     {
-        private readonly IServicoBase<InstituicaoFinanceira, ICriterio<InstituicaoFinanceira>> _instituicaoFinanceiraServico;
+        private readonly IServicoBase<InstituicaoFinanceira> _instituicaoFinanceiraServico;
 
         public ContaBancariaController(
             IContaBancariaServico servico,
             IMapper mapper,
-            IServicoBase<InstituicaoFinanceira, ICriterio<InstituicaoFinanceira>> instituicaoFinanceiraServico)
+            IServicoBase<InstituicaoFinanceira> instituicaoFinanceiraServico)
             : base(servico, mapper)
         {
             _instituicaoFinanceiraServico = instituicaoFinanceiraServico;
