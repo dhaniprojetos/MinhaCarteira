@@ -9,6 +9,7 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Filtro;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
@@ -19,10 +20,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
     {
         private readonly IMapper _mapper;
         protected IMapper Mapper => _mapper;
-        private readonly IServicoBase<TEntidade, ICriterio<TEntidade>> _servico;
-        protected IServicoBase<TEntidade, ICriterio<TEntidade>> Servico => _servico;
+        private readonly IServicoBase<TEntidade> _servico;
+        protected IServicoBase<TEntidade> Servico => _servico;
 
-        public BaseController(IServicoBase<TEntidade, ICriterio<TEntidade>> servico, IMapper mapper)
+        public BaseController(IServicoBase<TEntidade> servico, IMapper mapper)
         {
             _mapper = mapper;
             _servico = servico;
@@ -47,7 +48,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 return null;
             }
         }
-        protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos(ICriterio<TEntidade> criterio = null)
+        protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos(FiltroBase<TEntidade> criterio)
         {
             var resposta = await _servico.Navegar(criterio);
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
@@ -74,7 +75,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         {
             try
             {
-                IList<TEntidadeViewModel> itens = await ObterTodos();
+                IList<TEntidadeViewModel> itens = await ObterTodos(new FiltroBase<TEntidade>());
                 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itens);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;

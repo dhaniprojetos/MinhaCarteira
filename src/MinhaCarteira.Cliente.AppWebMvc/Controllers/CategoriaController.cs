@@ -9,29 +9,28 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Filtro;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class CategoriaController : BaseController<Categoria, CategoriaViewModel>
     {
-        private readonly IServicoBase<Categoria, ICriterio<Categoria>> _categoriaServico;
+        private readonly IServicoBase<Categoria> _categoriaServico;
 
         public CategoriaController(
-            IServicoBase<Categoria, ICriterio<Categoria>> servico,
-            IMapper mapper, IServicoBase<Categoria, ICriterio<Categoria>> categoriaServico)
-: base(servico, mapper)
-{
-_categoriaServico = categoriaServico;
+            IServicoBase<Categoria> servico,
+            IMapper mapper, IServicoBase<Categoria> categoriaServico)
+            : base(servico, mapper)
+        {
+            _categoriaServico = categoriaServico;
         }
 
-        protected override async Task<IList<CategoriaViewModel>> ObterTodos(ICriterio<Categoria> criterio)
+        protected override async Task<IList<CategoriaViewModel>> ObterTodos(FiltroBase<Categoria> criterio)
         {
             var resposta = await Servico.Navegar(criterio);
             var itens = Mapper.Map<List<CategoriaViewModel>>(
                 resposta.Dados);
-        
+
             return itens?.OrderBy(o => o.Caminho).ToList();
         }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
@@ -56,7 +55,7 @@ _categoriaServico = categoriaServico;
                 model.NomeArquivo = viewModel.IconeForm.FileName;
             }
 
-            if (viewModel.Id == 0) 
+            if (viewModel.Id == 0)
                 return await base.ExecutarAntesSalvar(viewModel, model);
 
             var itemDb = await ObterPorId(viewModel.Id);
