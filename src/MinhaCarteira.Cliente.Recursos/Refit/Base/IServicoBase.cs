@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Refit;
@@ -11,7 +12,7 @@ namespace MinhaCarteira.Cliente.Recursos.Refit.Base
         where TEntidade : IEntidade
     {
         [Get("")]
-        Task<Resposta<IList<TEntidade>>> Navegar();
+        Task<Resposta<IList<TEntidade>>> Navegar([Body] FiltroBase<TEntidade> criterio);
 
         [Get("/{id}")]
         Task<Resposta<TEntidade>> ObterPorId(int id);

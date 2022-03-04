@@ -26,7 +26,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<IList<CategoriaViewModel>> ObterTodos()
         {
-            var resposta = await Servico.Navegar();
+            var resposta = await Servico.Navegar(null);
             var itens = Mapper.Map<List<CategoriaViewModel>>(
                 resposta.Dados);
         
@@ -34,7 +34,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
             viewModel.AdicionarCategorias(resp.Dados);
 
             return await Task.FromResult(viewModel);
@@ -67,7 +67,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterCategorias(string prefix)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Caminho, val = s.Id })

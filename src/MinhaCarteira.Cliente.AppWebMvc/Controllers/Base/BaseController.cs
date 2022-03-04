@@ -48,7 +48,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         }
         protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos()
         {
-            var resposta = await _servico.Navegar();
+            var resposta = await _servico.Navegar(null);
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
             return itens;
         }
