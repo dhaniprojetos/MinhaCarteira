@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -37,16 +36,16 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<MovimentoBancarioViewModel> InicializarViewModel(MovimentoBancarioViewModel viewModel)
         {
-            var respPessoa = await _pessoaServico.Navegar();
+            var respPessoa = await _pessoaServico.Navegar(null);
             viewModel.AdicionarPessoas(respPessoa.Dados);
 
-            var respCentros = await _centroClassificacaoServico.Navegar();
+            var respCentros = await _centroClassificacaoServico.Navegar(null);
             viewModel.AdicionarCentrosClassificacao(respCentros.Dados);
 
-            var respCategorias = await _categoriaServico.Navegar();
+            var respCategorias = await _categoriaServico.Navegar(null);
             viewModel.AdicionarCategorias(respCategorias.Dados);
 
-            var respContas = await _contaBancariaServico.Navegar();
+            var respContas = await _contaBancariaServico.Navegar(null);
             viewModel.AdicionarContasBancarias(respContas.Dados);
 
             return await Task.FromResult(viewModel);
@@ -60,7 +59,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterContaBancaria(string prefix)
         {
-            var resp = await _contaBancariaServico.Navegar();
+            var resp = await _contaBancariaServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
@@ -75,7 +74,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterCategoria(string prefix)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Caminho, val = s.Id })
@@ -90,7 +89,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterPessoa(string prefix)
         {
-            var resp = await _pessoaServico.Navegar();
+            var resp = await _pessoaServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
@@ -105,7 +104,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterCentroClassificacao(string prefix)
         {
-            var resp = await _centroClassificacaoServico.Navegar();
+            var resp = await _centroClassificacaoServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
