@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
@@ -34,14 +32,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
         protected IServicoCrud<TEntidade> Servico { get; }
 
         [HttpGet]
-        public async Task<IActionResult> Navegar([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)]  FiltroBase<TEntidade> criterio)
+        public async Task<IActionResult> Navegar()
         {
             IActionResult resposta;
             try
             {
-                criterio ??= new FiltroBase<TEntidade>();
-
-                var itens = await Servico.Navegar(criterio);
+                var itens = await Servico.Navegar(null);
                 resposta = itens == null || itens.Count == 0
                     ? NotFound(new Resposta<IList<TEntidade>>(
                         null,

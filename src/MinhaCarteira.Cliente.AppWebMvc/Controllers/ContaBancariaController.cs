@@ -10,6 +10,7 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -29,7 +30,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<ContaBancariaViewModel> InicializarViewModel(ContaBancariaViewModel viewModel)
         {
-            var resp = await _instituicaoFinanceiraServico.Navegar(null);
+            var resp = await _instituicaoFinanceiraServico.Navegar();
             viewModel.AdicionarInstituicoesFinanceiras(resp.Dados);
 
             return viewModel;
@@ -50,7 +51,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
         {
-            var resp = await _instituicaoFinanceiraServico.Navegar(null);
+            var resp = await _instituicaoFinanceiraServico.Navegar();
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })

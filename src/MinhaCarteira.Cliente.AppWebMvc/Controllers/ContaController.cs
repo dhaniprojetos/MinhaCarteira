@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
