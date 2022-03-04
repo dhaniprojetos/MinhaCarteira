@@ -9,26 +9,23 @@ using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class MovimentoBancarioController : BaseController<MovimentoBancario, MovimentoBancarioViewModel>
     {
-        private readonly IServicoBase<Pessoa, ICriterio<Pessoa>> _pessoaServico;
-        private readonly IServicoBase<CentroClassificacao, ICriterio<CentroClassificacao>> _centroClassificacaoServico;
-        private readonly IServicoBase<Categoria, ICriterio<Categoria>> _categoriaServico;
+        private readonly IServicoBase<Pessoa> _pessoaServico;
+        private readonly IServicoBase<CentroClassificacao> _centroClassificacaoServico;
+        private readonly IServicoBase<Categoria> _categoriaServico;
         private readonly IContaBancariaServico _contaBancariaServico;
 
         public MovimentoBancarioController(
             IMovimentoServico servico,
             IMapper mapper,
-            IServicoBase<Pessoa, ICriterio<Pessoa>> pessoaServico,
-            IServicoBase<CentroClassificacao, ICriterio<CentroClassificacao>> centroClassificacaoServico,
-            IServicoBase<Categoria, ICriterio<Categoria>> categoriaServico,
+            IServicoBase<Pessoa> pessoaServico,
+            IServicoBase<CentroClassificacao> centroClassificacaoServico,
+            IServicoBase<Categoria> categoriaServico,
             IContaBancariaServico contaBancariaServico)
             : base(servico, mapper)
         {
@@ -137,45 +134,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index(string id)
-        {
-            try
-            {
-                var idConta = int.Parse(id ?? "1");
-                var retornoApi = await _contaBancariaServico.Navegar(null);
-                var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
-                
-                var filtroMovimento = new FiltroMovimentoBancario();
-                filtroMovimento.AdicionarFiltro(new KeyValuePair<string, string>("ContaBancariaId", idConta.ToString()));
-
-                var retornoMovimentos = await Servico.Navegar(filtroMovimento);
-                var movimentos = Mapper.Map<IList<MovimentoBancarioViewModel>>(retornoMovimentos.Dados);
-
-                var item = new ListaMovimentoBancarioViewModel()
-                {
-                    Contas = contas,
-                    Movimentos = movimentos
-                        .Where(w => w.ContaBancariaId == idConta)
-                        .ToList()
-                };
-
-                return View(item);
-            }
-            catch (Exception e)
-            {
-                var retornoApi = new Resposta<Exception>(e, e.Message);
-                ViewBag.RetornoApi = retornoApi;
-
-                return View(new ListaMovimentoBancarioViewModel());
-            }
-        }
-
         #region Métodos sobrescritos apenas manter as views
-        //public override async Task<IActionResult> Index()
-        //{
-        //    return await base.Index();
-        //}
+        public override async Task<IActionResult> Index()
+        {
+            return await base.Index();
+        }
 
         public override async Task<IActionResult> Detalhes(int id)
         {

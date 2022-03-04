@@ -2,8 +2,8 @@
 
 namespace MinhaCarteira.Comum.Definicao.Interface.Servico
 {
-    public interface IServicoCrud<TEntidade, TCriterio> : ICrud<TEntidade, ICriterio<TEntidade>>
+    public interface IServicoCrud<TEntidade> : ICrud<TEntidade>
     {
-        ICrud<TEntidade, TCriterio> Repositorio { get; }
+        ICrud<TEntidade> Repositorio { get; }
     }
 }

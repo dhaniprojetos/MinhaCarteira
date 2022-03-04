@@ -9,8 +9,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -158,9 +156,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
 
             return Json(new { redirectToUrl = Url.Action("Index", "Agendamento") });
-}
+        }
 
-#region Métodos sobrescritos apenas manter as views
+        #region Métodos sobrescritos apenas manter as views
         public override async Task<IActionResult> Index()
         {
             try

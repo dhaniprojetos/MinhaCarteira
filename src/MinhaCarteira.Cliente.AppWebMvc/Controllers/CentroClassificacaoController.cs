@@ -5,13 +5,12 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class CentroClassificacaoController : BaseController<CentroClassificacao, CentroClassificacaoViewModel>
     {
-        public CentroClassificacaoController(IServicoBase<CentroClassificacao, ICriterio<CentroClassificacao>> servico, IMapper mapper) : base(servico, mapper)
+        public CentroClassificacaoController(IServicoBase<CentroClassificacao> servico, IMapper mapper) : base(servico, mapper)
         {
         }
 

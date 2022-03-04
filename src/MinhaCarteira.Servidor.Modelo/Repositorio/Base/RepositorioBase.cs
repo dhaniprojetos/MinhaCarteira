@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
 {
-    public abstract class RepositorioBase<TEntidade> : ICrud<TEntidade, ICriterio<TEntidade>>
+    public abstract class RepositorioBase<TEntidade> : ICrud<TEntidade>
         where TEntidade : class, IEntidade
     {
         protected virtual IQueryable<TEntidade> AdicionarIncludes(
