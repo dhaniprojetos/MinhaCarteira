@@ -9,24 +9,26 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class CategoriaController : BaseController<Categoria, CategoriaViewModel>
     {
-        private readonly IServicoBase<Categoria> _categoriaServico;
+        private readonly IServicoBase<Categoria, ICriterio<Categoria>> _categoriaServico;
 
         public CategoriaController(
-            IServicoBase<Categoria> servico,
-            IMapper mapper, IServicoBase<Categoria> categoriaServico)
-            : base(servico, mapper)
-        {
-            _categoriaServico = categoriaServico;
+            IServicoBase<Categoria, ICriterio<Categoria>> servico,
+            IMapper mapper, IServicoBase<Categoria, ICriterio<Categoria>> categoriaServico)
+: base(servico, mapper)
+{
+_categoriaServico = categoriaServico;
         }
 
-        protected override async Task<IList<CategoriaViewModel>> ObterTodos()
+        protected override async Task<IList<CategoriaViewModel>> ObterTodos(ICriterio<Categoria> criterio)
         {
-            var resposta = await Servico.Navegar();
+            var resposta = await Servico.Navegar(criterio);
             var itens = Mapper.Map<List<CategoriaViewModel>>(
                 resposta.Dados);
         
@@ -34,7 +36,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
             viewModel.AdicionarCategorias(resp.Dados);
 
             return await Task.FromResult(viewModel);
@@ -67,7 +69,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterCategorias(string prefix)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Caminho, val = s.Id })

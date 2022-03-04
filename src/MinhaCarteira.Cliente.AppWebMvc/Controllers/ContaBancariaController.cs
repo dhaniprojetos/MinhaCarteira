@@ -10,19 +10,19 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class ContaBancariaController
         : BaseController<ContaBancaria, ContaBancariaViewModel>
     {
-        private readonly IServicoBase<InstituicaoFinanceira> _instituicaoFinanceiraServico;
+        private readonly IServicoBase<InstituicaoFinanceira, ICriterio<InstituicaoFinanceira>> _instituicaoFinanceiraServico;
 
         public ContaBancariaController(
             IContaBancariaServico servico,
             IMapper mapper,
-            IServicoBase<InstituicaoFinanceira> instituicaoFinanceiraServico)
+            IServicoBase<InstituicaoFinanceira, ICriterio<InstituicaoFinanceira>> instituicaoFinanceiraServico)
             : base(servico, mapper)
         {
             _instituicaoFinanceiraServico = instituicaoFinanceiraServico;
@@ -30,7 +30,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<ContaBancariaViewModel> InicializarViewModel(ContaBancariaViewModel viewModel)
         {
-            var resp = await _instituicaoFinanceiraServico.Navegar();
+            var resp = await _instituicaoFinanceiraServico.Navegar(null);
             viewModel.AdicionarInstituicoesFinanceiras(resp.Dados);
 
             return viewModel;
@@ -51,7 +51,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
         {
-            var resp = await _instituicaoFinanceiraServico.Navegar();
+            var resp = await _instituicaoFinanceiraServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
