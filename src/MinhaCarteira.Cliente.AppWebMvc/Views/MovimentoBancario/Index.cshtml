@@ -2,13 +2,16 @@
 
 @{
     ViewData["Title"] = "Index";
+    var id = ViewContext.RouteData.Values["id"] ?? "1";
 }
 
 <h1>Index</h1>
-@{await Html.RenderPartialAsync("_PartialAlertas");}
+@{
+    await Html.RenderPartialAsync("_PartialAlertas");
+}
 
 <p>
-    <a asp-action="Criar">Create New</a>
+    <a asp-action="Criar" asp-route-idContaBancaria="@id">Create New</a>
 </p>
 
 <div class="row">
@@ -27,9 +30,8 @@
         <ul class="nav nav-pills flex-column collapse show" id="sidebarSupportedContent">
             @foreach (var contaBancaria in Model.Contas)
             {
-                var id = ViewContext.RouteData.Values["id"] ?? "1";
                 var classe = contaBancaria.Id.ToString() == id?.ToString()
-                    ? "active" : "";
+                ? "active" : "";
 
                 <li class="nav-item">
                     <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link @classe">
@@ -65,18 +67,18 @@
                 @foreach (var item in Model.Movimentos)
                 {
                     var corFont = item.ValorReal > 0
-                        ? "text-primary"
-                        : item.ValorReal < 0
-                            ? "text-danger"
-                            : "text-secondary";
+                    ? "text-primary"
+                    : item.ValorReal < 0
+                    ? "text-danger"
+                    : "text-secondary";
 
                     <tr class="align-middle">
                         <td class="p-0 ps-2">
                             <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
-                                 title="@item.Categoria.Nome"
-                                 height="42" width="42"
-                                 alt="@item.Categoria.Nome"
-                                 asp-append-version="true" />
+                             title="@item.Categoria.Nome"
+                             height="42" width="42"
+                             alt="@item.Categoria.Nome"
+                             asp-append-version="true" />
                         </td>
                         <td class="p-0 ps-2">
                             @if (item.AgendamentoItemId != null)

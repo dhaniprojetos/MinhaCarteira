@@ -56,5 +56,5 @@
 </div>
 <div>
     @Html.ActionLink("Alterar", "Alterar", new { id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@Model.ContaBancariaId">Back to List</a>
 </div>

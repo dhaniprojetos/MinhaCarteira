@@ -198,12 +198,55 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
         }
 
-        #region Métodos sobrescritos apenas manter as views
-        //public override async Task<IActionResult> Index()
-        //{
-        //    return await base.Index();
-        //}
+        //[Route("criar")]
+        [HttpGet]
+        public async Task<IActionResult> Criar(string idContaBancaria)
+        {
+            var idConta = int.Parse(idContaBancaria ?? "1");
+            var retornoApi = await _contaBancariaServico.ObterPorId(idConta);
+            var conta = Mapper.Map<ContaBancariaViewModel>(retornoApi.Dados);
 
+            var item = await InicializarViewModel(new MovimentoBancarioViewModel());
+            item.ContaBancaria = conta;
+            item.ContaBancariaId = conta.Id;
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public override async Task<IActionResult> Criar(MovimentoBancarioViewModel item)
+        {
+            var retorno = await base.Criar(item);
+
+            if (retorno is RedirectToActionResult)
+                return RedirectToAction(nameof(Index), new { id = item.ContaBancariaId });
+
+            return retorno;
+        }
+
+        [HttpPost]
+        public async override Task<IActionResult> Alterar(MovimentoBancarioViewModel item)
+        {
+            var retorno = await base.Alterar(item);
+
+            if (retorno is RedirectToActionResult)
+                return RedirectToAction(nameof(Index), new { id = item.ContaBancariaId });
+
+            return retorno;
+        }
+
+        [HttpPost]
+        public async override Task<IActionResult> Deletar(MovimentoBancarioViewModel item)
+        {
+            var retorno = await base.Deletar(item);
+
+            if (retorno is RedirectToActionResult)
+                return RedirectToAction(nameof(Index), new { id = item.ContaBancariaId });
+
+            return retorno;
+        }
+
+        #region Métodos sobrescritos apenas manter as views
         public override async Task<IActionResult> Detalhes(int id)
         {
             return await base.Detalhes(id);
