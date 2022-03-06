@@ -16,6 +16,8 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
     public abstract class RepositorioBase<TEntidade> : ICrud<TEntidade>
         where TEntidade : class, IEntidade
     {
+        public int TotalRegistros { get; set; }
+
         protected Expression<Func<TEntidade, bool>> SimpleComparison(IList<FiltroOpcao> queryFilterObjects)
         {
             //initialize the body expression
@@ -251,9 +253,15 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             if (criterio != null && criterio.OpcoesFiltro.Any())
                 tab = AdicionarFiltro(tab, criterio.OpcoesFiltro);
 
+            TotalRegistros = await tab.CountAsync();
+
             tab = AdicionarOrdenacao(tab);
 
-            var itens = await tab.ToListAsync();
+            var itens = await tab
+                .Skip((criterio.Pagina - 1) * criterio.ItensPorPagina)
+                .Take(criterio.ItensPorPagina)
+                .ToListAsync();
+
             return itens;
         }
 

@@ -43,7 +43,10 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
         
         [JsonProperty(Order = 2)]
         public string MensagemErro { get; set; }
-        
+
+        [JsonProperty(Order = 3)]
+        public int TotalRegistros { get; set; }
+
         [JsonProperty(Order = 99)]
         public T Dados { get; set; }
     }

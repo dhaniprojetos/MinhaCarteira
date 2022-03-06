@@ -26,7 +26,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         [Range(1, int.MaxValue)]
         [Display(Name = "Instituição Financeira")]
         public int InstituicaoFinanceiraId { get; set; }
-        public InstituicaoFinanceira InstituicaoFinanceira { get; set; }
+        public InstituicaoFinanceiraViewModel InstituicaoFinanceira { get; set; }
         public string InstituicaoFinanceiraNome => InstituicaoFinanceira?.Nome;
 
         public IEnumerable<SelectListItem> InstituicoesBancaria { get; set; }

@@ -43,13 +43,18 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                 criterio ??= new FiltroBase<TEntidade>();
 
                 var itens = await Servico.Navegar(criterio);
+
+
                 resposta = itens == null || itens.Count == 0
                     ? NotFound(new Resposta<IList<TEntidade>>(
                         null,
                         "Nenhum registro localizado."))
                     : Ok(new Resposta<IList<TEntidade>>(
                         itens,
-                        "Itens localizados com sucesso."));
+                        "Itens localizados com sucesso.")
+                    {
+                        TotalRegistros = Servico.TotalRegistros
+                    });
             }
             catch (Exception e)
             {

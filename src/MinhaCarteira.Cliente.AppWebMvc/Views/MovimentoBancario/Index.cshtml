@@ -30,12 +30,28 @@
         <ul class="nav nav-pills flex-column collapse show" id="sidebarSupportedContent">
             @foreach (var contaBancaria in Model.Contas)
             {
+                var corFont = contaBancaria.Id.ToString() == id?.ToString()
+                ? "text-light"
+                : contaBancaria.ValorSaldoAtual > 0
+                ? "text-primary"
+                : contaBancaria.ValorSaldoAtual < 0
+                ? "text-danger"
+                : "text-secondary";
+
                 var classe = contaBancaria.Id.ToString() == id?.ToString()
                 ? "active" : "";
 
                 <li class="nav-item">
-                    <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link @classe">
-                        @contaBancaria.Nome
+                    <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark @classe">
+                        @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
+                        {
+                            <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
+                         height="32" width="32" asp-append-version="true" class="float-start align-middle mt-2 me-2" />
+                        }
+                        <div>
+                            <span>@contaBancaria.Nome</span><br />
+                            <small class="@corFont text-end">@Html.DisplayFor(modelItem => contaBancaria.ValorSaldoAtual)</small>
+                        </div>
                     </a>
                 </li>
             }
@@ -48,17 +64,14 @@
                 <tr>
                     <th style="width:50px;"></th>
                     <th style="width:10px;"></th>
-                    <th style="width:80px;">
+                    <th class="text-end" style="width:80px;">
                         Data
-                    </th>
-                    <th>
-                        Descrição
                     </th>
                     <th class="text-end" style="width:140px;">
                         Valor
                     </th>
-                    <th style="width: 190px;">
-                        Conta Bancária
+                    <th>
+                        Descrição
                     </th>
                     <th style="width: 190px;">Ações</th>
                 </tr>
@@ -89,14 +102,11 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.DataMovimento)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Descricao)
-                        </td>
                         <td class="text-end fw-bold fs-6 @corFont">
                             @Html.DisplayFor(modelItem => item.ValorReal)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ContaBancaria.Nome)
+                            @Html.DisplayFor(modelItem => item.Descricao)
                         </td>
                         <td style="width: 160px;">
                             <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">

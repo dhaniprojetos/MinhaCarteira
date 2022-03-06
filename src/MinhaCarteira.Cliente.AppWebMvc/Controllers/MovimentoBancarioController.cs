@@ -142,14 +142,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             var retornoApi = await _contaBancariaServico.Navegar(null);
             var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
 
-            //var filtroMovimento = new FiltroBase<MovimentoBancario>()
-            //{
-            //    OpcoesFiltro = { new FiltroOpcao(
-            //            "ContaBancariaId",
-            //            idContaBancaria,
-            //            TipoOperadorBusca.Igual) }
-            //};
-
             IList<MovimentoBancarioViewModel> movimentos;
             try
             {
@@ -182,7 +174,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 {
                     OpcoesFiltro = {
                         new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta),
-                        new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20)) }
+                        //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
+                    }
                 };
 
                 var item = await ObterMovimentosConta(idConta, filtroMovimento);

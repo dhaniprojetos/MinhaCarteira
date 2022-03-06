@@ -10,6 +10,8 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
     public class ServicoBase<TEntidade> : IServicoCrud<TEntidade>
         where TEntidade : class, IEntidade
     {
+        public int TotalRegistros { get; set; }
+
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
@@ -58,7 +60,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
         public async Task<IList<TEntidade>> Navegar(
             ICriterio<TEntidade> criterio)
         {
-            return await Repositorio.Navegar(criterio);
+            var itens = await Repositorio.Navegar(criterio);
+            TotalRegistros = Repositorio.TotalRegistros;
+
+            return itens;
         }
         public async Task<IList<TEntidade>> IncluirRange(IList<TEntidade> itens)
         {
