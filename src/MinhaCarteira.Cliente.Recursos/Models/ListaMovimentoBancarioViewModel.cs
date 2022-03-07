@@ -8,7 +8,8 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public ListaMovimentoBancarioViewModel()
         {
             Contas = new List<ContaBancariaViewModel>();
-            //Movimentos = new StaticPagedList<MovimentoBancarioViewModel>(null, 1, 1, 0);
+            Movimentos = new PagedList<MovimentoBancarioViewModel>(
+                null, 1, 1);
         }
 
         public IList<ContaBancariaViewModel> Contas { get; set; }

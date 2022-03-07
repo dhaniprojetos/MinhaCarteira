@@ -12,6 +12,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using Newtonsoft.Json;
 using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -189,6 +190,29 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 var item = await ObterMovimentosConta(idConta, filtroMovimento);
 
                 return View(item);
+            }
+            catch (Refit.ApiException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                    ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    return RedirectToAction("Logar", "Conta");
+
+                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (retornoApi == null)
+                    retornoApi = new Resposta<Exception>(ex, ex.Message)
+                    {
+                        StatusCode = (int)ex.StatusCode
+                    };
+
+                if (!TempData.ContainsKey("RetornoApi"))
+                    ViewBag.RetornoApi = retornoApi;
+                else
+                {
+                    var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                    ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+                }
+
+                return View(new ListaMovimentoBancarioViewModel());
             }
             catch (Exception e)
             {

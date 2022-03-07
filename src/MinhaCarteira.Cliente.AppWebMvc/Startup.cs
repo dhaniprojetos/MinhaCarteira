@@ -1,8 +1,12 @@
 using System.Globalization;
+using System.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +38,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc
 
             services.AdicionarConexoesRefit(Configuration["BaseUrlApi"]);
             services.AddAutoMapper(typeof(AutoMapperProfile));
-            
+
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
@@ -73,6 +77,24 @@ namespace MinhaCarteira.Cliente.AppWebMvc
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.Use(async (ctx, next) =>
+            {
+                var ep = ctx.Features.Get<IEndpointFeature>()?.Endpoint;
+                var authAttr = ep?.Metadata?.GetMetadata<AuthorizeAttribute>();
+                if (authAttr != null && authAttr.Policy == "LoggedIn")
+                {
+                    var authService = ctx.RequestServices.GetRequiredService<IAuthorizationService>();
+                    var result = await authService.AuthorizeAsync(ctx.User, ctx.GetRouteData(), authAttr.Policy);
+                    if (!result.Succeeded)
+                    {
+                        var path = $"/conta/logar";
+                        ctx.Response.Redirect(path);
+                        return;
+                    }
+                }
+                await next();
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

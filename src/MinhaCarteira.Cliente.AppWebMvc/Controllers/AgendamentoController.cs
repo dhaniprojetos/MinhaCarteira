@@ -183,6 +183,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
             catch (Refit.ApiException ex)
             {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                    ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    return RedirectToAction("Logar", "Conta");
+
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 if (retornoApi == null)
                     retornoApi = new Resposta<Exception>(ex, ex.Message)
