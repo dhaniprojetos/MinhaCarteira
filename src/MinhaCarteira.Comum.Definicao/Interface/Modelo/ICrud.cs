@@ -6,11 +6,10 @@ namespace MinhaCarteira.Comum.Definicao.Interface.Modelo
 {
     public interface ICrud<TEntidade> : IDisposable
     {
-        int TotalRegistros { get; set; }
-
+        //int TotalRegistros { get; set; }
         Task<int> Deletar(int id);
         Task<TEntidade> Alterar(TEntidade item);
-        Task<IList<TEntidade>> Navegar(ICriterio<TEntidade> criterio);
+        Task<Tuple<int, IList<TEntidade>>> Navegar(ICriterio<TEntidade> criterio);
         Task<TEntidade> Incluir(TEntidade item);
 
         Task<int> DeletarRange(int[] ids);

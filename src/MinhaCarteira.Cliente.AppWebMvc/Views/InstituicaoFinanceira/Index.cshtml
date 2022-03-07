@@ -1,4 +1,7 @@
-﻿@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.InstituicaoFinanceiraViewModel>
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common;
+@model IPagedList<MinhaCarteira.Cliente.Recursos.Models.InstituicaoFinanceiraViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +20,7 @@
             <tr>
                 <th></th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Nome)
+                    @Html.DisplayNameFor(m => m.Nome)
                 </th>
                 <th>Ações</th>
             </tr>
@@ -52,4 +55,23 @@
             }
         </tbody>
     </table>
+
+    <div style="float: right">
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </div>
+
+    @Html.PagedListPager(
+        Model,
+        page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+            PageClasses = new string[] { "page-link" },
+            UlElementClasses = new string[] { "pagination justify-content-center" },
+            LiElementClasses = new string[] { "page-item" },
+            DisplayItemSliceAndTotal = false,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        })
+
 </div>

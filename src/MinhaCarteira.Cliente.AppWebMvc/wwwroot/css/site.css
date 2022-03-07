@@ -120,7 +120,7 @@ body {
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
+        padding-left: 40%;
         white-space: normal;
         text-align: left !important;
     }
@@ -131,7 +131,7 @@ body {
             /* Top/left values mimic padding */
             top: 6px;
             left: 6px;
-            width: 45%;
+            width: 40%;
             padding-right: 10px;
             white-space: nowrap;
             text-align: left;

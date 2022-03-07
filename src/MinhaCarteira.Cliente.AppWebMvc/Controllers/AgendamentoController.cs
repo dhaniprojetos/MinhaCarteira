@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
+using MinhaCarteira.Comum.Definicao.Filtro;
+using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -159,22 +161,35 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page)
         {
             try
             {
+                var criterio = new FiltroBase<AgendamentoViewModel>()
+                {
+                    Pagina = page ?? 1
+                };
+
                 var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(90);
                 var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
+                var itensPagedList = await itens
+                    .ToPagedListAsync(criterio.Pagina, criterio.ItensPorPagina);
 
-                if (!TempData.ContainsKey("RetornoApi")) return View(itens);
+                if (!TempData.ContainsKey("RetornoApi")) return View(itensPagedList);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
                 ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
 
-                return View(itens);
+                return View(itensPagedList);
             }
             catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (retornoApi == null)
+                    retornoApi = new Resposta<Exception>(ex, ex.Message)
+                    {
+                        StatusCode = (int)ex.StatusCode
+                    };
+
                 if (!TempData.ContainsKey("RetornoApi"))
                     ViewBag.RetornoApi = retornoApi;
                 else
@@ -183,14 +198,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                     ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
                 }
 
-                return View(new List<AgendamentoItemViewModel>());
+                return View(new List<AgendamentoItemViewModel>().ToPagedList());
             }
             catch (Exception e)
             {
                 var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(new List<AgendamentoItemViewModel>());
+                return View(new List<AgendamentoItemViewModel>().ToPagedList());
             }
         }
 

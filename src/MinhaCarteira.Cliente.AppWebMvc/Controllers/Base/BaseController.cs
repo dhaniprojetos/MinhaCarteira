@@ -10,6 +10,7 @@ using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Filtro;
+using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
@@ -48,11 +49,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 return null;
             }
         }
-        protected virtual async Task<IList<TEntidadeViewModel>> ObterTodos(FiltroBase<TEntidade> criterio)
+        protected virtual async Task<Tuple<int, IList<TEntidadeViewModel>>> ObterTodos(FiltroBase<TEntidade> criterio)
         {
             var resposta = await _servico.Navegar(criterio);
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
-            return itens;
+            return new Tuple<int, IList<TEntidadeViewModel>>(
+                resposta.TotalRegistros, 
+                itens);
         }
         protected virtual async Task<Tuple<TEntidadeViewModel, TEntidade>> ExecutarAntesSalvar(
             TEntidadeViewModel viewModel, TEntidade model)
@@ -71,36 +74,50 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(item);
         }
 
-        public virtual async Task<IActionResult> Index()
+        public virtual async Task<IActionResult> Index(int? page)
         {
             try
             {
-                IList<TEntidadeViewModel> itens = await ObterTodos(new FiltroBase<TEntidade>());
-                
-                if (!TempData.ContainsKey("RetornoApi")) return View(itens);
+                var criterio = new FiltroBase<TEntidade>()
+                {
+                    Pagina = page ?? 1
+                };
+
+                var itens = await ObterTodos(criterio);
+                var itensPaginados = new StaticPagedList<TEntidadeViewModel>(
+                    itens.Item2, criterio.Pagina, criterio.ItensPorPagina, itens.Item1);
+
+                if (!TempData.ContainsKey("RetornoApi")) return View(itensPaginados);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
                 ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
-                
-                return View(itens);
+
+                return View(itensPaginados);
             }
             catch (Refit.ApiException ex)
             {
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (retornoApi == null)
+                    retornoApi = new Resposta<Exception>(ex, ex.Message)
+                    {
+                        StatusCode = (int)ex.StatusCode
+                    };
+
                 if (!TempData.ContainsKey("RetornoApi"))
                     ViewBag.RetornoApi = retornoApi;
-                else{
+                else
+                {
                     var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
                     ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
                 }
 
-                return View(new List<TEntidadeViewModel>());
+                return View(new List<TEntidadeViewModel>().ToPagedList());
             }
             catch (Exception e)
             {
                 var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(new List<TEntidadeViewModel>());
+                return View(new List<TEntidadeViewModel>().ToPagedList());
             }
         }
 

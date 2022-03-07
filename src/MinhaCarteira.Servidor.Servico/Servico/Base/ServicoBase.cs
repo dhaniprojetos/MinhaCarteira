@@ -57,11 +57,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
         {
             return await Repositorio.AlterarRange(itens);
         }
-        public async Task<IList<TEntidade>> Navegar(
+        public async Task<Tuple<int, IList<TEntidade>>> Navegar(
             ICriterio<TEntidade> criterio)
         {
             var itens = await Repositorio.Navegar(criterio);
-            TotalRegistros = Repositorio.TotalRegistros;
 
             return itens;
         }

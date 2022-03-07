@@ -33,6 +33,6 @@ namespace MinhaCarteira.Comum.Definicao.Filtro
         public IList<FiltroOpcao> OpcoesFiltro { get; set; }
 
         public int Pagina { get; set; } = 1;
-        public int ItensPorPagina { get; set; } = 1000;
+        public int ItensPorPagina { get; set; } = 3;
     }
 }

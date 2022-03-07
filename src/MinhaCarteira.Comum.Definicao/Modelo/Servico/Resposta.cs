@@ -47,6 +47,12 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
         [JsonProperty(Order = 3)]
         public int TotalRegistros { get; set; }
 
+        [JsonProperty(Order = 4)]
+        public int Pagina { get; set; }
+
+        [JsonProperty(Order = 5)]
+        public int ItensPorPagina { get; set; }
+
         [JsonProperty(Order = 99)]
         public T Dados { get; set; }
     }

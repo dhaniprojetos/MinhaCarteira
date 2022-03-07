@@ -1,4 +1,7 @@
-﻿@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.ContaBancariaViewModel>
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common;
+@model IPagedList<MinhaCarteira.Cliente.Recursos.Models.ContaBancariaViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -21,16 +24,16 @@
                     Saldo
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Nome)
+                    @Html.DisplayNameFor(m => m.Nome)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Agencia)
+                    @Html.DisplayNameFor(m => m.Agencia)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Conta)
+                    @Html.DisplayNameFor(m => m.Conta)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.InstituicaoFinanceiraId)
+                    @Html.DisplayNameFor(m => m.InstituicaoFinanceiraId)
                 </th>
                 <th>Ações</th>
             </tr>
@@ -48,10 +51,10 @@
                     <td data-title="Saldo" class="text-end fw-bold @corFont">
                         @Html.DisplayFor(modelItem => item.ValorSaldoAtual)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.Nome)">
+                    <td data-title="@Html.DisplayNameFor(m => m.Nome)">
                         @Html.DisplayFor(modelItem => item.Nome)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.Agencia)">
+                    <td data-title="@Html.DisplayNameFor(m => m.Agencia)">
                         @if (!string.IsNullOrWhiteSpace(item.Agencia))
                         {
                             @Html.DisplayFor(modelItem => item.Agencia)
@@ -61,7 +64,7 @@
                             <span>&nbsp;</span>
                         }
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.Conta)">
+                    <td data-title="@Html.DisplayNameFor(m => m.Conta)">
                         @if (!string.IsNullOrWhiteSpace(item.Conta))
                         {
                             @Html.DisplayFor(modelItem => item.Conta)
@@ -71,10 +74,10 @@
                             <span>&nbsp;</span>
                         }
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.InstituicaoFinanceira.Nome)">
+                    <td data-title="@Html.DisplayNameFor(m => m.InstituicaoFinanceira.Nome)">
                         @Html.DisplayFor(modelItem => item.InstituicaoFinanceira.Nome)
                     </td>
-                    <td data-title="Ação">
+                    <td data-title="Ações">
                         <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
                             <i class="fa-solid fa-lg fa-pen-to-square"></i>
                         </a>
@@ -92,4 +95,23 @@
             }
         </tbody>
     </table>
+
+    <div style="float: right">
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </div>
+
+    @Html.PagedListPager(
+        Model,
+        page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+            PageClasses = new string[] { "page-link" },
+            UlElementClasses = new string[] { "pagination justify-content-center" },
+            LiElementClasses = new string[] { "page-item" },
+            DisplayItemSliceAndTotal = false,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        })
+
 </div>

@@ -24,7 +24,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             _movimentoRepositorio = movimentoRepositorio;
         }
 
-        private RecurrenceType ObterRecorrenciaBuilder(Agendamento agend)
+        private static RecurrenceType ObterRecorrenciaBuilder(Agendamento agend)
         {
             return agend.TipoRecorrencia switch
             {
@@ -63,7 +63,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             };
         }
 
-        private Agendamento GerarParcelas(Agendamento agend)
+        private static Agendamento GerarParcelas(Agendamento agend)
         {
             var recorrencia = ObterRecorrenciaBuilder(agend);
             DateTime data = agend.DataInicial;
@@ -141,10 +141,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico
 
         public async Task<AgendamentoItem> ConciliarParcela(int id, string idMovimentos)
         {
-            var movimentoConciliado = await ((MovimentoBancarioRepositorio)_movimentoRepositorio)
+            var _ = await ((MovimentoBancarioRepositorio)_movimentoRepositorio)
                 .ConciliarParcela(id, idMovimentos);
             
-            var item = await ((AgendamentoRepositorio)Repositorio)
+            _ = await ((AgendamentoRepositorio)Repositorio)
                 .ConciliarParcela(id);
 
             return null;

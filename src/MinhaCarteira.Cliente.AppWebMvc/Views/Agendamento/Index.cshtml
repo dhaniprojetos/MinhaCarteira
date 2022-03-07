@@ -1,5 +1,8 @@
-﻿@using MinhaCarteira.Cliente.Recursos.Models.Enum
-@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel>
+﻿@using MinhaCarteira.Cliente.Recursos.Models.Enum;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common;
+@model IPagedList<MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,19 +23,19 @@
             <tr>
                 <th style="width: 50px;"></th>
                 <th style="width: 80px;">
-                    @Html.DisplayNameFor(model => model.Data)
+                    @Html.DisplayNameFor(m => m.First().Data)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Agendamento.Descricao)
+                    @Html.DisplayNameFor(m => m.First().Agendamento.Descricao)
                 </th>
                 <th class="text-end" style="width: 140px;">
-                    @Html.DisplayNameFor(model => model.Valor)
+                    @Html.DisplayNameFor(m => m.First().Valor)
                 </th>
                 <th style="width: 180px;">
-                    @Html.DisplayNameFor(model => model.Agendamento.Categoria.Nome)
+                    @Html.DisplayNameFor(m => m.First().Agendamento.Categoria.Nome)
                 </th>
                 <th style="width: 100px;">
-                    @Html.DisplayNameFor(model => model.Agendamento.NomeCentroClassificacao)
+                    @Html.DisplayNameFor(m => m.First().Agendamento.NomeCentroClassificacao)
                 </th>
                 <th style="width: 130px;">Ações</th>
             </tr>
@@ -54,24 +57,24 @@
                 <tr class="@classLinha align-middle">
                     <td data-title="Categoria">
                         <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
-                         title="@item.Agendamento.Categoria.Nome"
-                         height="42" width="42"
-                         alt="@item.Agendamento.Categoria.Nome"
-                         asp-append-version="true" />
+                             title="@item.Agendamento.Categoria.Nome"
+                             height="42" width="42"
+                             alt="@item.Agendamento.Categoria.Nome"
+                             asp-append-version="true" />
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.Data)">
+                    <td data-title="@Html.DisplayNameFor(model => item.Data)">
                         @Html.DisplayFor(modelItem => item.DataPagamento)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.Agendamento.Descricao)">
+                    <td data-title="@Html.DisplayNameFor(model => item.Agendamento.Descricao)">
                         @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.ValorPago)" class="text-end fw-bold @corFont">
+                    <td data-title="@Html.DisplayNameFor(model => item.ValorPago)" class="text-end fw-bold @corFont">
                         @Html.DisplayFor(modelItem => item.ValorPago)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.NomePessoa)">
+                    <td data-title="@Html.DisplayNameFor(model => item.NomePessoa)">
                         @Html.DisplayFor(modelItem => item.NomePessoa)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => model.Agendamento.NomeCentroClassificacao)">
+                    <td data-title="@Html.DisplayNameFor(model => item.Agendamento.NomeCentroClassificacao)">
                         @Html.DisplayFor(modelItem => item.Agendamento.NomeCentroClassificacao)
                     </td>
                     <td data-title="Ação">
@@ -96,4 +99,22 @@
             }
         </tbody>
     </table>
+
+    <div style="float: right">
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </div>
+
+    @Html.PagedListPager(
+        Model,
+        page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+            PageClasses = new string[] { "page-link" },
+            UlElementClasses = new string[] { "pagination justify-content-center" },
+            LiElementClasses = new string[] { "page-item" },
+            DisplayItemSliceAndTotal = false,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        })
 </div>

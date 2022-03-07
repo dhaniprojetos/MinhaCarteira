@@ -25,13 +25,15 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             _categoriaServico = categoriaServico;
         }
 
-        protected override async Task<IList<CategoriaViewModel>> ObterTodos(FiltroBase<Categoria> criterio)
+        protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(FiltroBase<Categoria> criterio)
         {
             var resposta = await Servico.Navegar(criterio);
             var itens = Mapper.Map<List<CategoriaViewModel>>(
                 resposta.Dados);
 
-            return itens?.OrderBy(o => o.Caminho).ToList();
+            return new Tuple<int, IList<CategoriaViewModel>>(
+                resposta.TotalRegistros, 
+                itens?.OrderBy(o => o.Caminho).ToList());
         }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
@@ -81,9 +83,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page)
         {
-            return await base.Index();
+            return await base.Index(page);
         }
 
         public override async Task<IActionResult> Criar()

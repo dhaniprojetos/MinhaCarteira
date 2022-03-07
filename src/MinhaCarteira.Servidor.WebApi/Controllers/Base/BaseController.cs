@@ -44,16 +44,22 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
 
                 var itens = await Servico.Navegar(criterio);
 
-
-                resposta = itens == null || itens.Count == 0
+                resposta = itens == null || itens.Item2.Count == 0
                     ? NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Nenhum registro localizado."))
+                        "Nenhum registro localizado.")
+                    {
+                        Pagina = criterio.Pagina,
+                        TotalRegistros = itens.Item1,
+                        ItensPorPagina = criterio.ItensPorPagina
+                    })
                     : Ok(new Resposta<IList<TEntidade>>(
-                        itens,
+                        itens.Item2,
                         "Itens localizados com sucesso.")
                     {
-                        TotalRegistros = Servico.TotalRegistros
+                        Pagina = criterio.Pagina,
+                        TotalRegistros = itens.Item1,
+                        ItensPorPagina = criterio.ItensPorPagina
                     });
             }
             catch (Exception e)

@@ -16,8 +16,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
     public abstract class RepositorioBase<TEntidade> : ICrud<TEntidade>
         where TEntidade : class, IEntidade
     {
-        public int TotalRegistros { get; set; }
-
         protected Expression<Func<TEntidade, bool>> SimpleComparison(IList<FiltroOpcao> queryFilterObjects)
         {
             //initialize the body expression
@@ -243,7 +241,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public virtual async Task<IList<TEntidade>> Navegar(
+        public virtual async Task<Tuple<int, IList<TEntidade>>> Navegar(
             ICriterio<TEntidade> criterio)
         {
             var tab = criterio.AdicionarIncludes
@@ -253,7 +251,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             if (criterio != null && criterio.OpcoesFiltro.Any())
                 tab = AdicionarFiltro(tab, criterio.OpcoesFiltro);
 
-            TotalRegistros = await tab.CountAsync();
+            var totalRegistros = await tab.CountAsync();
 
             tab = AdicionarOrdenacao(tab);
 
@@ -262,7 +260,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 .Take(criterio.ItensPorPagina)
                 .ToListAsync();
 
-            return itens;
+            return new Tuple<int, IList<TEntidade>>(totalRegistros, itens);
         }
 
         public async Task<TEntidade> ObterPorId(int id)

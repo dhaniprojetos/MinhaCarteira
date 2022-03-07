@@ -46,7 +46,7 @@
                         @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
                         {
                             <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
-                         height="32" width="32" asp-append-version="true" class="float-start align-middle mt-2 me-2" />
+                                 height="32" width="32" asp-append-version="true" class="float-start align-middle mt-2 me-2" />
                         }
                         <div>
                             <span>@contaBancaria.Nome</span><br />
@@ -79,31 +79,41 @@
             <tbody>
                 @foreach (var item in Model.Movimentos)
                 {
+                    var corFundoConciliada = item.AgendamentoItemId != null
+                        ? "bg-success bg-opacity-10"
+                        : string.Empty;
+
                     var corFont = item.ValorReal > 0
-                    ? "text-primary"
-                    : item.ValorReal < 0
-                    ? "text-danger"
-                    : "text-secondary";
+                        ? "text-primary"
+                        : item.ValorReal < 0
+                            ? "text-danger"
+                            : "text-secondary";
 
                     <tr class="align-middle">
                         <td data-title="Categoria">
                             <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
-                             title="@item.Categoria.Nome"
-                             height="42" width="42"
-                             alt="@item.Categoria.Nome"
-                             asp-append-version="true" />
+                                 title="@item.Categoria.Nome"
+                                 height="42" width="42"
+                                 alt="@item.Categoria.Nome"
+                                 class="d-none d-sm-inline"
+                                 asp-append-version="true" />
+
+                            <span class="d-sm-none">
+                                @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                            </span>
                         </td>
-                        <td data-title="Conciliada">
+                        <td data-title="Conciliada?" class="@corFundoConciliada">
                             @if (item.AgendamentoItemId != null)
                             {
-                                <i class="fa fa-link"></i>
+                                <span class="d-sm-none">Sim</span>
+                                <i class="text-success fa fa-link"></i>
                             }
                             else
                             {
-                                <span>&nbsp;</span>
+                                <span class="d-sm-none">Não</span>
                             }
                         </td>
-                        <td data-title="Data do Movimento">
+                        <td data-title="Data">
                             @Html.DisplayFor(modelItem => item.DataMovimento)
                         </td>
                         <td data-title="Valor" class="text-end fw-bold fs-6 @corFont">
