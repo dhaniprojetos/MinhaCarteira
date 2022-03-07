@@ -17,10 +17,12 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
             T dados,
             int numeroPagina,
             int itensPorPagina,
+            int totalRegistros,
             string mensagem = null)
         : base(dados, mensagem)
         {
             NumeroPagina = numeroPagina;
+            TotalRegistros = totalRegistros;
             ItensPorPagina = itensPorPagina;
         }
     }

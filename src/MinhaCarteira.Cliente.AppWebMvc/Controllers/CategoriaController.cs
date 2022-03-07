@@ -9,7 +9,7 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -25,12 +25,16 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             _categoriaServico = categoriaServico;
         }
 
-        protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(FiltroBase<Categoria> criterio)
+        protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(ICriterio criterio)
         {
+            var itensPorPagina = criterio.ItensPorPagina;
+            criterio.ItensPorPagina = 1000000;
+
             var resposta = await Servico.Navegar(criterio);
             var itens = Mapper.Map<List<CategoriaViewModel>>(
                 resposta.Dados);
 
+            criterio.ItensPorPagina = itensPorPagina;
             return new Tuple<int, IList<CategoriaViewModel>>(
                 resposta.TotalRegistros, 
                 itens?.OrderBy(o => o.Caminho).ToList());

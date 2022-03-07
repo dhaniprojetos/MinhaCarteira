@@ -21,7 +21,7 @@ namespace MinhaCarteira.Comum.Definicao.Filtro
         public TipoOperadorBusca Operador { get; set; }
     }
 
-    public class FiltroBase<TEntidade> : ICriterio<TEntidade>
+    public class FiltroBase : ICriterio
     {
         public FiltroBase()
         {

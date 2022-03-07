@@ -49,7 +49,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 return null;
             }
         }
-        protected virtual async Task<Tuple<int, IList<TEntidadeViewModel>>> ObterTodos(FiltroBase<TEntidade> criterio)
+        protected virtual async Task<Tuple<int, IList<TEntidadeViewModel>>> ObterTodos(ICriterio criterio)
         {
             var resposta = await _servico.Navegar(criterio);
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
@@ -78,7 +78,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         {
             try
             {
-                var criterio = new FiltroBase<TEntidade>()
+                var criterio = new FiltroBase()
                 {
                     Pagina = page ?? 1
                 };

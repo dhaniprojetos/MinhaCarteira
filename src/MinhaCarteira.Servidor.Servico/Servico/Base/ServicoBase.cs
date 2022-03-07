@@ -58,7 +58,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
             return await Repositorio.AlterarRange(itens);
         }
         public async Task<Tuple<int, IList<TEntidade>>> Navegar(
-            ICriterio<TEntidade> criterio)
+            ICriterio criterio)
         {
             var itens = await Repositorio.Navegar(criterio);
 

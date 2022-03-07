@@ -165,7 +165,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             try
             {
-                var criterio = new FiltroBase<AgendamentoViewModel>()
+                var criterio = new FiltroBase()
                 {
                     Pagina = page ?? 1
                 };

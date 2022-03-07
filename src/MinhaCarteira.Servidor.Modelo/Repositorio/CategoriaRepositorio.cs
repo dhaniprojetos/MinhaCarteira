@@ -13,6 +13,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
         public CategoriaRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }
 
+        //protected override IQueryable<Categoria> AdicionarOrdenacao(IQueryable<Categoria> source)
+        //{
+        //    return source.OrderBy(o => o.Caminho);
+        //}
+
         protected override IQueryable<Categoria> AdicionarIncludes(IQueryable<Categoria> source)
         {
             return source

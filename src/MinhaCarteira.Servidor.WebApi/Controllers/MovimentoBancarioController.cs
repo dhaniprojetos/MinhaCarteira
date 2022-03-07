@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using MinhaCarteira.Servidor.WebApi.Controllers.Base;

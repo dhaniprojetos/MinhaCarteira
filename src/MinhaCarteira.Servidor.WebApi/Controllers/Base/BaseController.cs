@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
@@ -35,32 +34,28 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
         protected IServicoCrud<TEntidade> Servico { get; }
 
         [HttpGet]
-        public async Task<IActionResult> Navegar([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] FiltroBase<TEntidade> criterio)
+        public async Task<IActionResult> Navegar([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] FiltroBase criterio)
         {
             IActionResult resposta;
             try
             {
-                criterio ??= new FiltroBase<TEntidade>();
+                criterio ??= new FiltroBase();
 
                 var itens = await Servico.Navegar(criterio);
 
                 resposta = itens == null || itens.Item2.Count == 0
-                    ? NotFound(new Resposta<IList<TEntidade>>(
+                    ? NotFound(new RespostaPaginada<IList<TEntidade>>(
                         null,
-                        "Nenhum registro localizado.")
-                    {
-                        Pagina = criterio.Pagina,
-                        TotalRegistros = itens.Item1,
-                        ItensPorPagina = criterio.ItensPorPagina
-                    })
-                    : Ok(new Resposta<IList<TEntidade>>(
+                        criterio.Pagina,
+                        criterio.ItensPorPagina,
+                        itens.Item1,
+                        "Nenhum registro localizado."))
+                    : Ok(new RespostaPaginada<IList<TEntidade>>(
                         itens.Item2,
-                        "Itens localizados com sucesso.")
-                    {
-                        Pagina = criterio.Pagina,
-                        TotalRegistros = itens.Item1,
-                        ItensPorPagina = criterio.ItensPorPagina
-                    });
+                        criterio.Pagina,
+                        criterio.ItensPorPagina,
+                        itens.Item1,
+                        "Itens localizados com sucesso."));
             }
             catch (Exception e)
             {

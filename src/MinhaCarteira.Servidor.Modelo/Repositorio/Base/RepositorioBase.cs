@@ -1,14 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Helper;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
@@ -36,7 +40,6 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 var property = Expression.Property(parameterExpression, queryFilterObject.NomePropriedade);
 
                 //create the constant expression value
-                //var constantExpressionValue = Expression.Constant(queryFilterObject.Valor, queryFilterObject.PropertyType);
                 var valor = Convert.ChangeType(queryFilterObject.Valor, property.Type);
                 var constantExpressionValue = Expression.Constant(valor, property.Type);
 
@@ -65,6 +68,39 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 else if (queryFilterObject.Operador == TipoOperadorBusca.MenorOuIgual)
                 {
                     clause = Expression.LessThanOrEqual(property, constantExpressionValue);
+                }
+                else if (queryFilterObject.Operador == TipoOperadorBusca.Contem)
+                {
+                    var miTl = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+                    var miTs = typeof(int).GetMethod("ToString", Type.EmptyTypes);
+                    var miC = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+
+                    //var param = Expression.Parameter(property.Type, "p");
+                    //var prop = Expression.PropertyOrField(param, nomePropriedade);
+                    ////MethodInfo mContains = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                    //var buscar = Expression.Constant(valor.Trim().ToLower(), typeof(string));
+
+                    MethodCallExpression method;
+                    //Expression<Func<T, TA>> lambda;
+                    //
+                    //if (EhNumerico(prop.Type))
+                    //{
+                    //    method = Expression.Call(prop, miTs ?? throw new InvalidOperationException());
+                    //    method = Expression.Call(method, miC ?? throw new InvalidOperationException(), buscar);
+                    //    lambda = Expression.Lambda<Func<T, TA>>(method, param);
+                    //}
+                    //else
+                    //{
+                        method = Expression.Call(property, miTl ?? throw new InvalidOperationException());
+                        method = Expression.Call(method, miC, constantExpressionValue);
+
+                        Expression naoNulo = Expression.NotEqual(property, Expression.Constant(null, property.Type));
+                        clause = Expression.AndAlso(naoNulo, method);
+                        
+                    //}
+                    //
+                    //return lambda;
+
                 }
 
                 //you should validate against a null clause....
@@ -241,8 +277,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 throw;
             }
         }
-        public virtual async Task<Tuple<int, IList<TEntidade>>> Navegar(
-            ICriterio<TEntidade> criterio)
+        public virtual async Task<Tuple<int, IList<TEntidade>>> Navegar(ICriterio criterio)
         {
             var tab = criterio.AdicionarIncludes
                 ? AdicionarIncludes(Tabela).AsNoTracking()

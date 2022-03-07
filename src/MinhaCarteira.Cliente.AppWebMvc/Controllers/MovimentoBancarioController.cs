@@ -10,6 +10,7 @@ using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
@@ -79,14 +80,15 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterCategoria(string prefix)
         {
-            var resp = await _categoriaServico.Navegar(null);
+            var criterio = new FiltroBase();
+            criterio.OpcoesFiltro = new List<FiltroOpcao>
+            {
+                new FiltroOpcao("Nome", TipoOperadorBusca.Contem, prefix)
+            };
 
-            var items = resp.Dados
-                .Select(s => new { label = s.Caminho, val = s.Id })
-                .Where(w => string.IsNullOrEmpty(prefix) ||
-                            w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
-                .OrderBy(s => s.label)
-                .ToList();
+            var resp = await _categoriaServico.Navegar(criterio);
+
+            var items = resp.Dados.ToList();
 
             return Json(items);
         }
@@ -139,13 +141,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         private async Task<ListaMovimentoBancarioViewModel> ObterMovimentosConta(
-            int idContaBancaria, FiltroBase<MovimentoBancario> filtroMovimento)
+            int idContaBancaria, ICriterio filtroMovimento)
         {
             var retornoApi = await _contaBancariaServico.Navegar(null);
             var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
 
             var totalMovimentos = 0;
-            IList <MovimentoBancarioViewModel> movimentos;
+            IList<MovimentoBancarioViewModel> movimentos;
             try
             {
                 var retornoMovimentos = await Servico.Navegar(filtroMovimento);
@@ -178,7 +180,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             try
             {
                 var idConta = int.Parse(id ?? "1");
-                var filtroMovimento = new FiltroBase<MovimentoBancario>()
+                var filtroMovimento = new FiltroBase()
                 {
                     Pagina = page ?? 1,
                     OpcoesFiltro = {
