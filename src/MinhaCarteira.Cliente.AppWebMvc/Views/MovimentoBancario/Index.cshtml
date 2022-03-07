@@ -1,18 +1,21 @@
-﻿@model MinhaCarteira.Cliente.Recursos.Models.ListaMovimentoBancarioViewModel
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model MinhaCarteira.Cliente.Recursos.Models.ListaMovimentoBancarioViewModel
 
 @{
     ViewData["Title"] = "Index";
     var id = ViewContext.RouteData.Values["id"] ?? "1";
 }
 
-<h1>Index</h1>
+<h1> Index </h1>
 @{
     await Html.RenderPartialAsync("_PartialAlertas");
 }
 
 <p>
-    <a asp-action="Criar" asp-route-idContaBancaria="@id">Create New</a>
+    <a asp - action="Criar" asp-route-idContaBancaria="@id">Create New</a>
 </p>
+
 
 <div class="row">
     <div class="d-flex flex-column col-md-3 col-sm-4">
@@ -31,12 +34,12 @@
             @foreach (var contaBancaria in Model.Contas)
             {
                 var corFont = contaBancaria.Id.ToString() == id?.ToString()
-                ? "text-light"
-                : contaBancaria.ValorSaldoAtual > 0
-                ? "text-primary"
-                : contaBancaria.ValorSaldoAtual < 0
-                ? "text-danger"
-                : "text-secondary";
+                    ? "text-light"
+                    : contaBancaria.ValorSaldoAtual > 0
+                        ? "text-primary"
+                        : contaBancaria.ValorSaldoAtual < 0
+                            ? "text-danger"
+                            : "text-secondary";
 
                 var classe = contaBancaria.Id.ToString() == id?.ToString()
                 ? "active" : "";
@@ -140,5 +143,23 @@
                 }
             </tbody>
         </table>
+
+        @*<div style="float: right">
+            Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+        </div>*@
+
+        @Html.PagedListPager(
+            Model.Movimentos,
+            page => Url.Action("Index", new { page }),
+            new PagedListRenderOptions
+            {
+                PageClasses = new string[] { "page-link" },
+                UlElementClasses = new string[] { "pagination justify-content-center" },
+                LiElementClasses = new string[] { "page-item" },
+                DisplayItemSliceAndTotal = false,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+            })
     </div>
 </div>

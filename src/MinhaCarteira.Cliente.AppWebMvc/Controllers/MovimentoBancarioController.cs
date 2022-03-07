@@ -12,6 +12,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -142,10 +143,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             var retornoApi = await _contaBancariaServico.Navegar(null);
             var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
 
-            IList<MovimentoBancarioViewModel> movimentos;
+            var totalMovimentos = 0;
+            IList <MovimentoBancarioViewModel> movimentos;
             try
             {
                 var retornoMovimentos = await Servico.Navegar(filtroMovimento);
+                totalMovimentos = retornoMovimentos.TotalRegistros;
                 movimentos = Mapper.Map<IList<MovimentoBancarioViewModel>>(retornoMovimentos.Dados);
             }
             catch (Exception)
@@ -156,22 +159,27 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             var item = new ListaMovimentoBancarioViewModel()
             {
                 Contas = contas,
-                Movimentos = movimentos
-                    .Where(w => w.ContaBancariaId == idContaBancaria)
-                    .ToList()
+                Movimentos = new StaticPagedList<MovimentoBancarioViewModel>(
+                    movimentos
+                        .Where(w => w.ContaBancariaId == idContaBancaria)
+                        .ToList(),
+                    filtroMovimento.Pagina,
+                    filtroMovimento.ItensPorPagina,
+                    totalMovimentos)
             };
 
             return item;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index(string id, int? page)
         {
             try
             {
                 var idConta = int.Parse(id ?? "1");
                 var filtroMovimento = new FiltroBase<MovimentoBancario>()
                 {
+                    Pagina = page ?? 1,
                     OpcoesFiltro = {
                         new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))

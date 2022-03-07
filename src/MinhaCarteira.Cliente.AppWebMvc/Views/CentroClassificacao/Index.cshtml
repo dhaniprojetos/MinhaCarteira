@@ -19,13 +19,13 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(m => m.Nome)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().Nome)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.EhDespesa)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().EhDespesa)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.EhReceita)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().EhReceita)
                 </th>
                 <th>Ações</th>
             </tr>

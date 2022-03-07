@@ -24,16 +24,16 @@
                     Saldo
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.Nome)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().Nome)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.Agencia)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().Agencia)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.Conta)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().Conta)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.InstituicaoFinanceiraId)
+                    @Html.DisplayNameFor(m => m.FirstOrDefault().InstituicaoFinanceiraId)
                 </th>
                 <th>Ações</th>
             </tr>
@@ -51,10 +51,10 @@
                     <td data-title="Saldo" class="text-end fw-bold @corFont">
                         @Html.DisplayFor(modelItem => item.ValorSaldoAtual)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(m => m.Nome)">
+                    <td data-title="@Html.DisplayNameFor(m => m.FirstOrDefault().Nome)">
                         @Html.DisplayFor(modelItem => item.Nome)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(m => m.Agencia)">
+                    <td data-title="@Html.DisplayNameFor(m => m.FirstOrDefault().Agencia)">
                         @if (!string.IsNullOrWhiteSpace(item.Agencia))
                         {
                             @Html.DisplayFor(modelItem => item.Agencia)
@@ -64,7 +64,7 @@
                             <span>&nbsp;</span>
                         }
                     </td>
-                    <td data-title="@Html.DisplayNameFor(m => m.Conta)">
+                    <td data-title="@Html.DisplayNameFor(m => m.FirstOrDefault().Conta)">
                         @if (!string.IsNullOrWhiteSpace(item.Conta))
                         {
                             @Html.DisplayFor(modelItem => item.Conta)
@@ -74,7 +74,7 @@
                             <span>&nbsp;</span>
                         }
                     </td>
-                    <td data-title="@Html.DisplayNameFor(m => m.InstituicaoFinanceira.Nome)">
+                    <td data-title="@Html.DisplayNameFor(m => m.FirstOrDefault().InstituicaoFinanceira.Nome)">
                         @Html.DisplayFor(modelItem => item.InstituicaoFinanceira.Nome)
                     </td>
                     <td data-title="Ações">
