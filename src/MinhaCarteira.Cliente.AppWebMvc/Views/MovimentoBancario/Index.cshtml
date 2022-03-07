@@ -58,8 +58,8 @@
         </ul>
     </div>
 
-    <div class="col-md-9 col-sm-8 table-responsive">
-        <table class="table table-hover table-responsive-sm">
+    <div class="col-md-9 col-sm-8 table-responsive" id="no-more-tables">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th style="width:50px;"></th>
@@ -86,29 +86,33 @@
                     : "text-secondary";
 
                     <tr class="align-middle">
-                        <td class="p-0 ps-2">
+                        <td data-title="Categoria">
                             <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
                              title="@item.Categoria.Nome"
                              height="42" width="42"
                              alt="@item.Categoria.Nome"
                              asp-append-version="true" />
                         </td>
-                        <td class="p-0 ps-2">
+                        <td data-title="Conciliada">
                             @if (item.AgendamentoItemId != null)
                             {
                                 <i class="fa fa-link"></i>
                             }
+                            else
+                            {
+                                <span>&nbsp;</span>
+                            }
                         </td>
-                        <td>
+                        <td data-title="Data do Movimento">
                             @Html.DisplayFor(modelItem => item.DataMovimento)
                         </td>
-                        <td class="text-end fw-bold fs-6 @corFont">
+                        <td data-title="Valor" class="text-end fw-bold fs-6 @corFont">
                             @Html.DisplayFor(modelItem => item.ValorReal)
                         </td>
-                        <td>
+                        <td data-title="Descrição">
                             @Html.DisplayFor(modelItem => item.Descricao)
                         </td>
-                        <td style="width: 160px;">
+                        <td data-title="Ação">
                             <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-lg fa-pen-to-square"></i>
                             </a>

@@ -6,13 +6,15 @@
 }
 
 <h1>Index</h1>
-@{await Html.RenderPartialAsync("_PartialAlertas");}
+@{
+    await Html.RenderPartialAsync("_PartialAlertas");
+}
 
 <p>
     <a asp-action="Criar">Create New</a>
 </p>
 
-<div class="table-responsive-sm">
+<div class="table-responsive-sm" id="no-more-tables">
     <table class="table table-hover">
         <thead>
             <tr>
@@ -46,33 +48,33 @@
                     _ => ""
                 };
                 var corFont = item.Agendamento.Tipo == MinhaCarteira.Comum.Definicao.Modelo.TipoMovimento.Credito
-                    ? "text-primary"
-                    : "text-danger";
+                ? "text-primary"
+                : "text-danger";
 
                 <tr class="@classLinha align-middle">
-                    <td>
+                    <td data-title="Categoria">
                         <img src="data:@item.Agendamento.Categoria.MimeType;base64,@item.Agendamento.Categoria.IconeCategoria"
-                             title="@item.Agendamento.Categoria.Nome"
-                             height="42" width="42"
-                             alt="@item.Agendamento.Categoria.Nome"
-                             asp-append-version="true" />
+                         title="@item.Agendamento.Categoria.Nome"
+                         height="42" width="42"
+                         alt="@item.Agendamento.Categoria.Nome"
+                         asp-append-version="true" />
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => model.Data)">
                         @Html.DisplayFor(modelItem => item.DataPagamento)
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => model.Agendamento.Descricao)">
                         @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
                     </td>
-                    <td class="text-end fw-bold @corFont">
+                    <td data-title="@Html.DisplayNameFor(model => model.ValorPago)" class="text-end fw-bold @corFont">
                         @Html.DisplayFor(modelItem => item.ValorPago)
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => model.NomePessoa)">
                         @Html.DisplayFor(modelItem => item.NomePessoa)
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => model.Agendamento.NomeCentroClassificacao)">
                         @Html.DisplayFor(modelItem => item.Agendamento.NomeCentroClassificacao)
                     </td>
-                    <td>
+                    <td data-title="Ação">
                         @if (item.StatusParcela == StatusParcela.Paga)
                         {
                             <a class="btn btn-success" asp-action="ConciliarParcela" asp-route-id="@item.Id">
@@ -84,6 +86,10 @@
                             <a class="btn btn-primary" asp-action="PagarParcela" asp-route-id="@item.Id">
                                 <i class="fa fa-check-circle"></i> Pagar
                             </a>
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
                         }
                     </td>
                 </tr>

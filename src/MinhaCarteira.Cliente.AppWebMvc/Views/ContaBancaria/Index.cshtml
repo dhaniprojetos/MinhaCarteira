@@ -5,13 +5,15 @@
 }
 
 <h1>Index</h1>
-@{await Html.RenderPartialAsync("_PartialAlertas");}
+@{
+    await Html.RenderPartialAsync("_PartialAlertas");
+}
 
 <p>
     <a asp-action="Criar">Create New</a>
 </p>
 
-<div class="table-responsive-sm">
+<div class="table-responsive-sm" id="no-more-tables">
     <table class="table table-hover">
         <thead>
             <tr>
@@ -37,28 +39,42 @@
             @foreach (var item in Model)
             {
                 var corFont = item.ValorSaldoAtual > 0
-                    ? "text-primary"
-                    : item.ValorSaldoAtual < 0
-                        ? "text-danger"
-                        : "text-secondary";
+                ? "text-primary"
+                : item.ValorSaldoAtual < 0
+                ? "text-danger"
+                : "text-secondary";
 
                 <tr class="align-middle">
-                    <td class="text-end fw-bold @corFont">
+                    <td data-title="Saldo" class="text-end fw-bold @corFont">
                         @Html.DisplayFor(modelItem => item.ValorSaldoAtual)
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => model.Nome)">
                         @Html.DisplayFor(modelItem => item.Nome)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Agencia)
+                    <td data-title="@Html.DisplayNameFor(model => model.Agencia)">
+                        @if (!string.IsNullOrWhiteSpace(item.Agencia))
+                        {
+                            @Html.DisplayFor(modelItem => item.Agencia)
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
+                        }
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Conta)
+                    <td data-title="@Html.DisplayNameFor(model => model.Conta)">
+                        @if (!string.IsNullOrWhiteSpace(item.Conta))
+                        {
+                            @Html.DisplayFor(modelItem => item.Conta)
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
+                        }
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => model.InstituicaoFinanceira.Nome)">
                         @Html.DisplayFor(modelItem => item.InstituicaoFinanceira.Nome)
                     </td>
-                    <td style="width: 200px;">
+                    <td data-title="Ação">
                         <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
                             <i class="fa-solid fa-lg fa-pen-to-square"></i>
                         </a>
