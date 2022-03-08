@@ -29,10 +29,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(ICriterio criterio)
         {
             criterio.ItensPorPagina = 5;
-            criterio.OpcoesFiltro = new List<FiltroOpcao>
-            {
-                new FiltroOpcao("IdCategoriaPai", Comum.Definicao.Modelo.TipoOperadorBusca.Igual, null)
-            };
+            criterio.OpcoesFiltro.Add(
+                new FiltroOpcao("IdCategoriaPai", Comum.Definicao.Modelo.TipoOperadorBusca.Igual, null));
 
             var resposta = await Servico.Navegar(criterio);
             var itens = resposta.Dados;
