@@ -27,14 +27,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(ICriterio criterio)
         {
-            var itensPorPagina = criterio.ItensPorPagina;
-            criterio.ItensPorPagina = 1000000;
-
             var resposta = await Servico.Navegar(criterio);
             var itens = Mapper.Map<List<CategoriaViewModel>>(
                 resposta.Dados);
 
-            criterio.ItensPorPagina = itensPorPagina;
             return new Tuple<int, IList<CategoriaViewModel>>(
                 resposta.TotalRegistros, 
                 itens?.OrderBy(o => o.Caminho).ToList());

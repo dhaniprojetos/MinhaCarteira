@@ -14,6 +14,7 @@ using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
+using Refit;
 using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -65,62 +66,111 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterContaBancaria(string prefix)
         {
-            var resp = await _contaBancariaServico.Navegar(null);
+            var criterio = new FiltroBase
+            {
+                OpcoesFiltro = new List<FiltroOpcao>
+                {
+                    new FiltroOpcao("Nome", TipoOperadorBusca.Contem, prefix)
+                }
+            };
 
-            var items = resp.Dados
-                .Select(s => new { label = s.Nome, val = s.Id })
-                .Where(w => string.IsNullOrEmpty(prefix) ||
-                            w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
-                .OrderBy(s => s.label)
-                .ToList();
+            try
+            {
+                var resp = await _contaBancariaServico.Navegar(criterio);
 
-            return Json(items);
+                var items = resp.Dados
+                    .Select(s => new { label = s.Nome, val = s.Id })
+                    .OrderBy(s => s.label)
+                    .ToList();
+
+                return Json(items);
+            }
+            catch (ApiException)
+            {
+                return Json(null);
+            }
         }
 
         [HttpPost]
         public async Task<JsonResult> ObterCategoria(string prefix)
         {
-            var criterio = new FiltroBase();
-            criterio.OpcoesFiltro = new List<FiltroOpcao>
+            var criterio = new FiltroBase
             {
-                new FiltroOpcao("Nome", TipoOperadorBusca.Contem, prefix)
+                ItensPorPagina = 1
             };
 
-            var resp = await _categoriaServico.Navegar(criterio);
+            try
+            {
+                var resp = await _categoriaServico.Navegar(criterio);
+                var items = resp.Dados
+                    .Select(s => new { label = s.Caminho, val = s.Id })
+                    .Where(w => string.IsNullOrEmpty(prefix) ||
+                                w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderBy(s => s.label)
+                    .ToList();
 
-            var items = resp.Dados.ToList();
-
-            return Json(items);
+                return Json(items);
+            }
+            catch (ApiException)
+            {
+                return Json(null);
+            }
         }
 
         [HttpPost]
         public async Task<JsonResult> ObterPessoa(string prefix)
         {
-            var resp = await _pessoaServico.Navegar(null);
+            var criterio = new FiltroBase
+            {
+                OpcoesFiltro = new List<FiltroOpcao>
+                {
+                    new FiltroOpcao("Nome", TipoOperadorBusca.Contem, prefix)
+                }
+            };
 
-            var items = resp.Dados
-                .Select(s => new { label = s.Nome, val = s.Id })
-                .Where(w => string.IsNullOrEmpty(prefix) ||
-                            w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
-                .OrderBy(s => s.label)
-                .ToList();
+            try
+            {
+                var resp = await _pessoaServico.Navegar(criterio);
 
-            return Json(items);
+                var items = resp.Dados
+                    .Select(s => new { label = s.Nome, val = s.Id })
+                    .OrderBy(s => s.label)
+                    .ToList();
+
+                return Json(items);
+            }
+            catch (ApiException)
+            {
+                return Json(null);
+            }
         }
 
         [HttpPost]
         public async Task<JsonResult> ObterCentroClassificacao(string prefix)
         {
-            var resp = await _centroClassificacaoServico.Navegar(null);
+            var criterio = new FiltroBase
+            {
+                OpcoesFiltro = new List<FiltroOpcao>
+                {
+                    new FiltroOpcao("Nome", TipoOperadorBusca.Contem, prefix)
+                }
+            };
 
-            var items = resp.Dados
-                .Select(s => new { label = s.Nome, val = s.Id })
-                .Where(w => string.IsNullOrEmpty(prefix) ||
-                            w.label.Contains(prefix, StringComparison.InvariantCultureIgnoreCase))
-                .OrderBy(s => s.label)
-                .ToList();
+            try
+            {
+                var resp = await _centroClassificacaoServico.Navegar(criterio);
 
-            return Json(items);
+                var items = resp.Dados
+                    .Select(s => new { label = s.Nome, val = s.Id })
+                    .OrderBy(s => s.label)
+                    .ToList();
+
+                return Json(items);
+            }
+            catch (ApiException)
+            {
+                return Json(null);
+            }
         }
 
         public async Task<IActionResult> Clonar(string id)
@@ -163,9 +213,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             {
                 Contas = contas,
                 Movimentos = new StaticPagedList<MovimentoBancarioViewModel>(
-                    movimentos
-                        .Where(w => w.ContaBancariaId == idContaBancaria)
-                        .ToList(),
+                    movimentos,
                     filtroMovimento.Pagina,
                     filtroMovimento.ItensPorPagina,
                     totalMovimentos)

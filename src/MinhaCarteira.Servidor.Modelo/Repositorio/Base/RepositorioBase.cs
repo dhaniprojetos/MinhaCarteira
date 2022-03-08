@@ -75,32 +75,12 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                     var miTs = typeof(int).GetMethod("ToString", Type.EmptyTypes);
                     var miC = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
-                    //var param = Expression.Parameter(property.Type, "p");
-                    //var prop = Expression.PropertyOrField(param, nomePropriedade);
-                    ////MethodInfo mContains = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                    //var buscar = Expression.Constant(valor.Trim().ToLower(), typeof(string));
-
                     MethodCallExpression method;
-                    //Expression<Func<T, TA>> lambda;
-                    //
-                    //if (EhNumerico(prop.Type))
-                    //{
-                    //    method = Expression.Call(prop, miTs ?? throw new InvalidOperationException());
-                    //    method = Expression.Call(method, miC ?? throw new InvalidOperationException(), buscar);
-                    //    lambda = Expression.Lambda<Func<T, TA>>(method, param);
-                    //}
-                    //else
-                    //{
-                        method = Expression.Call(property, miTl ?? throw new InvalidOperationException());
-                        method = Expression.Call(method, miC, constantExpressionValue);
+                    method = Expression.Call(property, miTl);
+                    method = Expression.Call(method, miC, constantExpressionValue);
 
-                        Expression naoNulo = Expression.NotEqual(property, Expression.Constant(null, property.Type));
-                        clause = Expression.AndAlso(naoNulo, method);
-                        
-                    //}
-                    //
-                    //return lambda;
-
+                    Expression naoNulo = Expression.NotEqual(property, Expression.Constant(null, property.Type));
+                    clause = Expression.AndAlso(naoNulo, method);
                 }
 
                 //you should validate against a null clause....
@@ -290,10 +270,14 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
 
             tab = AdicionarOrdenacao(tab);
 
-            var itens = await tab
-                .Skip((criterio.Pagina - 1) * criterio.ItensPorPagina)
-                .Take(criterio.ItensPorPagina)
-                .ToListAsync();
+            IList<TEntidade> itens;
+
+            if (criterio.ItensPorPagina <= 1)
+                itens = await tab.ToListAsync();
+            else itens = await tab
+                    .Skip((criterio.Pagina - 1) * criterio.ItensPorPagina)
+                    .Take(criterio.ItensPorPagina)
+                    .ToListAsync();
 
             return new Tuple<int, IList<TEntidade>>(totalRegistros, itens);
         }
