@@ -37,7 +37,7 @@ namespace MinhaCarteira.Teste.Mock.Faker
                 .RuleFor(p => p.TipoMovimento, f => f.PickRandom<TipoMovimento>())
                 .RuleFor(p => p.DataMovimento, f => f.Date.Between(dataInicial, dataFinal))
                 .RuleFor(p => p.Descricao, f => f.Random.Words(5))
-                .RuleFor(p => p.Valor, f=> f.Random.Decimal(0, 99999))
+                .RuleFor(p => p.Valor, f=> f.Random.Decimal(0, 999))
                 .RuleFor(p => p.IdAuxiliar, f => f.Random.Int(0, 500).OrNull(f, .8f))
                 .RuleFor(p => p.CentroClassificacao, _centroClassificacao.DadosParaInsercao())
                 .RuleFor(p => p.Pessoa, _pessoaBuilder.DadosParaInsercao())

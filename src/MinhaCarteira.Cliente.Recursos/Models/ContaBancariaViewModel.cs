@@ -16,7 +16,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public string Agencia { get; set; }
         public string Conta { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd/mm/yyyy hh:mm:ss", ApplyFormatInEditMode = true)]
         public DateTime DataSaldoInicial { get; set; }
         [DataType(DataType.Currency)]
         public decimal ValorSaldoInicial { get; set; }
@@ -34,7 +34,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public ContaBancariaViewModel()
         {
             InstituicoesBancaria = new List<SelectListItem>();
-            DataSaldoInicial = DateTime.Now;
+            DataSaldoInicial = DateTime.Today;
         }
         public ContaBancariaViewModel(Resposta<IList<InstituicaoFinanceira>> resposta)
         {

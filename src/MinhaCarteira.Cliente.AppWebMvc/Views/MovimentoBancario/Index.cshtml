@@ -16,7 +16,6 @@
     <a asp-action="Criar" asp-route-idContaBancaria="@id">Create New</a>
 </p>
 
-
 <div class="row">
     <div class="d-flex flex-column col-md-3 col-sm-4">
         <button class="navbar-toggler text-start"
@@ -31,32 +30,51 @@
 
         <hr style="border: 0px; border-top: solid 2px #000; opacity: 1;">
         <ul class="nav nav-pills flex-column collapse show" id="sidebarSupportedContent">
-            @foreach (var contaBancaria in Model.Contas)
+            @if (Model.Contas == null || !Model.Contas.Any())
             {
-                var corFont = contaBancaria.Id.ToString() == id?.ToString()
-                    ? "text-light"
-                    : contaBancaria.ValorSaldoAtual > 0
-                        ? "text-primary"
-                        : contaBancaria.ValorSaldoAtual < 0
-                            ? "text-danger"
-                            : "text-secondary";
-
-                var classe = contaBancaria.Id.ToString() == id?.ToString()
-                ? "active" : "";
-
                 <li class="nav-item">
-                    <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark @classe">
-                        @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
-                        {
-                            <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
-                                 height="32" width="32" asp-append-version="true" class="float-start align-middle mt-2 me-2" />
-                        }
-                        <div>
-                            <span>@contaBancaria.Nome</span><br />
-                            <small class="@corFont text-end">@Html.DisplayFor(modelItem => contaBancaria.ValorSaldoAtual)</small>
+                    <div class="p-0 pb-1 bg-light rounded-3">
+                        <div class="container-fluid">
+                            <h1 class="display-5 fw-bold">Contas</h1>
+                            <p class="fs-5">Você não possui nenhuma conta bancária a ser listada por aqui.</p>
+                            <p class="fs-6">Clique no botão abaixo para cadastrar uma nova conta bancária.</p>
+
+                            <a class="btn btn-lg mb-3 btn-primary" asp-action="Criar" asp-controller="ContaBancaria" asp-route-idContaBancaria="@id" role="button">
+                                Cadastrar
+                            </a>
                         </div>
-                    </a>
+                    </div>
                 </li>
+            }
+            else
+            {
+                @foreach (var contaBancaria in Model.Contas)
+                {
+                    var corFont = contaBancaria.Id.ToString() == id?.ToString()
+                        ? "text-light"
+                        : contaBancaria.ValorSaldoAtual > 0
+                            ? "text-primary"
+                            : contaBancaria.ValorSaldoAtual < 0
+                                ? "text-danger"
+                                : "text-secondary";
+
+                    var classe = contaBancaria.Id.ToString() == id?.ToString()
+                        ? "active bg-secondary fw-bold" : "";
+
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark p-0 ps-2 pt-2 pb-2 mb-2 @classe">
+                            @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
+                            {
+                                <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
+                                     height="48" width="48" asp-append-version="true" class="rounded float-start" />
+                            }
+                            <div class="p-0 ps-2 text-truncate">
+                                <span class="text-break">@contaBancaria.Nome</span><br />
+                                <small class="@corFont text-end">@Html.DisplayFor(modelItem => contaBancaria.ValorSaldoAtual)</small>
+                            </div>
+                        </a>
+                    </li>
+                }
             }
         </ul>
     </div>
@@ -80,86 +98,115 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Movimentos)
+                @if (Model.Movimentos == null || Model.Movimentos.Count <= 0)
                 {
-                    var corFundoConciliada = item.AgendamentoItemId != null
-                        ? "bg-success bg-opacity-10"
-                        : string.Empty;
-
-                    var corFont = item.ValorReal > 0
-                        ? "text-primary"
-                        : item.ValorReal < 0
-                            ? "text-danger"
-                            : "text-secondary";
-
                     <tr class="align-middle">
-                        <td data-title="Categoria">
-                            <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
-                                 title="@item.Categoria.Nome"
-                                 height="42" width="42"
-                                 alt="@item.Categoria.Nome"
-                                 class="d-none d-sm-inline"
-                                 asp-append-version="true" />
+                        <td colspan="10" class="p-0 m-0">
+                            <div class="p-5 mb-4 bg-light rounded-3">
+                                <div class="container-fluid">
+                                    <h1 class="display-5 fw-bold">Movimento Bancário</h1>
+                                    <p class="col-md-12 fs-4">Você não possui nenhum movimento bancário a ser listado por aqui.</p>
+                                    <p class="col-md-12 fs-6">Verifique as contas cadastradas e tente cadastrar um novo item.</p>
 
-                            <span class="d-sm-none">
-                                @Html.DisplayFor(modelItem => item.Categoria.Nome)
-                            </span>
-                        </td>
-                        <td data-title="Conciliada?" class="@corFundoConciliada">
-                            @if (item.AgendamentoItemId != null)
-                            {
-                                <span class="d-sm-none">Sim</span>
-                                <i class="text-success fa fa-link"></i>
-                            }
-                            else
-                            {
-                                <span class="d-sm-none">Não</span>
-                            }
-                        </td>
-                        <td data-title="Data">
-                            @Html.DisplayFor(modelItem => item.DataMovimento)
-                        </td>
-                        <td data-title="Valor" class="text-end fw-bold fs-6 @corFont">
-                            @Html.DisplayFor(modelItem => item.ValorReal)
-                        </td>
-                        <td data-title="Descrição">
-                            @Html.DisplayFor(modelItem => item.Descricao)
-                        </td>
-                        <td data-title="Ação">
-                            <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
-                                <i class="fa-solid fa-lg fa-pen-to-square"></i>
-                            </a>
-                            <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
-                                <i class="fa-solid fa-lg fa-info-circle"></i>
-                            </a>
-                            <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
-                                <i class="fa-solid fa-lg fa-trash-can"></i>
-                            </a>
-                            <a title="Clonar registro" class="btn btn-outline-info p-0 pt-1 pb-1" style="width: 40px;" asp-action="Clonar" asp-route-id="@item.Id">
-                                <i class="fa-solid fa-lg fa-clone"></i>
-                            </a>
+                                    @{
+                                        var classeBotao = Model.Contas.Count > 0
+                                            ? "btn-primary"
+                                            : "btn-secondary disabled";
+                                    }
+                                    <a class="btn btn-lg @classeBotao" asp-action="Criar" asp-route-idContaBancaria="@id" role="button">
+                                        Cadastrar
+                                    </a>
+                                </div>
+                            </div>
                         </td>
                     </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.Movimentos)
+                    {
+                        var corFundoConciliada = item.AgendamentoItemId != null
+                            ? "bg-success bg-opacity-10"
+                            : string.Empty;
+
+                        var corFont = item.ValorReal > 0
+                            ? "text-primary"
+                            : item.ValorReal < 0
+                                ? "text-danger"
+                                : "text-secondary";
+
+                        <tr class="align-middle">
+                            <td data-title="Categoria">
+                                <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
+                                     title="@item.Categoria.Nome"
+                                     height="42" width="42"
+                                     alt="@item.Categoria.Nome"
+                                     class="d-none d-sm-inline"
+                                     asp-append-version="true" />
+
+                                <span class="d-sm-none">
+                                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                                </span>
+                            </td>
+                            <td data-title="Conciliada?" class="@corFundoConciliada">
+                                @if (item.AgendamentoItemId != null)
+                                {
+                                    <span class="d-sm-none">Sim</span>
+                                    <i class="text-success fa fa-link"></i>
+                                }
+                                else
+                                {
+                                    <span class="d-sm-none">Não</span>
+                                }
+                            </td>
+                            <td data-title="Data">
+                                @Html.DisplayFor(modelItem => item.DataMovimento)
+                            </td>
+                            <td data-title="Valor" class="text-end fw-bold fs-6 @corFont">
+                                @Html.DisplayFor(modelItem => item.ValorReal)
+                            </td>
+                            <td data-title="Descrição">
+                                @Html.DisplayFor(modelItem => item.Descricao)
+                            </td>
+                            <td data-title="Ação">
+                                <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-lg fa-pen-to-square"></i>
+                                </a>
+                                <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-lg fa-info-circle"></i>
+                                </a>
+                                <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-lg fa-trash-can"></i>
+                                </a>
+                                <a title="Clonar registro" class="btn btn-outline-info p-0 pt-1 pb-1" style="width: 40px;" asp-action="Clonar" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-lg fa-clone"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
 
-        @*<div style="float: right">
-            Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
-        </div>*@
+        @if (Model.Movimentos.Count > 0)
+        {
+            <div style="float: right">
+                Página @(Model.Movimentos.PageCount < Model.Movimentos.PageNumber ? 0 : Model.Movimentos.PageNumber) de @Model.Movimentos.PageCount
+            </div>
 
-        @Html.PagedListPager(
-            Model.Movimentos,
-            page => Url.Action("Index", new { page }),
-            new PagedListRenderOptions
-            {
-                PageClasses = new string[] { "page-link" },
-                UlElementClasses = new string[] { "pagination justify-content-center" },
-                LiElementClasses = new string[] { "page-item" },
-                DisplayItemSliceAndTotal = false,
-                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
-            })
+            @Html.PagedListPager(
+                Model.Movimentos,
+                page => Url.Action("Index", new { page }),
+                new PagedListRenderOptions
+                {
+                    PageClasses = new string[] { "page-link" },
+                    UlElementClasses = new string[] { "pagination justify-content-center" },
+                    LiElementClasses = new string[] { "page-item" },
+                    DisplayItemSliceAndTotal = false,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                })
+        }
     </div>
 </div>

@@ -1,18 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Helper;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
@@ -40,8 +37,14 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 var property = Expression.Property(parameterExpression, queryFilterObject.NomePropriedade);
 
                 //create the constant expression value
-                var valor = Convert.ChangeType(queryFilterObject.Valor, property.Type);
-                var constantExpressionValue = Expression.Constant(valor, property.Type);
+                ConstantExpression constantExpressionValue;
+                if (queryFilterObject.Valor == null)
+                    constantExpressionValue = Expression.Constant(null, property.Type);
+                else
+                {
+                    var valor = Convert.ChangeType(queryFilterObject.Valor, property.Type);
+                    constantExpressionValue = Expression.Constant(valor, property.Type);
+                }
 
                 //create the binary expression clause based on the comparison operator
                 BinaryExpression clause = null;
@@ -82,7 +85,19 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                     Expression naoNulo = Expression.NotEqual(property, Expression.Constant(null, property.Type));
                     clause = Expression.AndAlso(naoNulo, method);
                 }
+                else if (queryFilterObject.Operador == TipoOperadorBusca.NaoContem)
+                {
+                    var miTl = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+                    var miTs = typeof(int).GetMethod("ToString", Type.EmptyTypes);
+                    var miC = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
+                    MethodCallExpression method;
+                    method = Expression.Call(property, miTl);
+                    method = Expression.Call(method, miC, constantExpressionValue);
+
+                    Expression naoNulo = Expression.NotEqual(property, Expression.Constant(null, property.Type));
+                    var expr = Expression.AndAlso(naoNulo, Expression.Not(method));
+                }
                 //you should validate against a null clause....
 
                 //assign the item either to the relevant logical comparison expression list

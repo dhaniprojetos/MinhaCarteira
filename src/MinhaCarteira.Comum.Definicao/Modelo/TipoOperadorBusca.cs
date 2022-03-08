@@ -8,6 +8,7 @@
         MaiorOuIgual,
         Menor,
         MenorOuIgual,
-        Contem
+        Contem,
+        NaoContem
     }
 }

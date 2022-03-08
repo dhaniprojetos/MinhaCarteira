@@ -9,6 +9,7 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
@@ -27,13 +28,29 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(ICriterio criterio)
         {
+            criterio.ItensPorPagina = 5;
+            criterio.OpcoesFiltro = new List<FiltroOpcao>
+            {
+                new FiltroOpcao("IdCategoriaPai", Comum.Definicao.Modelo.TipoOperadorBusca.Igual, null)
+            };
+
             var resposta = await Servico.Navegar(criterio);
-            var itens = Mapper.Map<List<CategoriaViewModel>>(
-                resposta.Dados);
+            var itens = resposta.Dados;
+            var itensExpandidos = resposta.Dados
+                .SelectMany(s => s.SubCategoria)
+                .ToList();
+            
+            itensExpandidos
+                .ForEach(f => f.CategoriaPai = itens.FirstOrDefault(item => item.Id == f.IdCategoriaPai));
+
+            itensExpandidos.AddRange(itens);
+
+            var itensViewModel = Mapper.Map<List<CategoriaViewModel>>(
+                itensExpandidos);
 
             return new Tuple<int, IList<CategoriaViewModel>>(
-                resposta.TotalRegistros, 
-                itens?.OrderBy(o => o.Caminho).ToList());
+                resposta.TotalRegistros,
+                itensViewModel?.OrderBy(o => o.Caminho).ToList());
         }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
