@@ -10,11 +10,13 @@
 
 <div class="accordion mt-3 mb-3">
     <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                Movimento Bancário
-            </button>
-        </h2>
+        <div>
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Movimento Bancário
+                </button>
+            </h2>
+        </div>
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body p-0">
                 <form asp-action="Index" method="get" class="p-3">
@@ -41,17 +43,17 @@
                     </div>
 
                     <div class="row justify-content-end pe-2">
-                        <button class="btn btn-primary col-5 col-sm-1 me-2">
+                        <a class="btn btn-success col-5 col-sm-2 col-lg-1 me-2" asp-action="Criar" asp-route-idContaBancaria="@id">
+                            <i class="fa fa-add"></i>
+                            <span>Criar</span>
+                        </a>
+
+                        <button class="btn btn-primary col-5 col-sm-2 col-lg-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
                             </svg>
                             <span>Buscar</span>
                         </button>
-
-                        <a class="btn btn-success col-5 col-sm-1" asp-action="Criar" asp-route-idContaBancaria="@id">
-                            <i class="fa fa-add"></i>
-                            <span>Criar</span>
-                        </a>
                     </div>
                 </form>
             </div>
@@ -60,7 +62,7 @@
 </div>
 
 <div class="row">
-    <div class="d-flex flex-column col-md-3 col-sm-4">
+    <div class="d-flex flex-column col-sm-4 col-lg-3">
         <button class="navbar-toggler text-start"
                 type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebarSupportedContent"
@@ -106,7 +108,7 @@
                         ? "active bg-secondary fw-bold" : "";
 
                     <li class="nav-item">
-                        <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark p-0 ps-2 pt-2 pb-2 mb-2 @classe">
+                        <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark shadow p-0 ps-2 pt-2 pb-2 mb-2 @classe">
                             @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
                             {
                                 <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
@@ -123,7 +125,7 @@
         </ul>
     </div>
 
-    <div class="col-md-9 col-sm-8 table-responsive" id="no-more-tables">
+    <div class="col-sm-8 col-lg-9 table-responsive" id="no-more-tables">
         <table class="table table-hover">
             <thead>
                 <tr>
