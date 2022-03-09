@@ -5,14 +5,59 @@
 
 @{
     ViewData["Title"] = "Index";
+    await Html.RenderPartialAsync("_PartialAlertas");
 }
 
-<h1>Index</h1>
-@{await Html.RenderPartialAsync("_PartialAlertas");}
+<div class="accordion mt-3 mb-3">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Cliente / Fornecedor
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body p-0">
+                <form asp-action="Index" method="get" class="p-3">
+                    <div class="row mb-2">
+                        <div class="col-sm-3">
+                            <label class="form-label">Campo</label>
+                            <select class="form-select">
+                                <option>Data</option>
+                            </select>
+                        </div>
 
-<p>
-    <a asp-action="Criar">Create New</a>
-</p>
+                        <div class="col-sm-3">
+                            <label class="form-label">Operador</label>
+                            <select class="form-select">
+                                <option>Data</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="form-label">Valor</label>
+                            <input id="txtCategoria" class="form-control" />
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end pe-2">
+                        <button class="btn btn-primary col-5 col-sm-1 me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                            </svg>
+                            <span>Buscar</span>
+                        </button>
+
+                        <a class="btn btn-success col-5 col-sm-1" asp-action="Criar">
+                            <i class="fa fa-add"></i>
+                            <span>Criar</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="table-responsive-sm">
     <table class="table table-hover">
@@ -31,14 +76,14 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model == null || !Model.Any())
+            @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model == null || !Model.Any()))
             {
                 <tr class="align-middle">
                     <td colspan="10" class="p-0 m-0">
                         <div class="p-5 mb-4 bg-light rounded-3">
                             <div class="container-fluid">
-                                <h1 class="display-5 fw-bold">Pessoa</h1>
-                                <p class="col-md-12 fs-4">Você não possui nenhuma pessoa a ser listada por aqui.</p>
+                                <h1 class="display-5 fw-bold">Cliente / Fornecedor</h1>
+                                <p class="col-md-12 fs-4">Você não possui nenhum cliente/fornecedor a ser listado por aqui.</p>
                                 <p class="col-md-12 fs-6">Clique no botão abaixo para cadastrar um novo item.</p>
 
                                 <a class="btn btn-lg btn-primary" asp-action="Criar" role="button">

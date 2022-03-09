@@ -7,48 +7,57 @@
     var id = ViewContext.RouteData.Values["id"] ?? "1";
     await Html.RenderPartialAsync("_PartialAlertas");
 }
-@*
-    <p>
-        <a asp-action="Criar" asp-route-idContaBancaria="@id">Create New</a>
-    </p>*@
 
-<form asp-action="Index" method="get" class="p-3 mb-3" style="background-color: #ddd; border: 1px solid #bbb;">
-    <fieldset>
-        <legend>Movimento bancário</legend>
-        <div class="row mb-2">
-            <div class="col-sm-2">
-                <label class="form-label">Campo</label>
-                <select class="form-select">
-                    <option>Data</option>
-                </select>
-            </div>
-
-            <div class="col-sm-2">
-                <label class="form-label">Operador</label>
-                <select class="form-select">
-                    <option>Data</option>
-                </select>
-            </div>
-
-            <div class="col-sm-6">
-                <label class="form-label">Valor</label>
-                <input id="txtCategoria" class="form-control" />
-                <span class="text-danger"></span>
-            </div>
-
-            <button class="col-sm-1 btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                </svg>
+<div class="accordion mt-3 mb-3">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Movimento Bancário
             </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body p-0">
+                <form asp-action="Index" method="get" class="p-3">
+                    <div class="row mb-2">
+                        <div class="col-sm-3">
+                            <label class="form-label">Campo</label>
+                            <select class="form-select">
+                                <option>Data</option>
+                            </select>
+                        </div>
 
-            <a class="col-sm-1 btn btn-success align-middle" asp-action="Criar" asp-route-idContaBancaria="@id">
-                <i class="fa fa-add"></i>
-                Criar
-            </a>
+                        <div class="col-sm-3">
+                            <label class="form-label">Operador</label>
+                            <select class="form-select">
+                                <option>Data</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="form-label">Valor</label>
+                            <input id="txtCategoria" class="form-control" />
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end pe-2">
+                        <button class="btn btn-primary col-5 col-sm-1 me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                            </svg>
+                            <span>Buscar</span>
+                        </button>
+
+                        <a class="btn btn-success col-5 col-sm-1" asp-action="Criar" asp-route-idContaBancaria="@id">
+                            <i class="fa fa-add"></i>
+                            <span>Criar</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </fieldset>
-</form>
+    </div>
+</div>
 
 <div class="row">
     <div class="d-flex flex-column col-md-3 col-sm-4">
@@ -64,7 +73,8 @@
 
         <hr style="border: 0px; border-top: solid 2px #000; opacity: 1;">
         <ul class="nav nav-pills flex-column collapse show" id="sidebarSupportedContent">
-            @if (Model.Contas == null || !Model.Contas.Any())
+
+            @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model.Contas == null || !Model.Contas.Any()))
             {
                 <li class="nav-item">
                     <div class="p-0 pb-1 bg-light rounded-3">
@@ -132,7 +142,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model.Movimentos == null || Model.Movimentos.Count <= 0)
+                @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model.Movimentos == null || Model.Movimentos.Count <= 0))
                 {
                     <tr class="align-middle">
                         <td colspan="10" class="p-0 m-0">

@@ -6,7 +6,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class AgendamentoItemViewModel
+    public class AgendamentoItemViewModel : BaseViewModel
     {
         public int Id { get; set; }
         public int AgendamentoId { get; set; }

@@ -1,6 +1,7 @@
 ﻿@using MinhaCarteira.Comum.Definicao.Interface.Servico
 
-@if (ViewBag?.RetornoApi != null)
+@if (ViewBag?.RetornoApi != null && 
+     ViewBag.RetornoApi.Mensagem != "Nenhum registro localizado.")
 {
     var retornoApi = ViewBag.RetornoApi as IRespostaServico;
     var classAlert = "alert-success";
