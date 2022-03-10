@@ -43,18 +43,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<MovimentoBancarioViewModel> InicializarViewModel(MovimentoBancarioViewModel viewModel)
         {
-            //var respPessoa = await _pessoaServico.Navegar(null);
-            //viewModel.AdicionarPessoas(respPessoa.Dados);
-            //
-            //var respCentros = await _centroClassificacaoServico.Navegar(null);
-            //viewModel.AdicionarCentrosClassificacao(respCentros.Dados);
-            //
-            //var respCategorias = await _categoriaServico.Navegar(null);
-            //viewModel.AdicionarCategorias(respCategorias.Dados);
-            //
-            //var respContas = await _contaBancariaServico.Navegar(null);
-            //viewModel.AdicionarContasBancarias(respContas.Dados);
-            //
             return await Task.FromResult(viewModel);
         }
 
@@ -239,7 +227,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
                 var item = await ObterMovimentosConta(idConta, filtroMovimento);
 
+                if (!TempData.ContainsKey("RetornoApi")) return View(item);
+                var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
+                ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
+
                 return View(item);
+
             }
             catch (Refit.ApiException ex)
             {

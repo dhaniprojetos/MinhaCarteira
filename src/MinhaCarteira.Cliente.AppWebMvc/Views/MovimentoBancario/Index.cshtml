@@ -3,8 +3,8 @@
 @model MinhaCarteira.Cliente.Recursos.Models.ListaMovimentoBancarioViewModel
 
 @{
-    var id = ViewContext.RouteData.Values["id"] ?? "1";
     await Html.RenderPartialAsync("_PartialAlertas");
+    var id = ViewContext.RouteData.Values["id"] ?? "1";
 
     ViewData["Title"] = "Movimentos Bancários";
     ViewData["Icone"] = "<i class='fa fa-arrow-down-1-9 fa-lg text-primary'></i>";
@@ -64,7 +64,7 @@
     </div>
 </div>
 
-<div class="row col-sm-12">
+<div class="row m-0">
     <div class="d-flex flex-column col-md-6 col-lg-4 col-xl-3">
         <button class="navbar-toggler text-start"
                 type="button" data-bs-toggle="collapse"

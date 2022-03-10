@@ -15,14 +15,6 @@
     }
 }
 
-@media (min-width: 768px) {
-    #menuLogin {
-        position: absolute;
-        bottom: 20px;
-        border-top: 1px solid #dee2e6;
-    }
-}
-
 footer {
     position: absolute;
     bottom: 0;
@@ -37,6 +29,34 @@ footer {
     left: 2%;
     width: 96%;
 }
+
+@media (min-width: 768px) {
+    .myAlert-bottom {
+        left: 190px;
+        width: 75%;
+    }
+
+    #menuLogin {
+        position: absolute;
+        bottom: 20px;
+        border-top: 1px solid #dee2e6;
+    }
+}
+
+@media (min-width: 992px) {
+    .myAlert-bottom {
+        left: 190px;
+        width: 80%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .myAlert-bottom {
+        left: 190px;
+        width: 85%;
+    }
+}
+
 
 @media only screen and (max-width: 572px) {
 
