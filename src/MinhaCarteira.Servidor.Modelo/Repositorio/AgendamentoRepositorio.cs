@@ -130,7 +130,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
             Contexto.Entry(itemDb).State = EntityState.Detached;
 
-            return null;
+            return parcela;
         }
 
         public async Task<bool> ConciliarParcela(int id)

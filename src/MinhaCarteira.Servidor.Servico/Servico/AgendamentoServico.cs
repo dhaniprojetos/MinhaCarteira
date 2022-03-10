@@ -139,15 +139,15 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             return item;
         }
 
-        public async Task<AgendamentoItem> ConciliarParcela(int id, string idMovimentos)
+        public async Task<bool> ConciliarParcela(int id, string idMovimentos)
         {
             var _ = await ((MovimentoBancarioRepositorio)_movimentoRepositorio)
                 .ConciliarParcela(id, idMovimentos);
             
-            _ = await ((AgendamentoRepositorio)Repositorio)
+            var alterado = await ((AgendamentoRepositorio)Repositorio)
                 .ConciliarParcela(id);
 
-            return null;
+            return alterado;
         }
     }
 }

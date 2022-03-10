@@ -20,6 +20,6 @@ namespace MinhaCarteira.Cliente.Recursos.Refit
         Task<Resposta<AgendamentoItem>> BaixarParcela(AgendamentoItem item);
 
         [Post("/conciliar-parcela")]
-        Task<Resposta<AgendamentoItem>> ConciliarParcela(int id, string idMovimentos);
+        Task<Resposta<bool>> ConciliarParcela(int id, string idMovimentos);
     }
 }

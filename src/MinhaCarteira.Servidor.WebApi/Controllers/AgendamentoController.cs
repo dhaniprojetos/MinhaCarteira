@@ -79,7 +79,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
                         "Nenhum registro localizado."))
                     : Ok(new Resposta<AgendamentoItem>(
                         itens,
-                        "Parcela localizada com sucesso."));
+                        "Pagamento realizado com sucesso."));
             }
             catch (Exception e)
             {
@@ -97,14 +97,14 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             IActionResult resposta;
             try
             {
-                var itens = await ((IAgendamentoServico)Servico).ConciliarParcela(id, idMovimentos);
-                resposta = itens == null
-                    ? NotFound(new Resposta<AgendamentoItem>(
-                        null,
-                        "Nenhum registro localizado."))
-                    : Ok(new Resposta<AgendamentoItem>(
-                        itens,
-                        "Parcela localizada com sucesso."));
+                var conciliado = await ((IAgendamentoServico)Servico).ConciliarParcela(id, idMovimentos);
+                resposta = !conciliado
+                    ? NotFound(new Resposta<bool>(
+                        conciliado,
+                        "Não foi possível realizar a conciliação corretamente."))
+                    : Ok(new Resposta<bool>(
+                        conciliado,
+                        "Parcela conciliada com sucesso."));
             }
             catch (Exception e)
             {

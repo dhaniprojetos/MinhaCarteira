@@ -110,14 +110,14 @@
                     var classe = contaBancaria.Id.ToString() == id?.ToString()
                         ? "active bg-secondary fw-bold" : "";
 
-                    <li class="nav-item">
+                    <li class="nav-item col-sm-12">
                         <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark shadow p-0 ps-2 pt-2 pb-2 mb-2 @classe">
                             @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
                             {
                                 <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
                                      height="48" width="48" asp-append-version="true" class="rounded float-start" />
                             }
-                            <div class="p-0 ps-2 text-truncate">
+                            <div class="p-0 ps-2 pe-1 text-truncate">
                                 <span class="text-break">@contaBancaria.Nome</span><br />
                                 <small class="@corFont text-end">@Html.DisplayFor(modelItem => contaBancaria.ValorSaldoAtual)</small>
                             </div>
