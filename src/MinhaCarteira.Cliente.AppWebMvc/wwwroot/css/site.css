@@ -15,13 +15,20 @@
     }
 }
 
+@media (min-width: 768px) {
+    #menuLogin {
+        position: absolute;
+        bottom: 20px;
+        border-top: 1px solid #dee2e6;
+    }
+}
+
 footer {
     position: absolute;
     bottom: 0;
     width: 90%;
     height: 30px;
 }
-
 
 .myAlert-bottom {
     z-index: 999;

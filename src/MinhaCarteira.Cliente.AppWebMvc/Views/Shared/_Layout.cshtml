@@ -51,11 +51,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="MovimentoBancario" asp-action="Index">Movimento</a>
+                        <a class="nav-link" asp-area="" asp-controller="Agendamento" asp-action="Index">Agendamento</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Agendamento" asp-action="Index">Agendamento</a>
+                        <a class="nav-link" asp-area="" asp-controller="MovimentoBancario" asp-action="Index">Movimento</a>
                     </li>
 
                     <li class="nav-item d-grid d-sm-none d-md-grid">
@@ -111,7 +111,7 @@
                     </li>
                 </ul>
 
-                <ul class="navbar-nav flex-grow-1">
+                <ul class="navbar-nav flex-grow-1" id="menuLogin">
                     @if (User.Identity is not { IsAuthenticated: true })
                     {
                         <li>
@@ -138,7 +138,7 @@
 
     <div id="page-container">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light mb-3 p-0 bg-secondary bg-opacity-10 border-bottom">
-            <div class="container" style="height:74px;">
+            <div class="container-fluid" style="height:74px;">
                 <a class="navbar-brand" asp-action="Index">
                     <span class="fs-4">
                         @Html.Raw(ViewData["Icone"])
@@ -160,7 +160,7 @@
             </div>
         </nav>
 
-        <main role="main" class="container-fuid ps-5 pe-5">
+        <main role="main" class="container-fuid ps-2 pe-2 ps-lg-5 pe-lg-5">
             @RenderBody()
         </main>
 
