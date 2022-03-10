@@ -4,15 +4,17 @@
 @model IPagedList<MinhaCarteira.Cliente.Recursos.Models.ContaBancariaViewModel>
 
 @{
-    ViewData["Title"] = "Index";
     await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Contas Bancárias";
+    ViewData["Icone"] = "<i class='fa fa-credit-card fa-lg text-primary'></i>";
+    ViewData["LinkNovo"] = Url.Action("Criar");
 }
 
-<div class="accordion mt-3 mb-3">
+<div class="accordion mb-3">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                Conta Bancária
+                Filtros
             </button>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">

@@ -2,8 +2,10 @@
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>@ViewData["Title"] - MinhaCarteira.Cliente.AppWebMvc</title>
+
     <environment include="Development">
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
     </environment>
@@ -13,107 +15,162 @@
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css">
+    <script src="~/lib/font-awesome/js/solid.min.js"></script>
+    <script src="~/lib/font-awesome/js/fontawesome.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap&text=dhaniprojetos" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap-navbar-sidebar/dist/navbar-fixed-left.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-navbar-sidebar/docs/docs.min.js" />
     <link rel="stylesheet" href="~/css/site.css" />
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+        <nav class="navbar fixed-left navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom border-end p-0 shadow">
+            <div class="container bg-secondary bg-opacity-10" style="height: 75px;">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="d-none d-sm-inline" src="~/img/dhani.png" />
-                    <img class="d-inline d-sm-none" src="~/img/dhani_mini.png" />
-                    <span class="navbar-brand d-inline d-xl-inline d-sm-none align-middle"
+                    <img class="img-fluid" src="~/img/dhani.png" />
+                    <span class="navbar-brand d-inline d-md-none align-middle fs-3"
                           style="font-family: 'Raleway', sans-serif;">dhani projetos</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+                <button class="navbar-toggler p-2 m-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+            </div>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MovimentoBancario" asp-action="Index">Movimento</a>
-                        </li>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Agendamento" asp-action="Index">Agendamento</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="MovimentoBancario" asp-action="Index">Movimento</a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ContaBancaria" asp-action="Index">Contas</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Agendamento" asp-action="Index">Agendamento</a>
+                    </li>
 
+                    <li class="nav-item d-grid d-sm-none d-md-grid">
+                        <ul class="navbar-nav text-decoration-none">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ContaBancaria" asp-action="Index">Contas</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Pessoa" asp-action="Index">Pessoa</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="CentroClassificacao" asp-action="Index">Centro de Classificação</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="InstituicaoFinanceira" asp-action="Index">Instituição</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown d-sm-inline d-none d-md-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Módulos
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Pessoa" asp-action="Index">Pessoa</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="CentroClassificacao" asp-action="Index">Centro de Classificação</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="InstituicaoFinanceira" asp-action="Index">Instituição</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav flex-grow-1">
+                    @if (User.Identity is not { IsAuthenticated: true })
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Logar">Login</a>
+                        </li>
+                    }
+                    else
+                    {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Módulos
+                                <i class="fa-solid fa-user"></i>
+                                @User.Identity.Name
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Pessoa" asp-action="Index">Pessoa</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="CentroClassificacao" asp-action="Index">Centro de Classificação</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="InstituicaoFinanceira" asp-action="Index">Instituição</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                                </li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Conta" asp-action="Sair">Sair</a></li>
                             </ul>
                         </li>
-                    </ul>
-
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity is not { IsAuthenticated: true })
-                        {
-                            <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Conta" asp-action="Logar">Login</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-user"></i>
-                                    @User.Identity.Name
-                                </a>
-
-                                <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Conta" asp-action="Sair">Sair</a></li>
-                                </ul>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                    }
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div id="page-container">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light mb-3 p-0 bg-secondary bg-opacity-10 border-bottom">
+            <div class="container" style="height:74px;">
+                <a class="navbar-brand" asp-action="Index">
+                    <span class="fs-4">
+                        @Html.Raw(ViewData["Icone"])
+                        @ViewData["Title"]
+                    </span>
+                </a>
+
+                @if (ViewData["LinkNovo"] != null)
+                {
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <a class='btn btn-success' href="@ViewData["LinkNovo"]">
+                                <i class='fa fa-add d-none'></i>
+                                <span>Novo</span>
+                            </a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </nav>
+
+        <main role="main" class="container-fuid ps-5 pe-5">
             @RenderBody()
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - MinhaCarteira - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+        <br /><br />
+        <footer class="border-top footer text-muted ms-3">
+            <div class="container-fluid">
+                &copy; 2022 - MinhaCarteira - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
 
     @if (!String.IsNullOrWhiteSpace(Context.Request.PathBase.Value))
     {
@@ -133,7 +190,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/font-awesome/js/all.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/someeRemoveAds.js" asp-append-version="true"></script>
 

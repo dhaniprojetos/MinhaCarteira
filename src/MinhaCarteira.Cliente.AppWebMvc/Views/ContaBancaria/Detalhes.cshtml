@@ -1,14 +1,14 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.ContaBancariaViewModel
 
 @{
-    ViewData["Title"] = "Detalhes";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Contas Bancárias";
+    ViewData["Icone"] = "<i class='fa fa-credit-card fa-lg text-primary'></i>";
 }
 
 <h1>Detalhes</h1>
-
+<hr />
 <div>
-    <h4>ContaBancariaViewModel</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(m => m.Id)

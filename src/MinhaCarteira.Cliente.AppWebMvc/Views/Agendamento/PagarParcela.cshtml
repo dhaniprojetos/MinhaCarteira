@@ -2,13 +2,12 @@
 @model MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel
 
 @{
-    ViewData["Title"] = "PagarParcela";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Agendamento";
+    ViewData["Icone"] = "<i class='fa fa-calendar-day fa-lg text-primary'></i>";
 }
 
-<h1>PagarParcela</h1>
-@{await Html.RenderPartialAsync("_PartialAlertas");}
-
-<h4>AgendamentoItemViewModel</h4>
+<h1>Pagamento</h1>
 <hr />
 <form asp-action="PagarParcela">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>

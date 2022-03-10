@@ -1,14 +1,14 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.AgendamentoViewModel
 
 @{
-    ViewData["Title"] = "Detalhes";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Agendamento";
+    ViewData["Icone"] = "<i class='fa fa-calendar-day fa-lg text-primary'></i>";
 }
 
 <h1>Detalhes</h1>
-
+<hr />
 <div>
-    <h4>AgendamentoViewModel</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(m => m.Id)
@@ -103,6 +103,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Alterar", "Alterar", new { id = Model.Id }) |
+    @Html.ActionLink("Alterar", "Alterar", new { id = Model?.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>

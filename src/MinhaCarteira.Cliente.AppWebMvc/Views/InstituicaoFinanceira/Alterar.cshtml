@@ -1,12 +1,12 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.InstituicaoFinanceiraViewModel
 
 @{
-    ViewData["Title"] = "Alterar";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Instituição Financeira";
+    ViewData["Icone"] = "<i class='fa fa-building-columns fa-lg text-primary'></i>";
 }
 
 <h1>Alterar</h1>
-
-<h4>InstituicaoFinanceiraViewModel</h4>
 <hr />
 <form asp-action="Alterar" enctype="multipart/form-data" method="post">
 

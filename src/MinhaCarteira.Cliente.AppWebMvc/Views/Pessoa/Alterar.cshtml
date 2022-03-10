@@ -1,12 +1,12 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.PessoaViewModel
 
 @{
-    ViewData["Title"] = "Alterar";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Cliente / Fornecedor";
+    ViewData["Icone"] = "<i class='fa fa-user fa-lg text-primary'></i>";
 }
 
 <h1>Alterar</h1>
-
-<h4>PessoaViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">

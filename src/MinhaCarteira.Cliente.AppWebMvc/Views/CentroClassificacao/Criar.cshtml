@@ -1,12 +1,12 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.CentroClassificacaoViewModel
 
 @{
-    ViewData["Title"] = "Criar";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Centro de Classificação";
+    ViewData["Icone"] = "<i class='fa fa-house fa-lg text-primary'></i>";
 }
 
-<h1>Criar</h1>
-
-<h4>CentroClassificacaoViewModel</h4>
+<h1>Novo</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">

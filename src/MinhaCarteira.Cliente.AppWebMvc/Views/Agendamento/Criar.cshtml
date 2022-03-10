@@ -1,16 +1,17 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.AgendamentoViewModel
 
 @{
-    ViewData["Title"] = "Criar";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Agendamento";
+    ViewData["Icone"] = "<i class='fa fa-calendar-day fa-lg text-primary'></i>";
 }
 
-<h1>Criar</h1>
-
-<h4>AgendamentoViewModel</h4>
+<h1>Novo</h1>
 <hr />
-
 <form asp-action="Criar">
+
     @Html.EditorForModel()
+
 </form>
 
 <div>

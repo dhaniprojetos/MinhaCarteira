@@ -3,17 +3,20 @@
 @model MinhaCarteira.Cliente.Recursos.Models.ListaMovimentoBancarioViewModel
 
 @{
-    ViewData["Title"] = "Index";
     var id = ViewContext.RouteData.Values["id"] ?? "1";
     await Html.RenderPartialAsync("_PartialAlertas");
+
+    ViewData["Title"] = "Movimentos Bancários";
+    ViewData["Icone"] = "<i class='fa fa-arrow-down-1-9 fa-lg text-primary'></i>";
+    ViewData["LinkNovo"] = Url.Action("Criar", new { idContaBancaria = id });
 }
 
-<div class="accordion mt-3 mb-3">
+<div class="accordion mb-3">
     <div class="accordion-item">
         <div>
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    Movimento Bancário
+                    Filtros
                 </button>
             </h2>
         </div>

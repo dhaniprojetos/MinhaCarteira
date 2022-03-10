@@ -1,12 +1,12 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel
 
 @{
-    ViewData["Title"] = "ConciliarParcela";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Agendamento";
+    ViewData["Icone"] = "<i class='fa fa-calendar-day fa-lg text-primary'></i>";
 }
 
-<h1>ConciliarParcela</h1>
-
-<h4>AgendamentoItemViewModel</h4>
+<h1>Conciliação</h1>
 <hr />
 <form id="formConciliar">
     <input asp-for="Id" type="hidden" />
