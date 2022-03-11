@@ -16,6 +16,37 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
     public abstract class RepositorioBase<TEntidade> : ICrud<TEntidade>
         where TEntidade : class, IEntidade
     {
+        static MemberExpression GetMemberExpression(Expression expression)
+        {
+            if (expression is MemberExpression expression1)
+            {
+                return expression1;
+            }
+            else if (expression is LambdaExpression)
+            {
+                var lambdaExpression = expression as LambdaExpression;
+                if (lambdaExpression.Body is MemberExpression expression2)
+                {
+                    return expression2;
+                }
+                else if (lambdaExpression.Body is UnaryExpression expression3)
+                {
+                    return ((MemberExpression)expression3.Operand);
+                }
+            }
+            return null;
+        }
+        static MemberExpression CreateExpression(ParameterExpression expression, string propertyName)
+        {
+            Expression body = expression;
+            foreach (var member in propertyName.Split('.'))
+            {
+                body = Expression.PropertyOrField(body, member);
+            }
+            return GetMemberExpression(body);
+            //return Expression.Lambda(body, param);
+        }
+
         protected Expression<Func<Tipo, bool>> SimpleComparison<Tipo>(IList<FiltroOpcao> queryFilterObjects)
         {
             //initialize the body expression
@@ -24,7 +55,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             BinaryExpression orExpressionBody = null;
 
             //create parameter expression
-            ParameterExpression parameterExpression = Expression.Parameter(typeof(TEntidade), "DynamicFilterQuery");
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(Tipo), "DynamicFilterQuery");
 
             //list of binary expressions to store either the || or && operators
             List<BinaryExpression> andExpressions = new();
@@ -33,7 +64,10 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             foreach (var queryFilterObject in queryFilterObjects)
             {
                 //create member property expression
-                var property = Expression.Property(parameterExpression, queryFilterObject.NomePropriedade);
+                MemberExpression property;
+                if (!queryFilterObject.NomePropriedade.Contains("."))
+                    property = Expression.Property(parameterExpression, queryFilterObject.NomePropriedade);
+                else property = CreateExpression(parameterExpression, queryFilterObject.NomePropriedade);
 
                 //create the constant expression value
                 ConstantExpression constantExpressionValue;

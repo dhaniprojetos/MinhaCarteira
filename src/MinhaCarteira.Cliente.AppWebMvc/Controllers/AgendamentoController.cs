@@ -161,9 +161,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return Json(new { redirectToUrl = Url.Action("Index", "Agendamento") });
         }
 
-        #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index(int? page,
-            ListaBaseViewModel<AgendamentoViewModel> model)
+        [HttpGet]
+        public async Task<IActionResult> Index(int? page,
+            ListaBaseViewModel<AgendamentoItemViewModel> model)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 {
                     Pagina = page ?? 1,
                     OpcoesFiltro = {
-                        new FiltroOpcao("DataInicial", TipoOperadorBusca.MaiorOuIgual, DateTime.Now.AddDays(-90).ToString()),
+                        new FiltroOpcao("Data", TipoOperadorBusca.MaiorOuIgual, DateTime.Now.AddDays(-90).ToString()),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
                     }
                 };
@@ -224,6 +224,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             }
         }
 
+
+        #region Métodos sobrescritos apenas manter as views
         public override async Task<IActionResult> Criar()
         {
             return await base.Criar();

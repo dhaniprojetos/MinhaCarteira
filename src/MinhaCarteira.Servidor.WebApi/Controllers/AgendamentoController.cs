@@ -6,10 +6,8 @@ using MinhaCarteira.Servidor.WebApi.Controllers.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
@@ -21,7 +19,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
 
         [Route("contas-a-vencer")]
         [HttpGet]
-        public async Task<IActionResult> ContasAVencer([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] ICriterio criterio)
+        public async Task<IActionResult> ContasAVencer([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] FiltroBase criterio)
         {
             IActionResult resposta;
             try
