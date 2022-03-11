@@ -7,10 +7,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -98,9 +100,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index(int? page)
+        public override async Task<IActionResult> Index(int? page, ListaBaseViewModel<CategoriaViewModel> model)
         {
-            return await base.Index(page);
+            return await base.Index(page, model);
         }
 
         public override async Task<IActionResult> Criar()

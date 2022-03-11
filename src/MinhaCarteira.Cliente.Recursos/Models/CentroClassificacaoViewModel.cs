@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class CentroClassificacaoViewModel : IEntidade
+    public class CentroClassificacaoViewModel : BaseViewModel, IEntidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }

@@ -10,6 +10,8 @@ using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
+using X.PagedList;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -84,9 +86,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index(int? page)
+        public override async Task<IActionResult> Index(int? page, ListaBaseViewModel<ContaBancariaViewModel> model)
         {
-            return await base.Index(page);
+            return await base.Index(page, model);
         }
 
         public override async Task<IActionResult> Criar()

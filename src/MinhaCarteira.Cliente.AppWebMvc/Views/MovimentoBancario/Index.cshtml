@@ -1,5 +1,6 @@
 ﻿@using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common;
+@using MinhaCarteira.Comum.Definicao.Modelo;
 @model MinhaCarteira.Cliente.Recursos.Models.ListaMovimentoBancarioViewModel
 
 @{
@@ -25,32 +26,30 @@
                 <form asp-action="Index" method="get" class="p-3">
                     <div class="row mb-2">
                         <div class="col-sm-3">
-                            <label class="form-label">Campo</label>
-                            <select class="form-select">
-                                <option>Data</option>
-                            </select>
+                            <label asp-for="OpcaoAtual.NomePropriedade" class="form-label"></label>
+                            <input asp-for="OpcaoAtual.NomePropriedade" class="form-control" />
+                            <span asp-validation-for="OpcaoAtual.NomePropriedade" class="text-danger"></span>
                         </div>
 
-                        <div class="col-sm-3">
-                            <label class="form-label">Operador</label>
-                            <select class="form-select">
-                                <option>Data</option>
+                        <div class="col-sm-3 col-lg-2">
+                            <label asp-for="OpcaoAtual.Operador" class="form-label"></label>
+                            <select asp-for="OpcaoAtual.Operador" class="form-select">
+                                @foreach (var c in Enum.GetValues(typeof(TipoOperadorBusca)).Cast<TipoOperadorBusca>())
+                                {
+                                    <option value="@c">@c</option>
+                                }
                             </select>
+                            <span asp-validation-for="OpcaoAtual.Operador" class="text-danger"></span>
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label">Valor</label>
-                            <input id="txtCategoria" class="form-control" />
-                            <span class="text-danger"></span>
+                            <label asp-for="OpcaoAtual.Valor" class="form-label"></label>
+                            <input asp-for="OpcaoAtual.Valor" class="form-control" />
+                            <span asp-validation-for="OpcaoAtual.Valor" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="row justify-content-end pe-2">
-                        <a class="btn btn-success col-5 col-sm-2 col-lg-1 me-2" asp-action="Criar" asp-route-idContaBancaria="@id">
-                            <i class="fa fa-add"></i>
-                            <span>Criar</span>
-                        </a>
-
                         <button class="btn btn-primary col-5 col-sm-2 col-lg-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
@@ -100,22 +99,22 @@
                 @foreach (var contaBancaria in Model.Contas)
                 {
                     var corFont = contaBancaria.Id.ToString() == id?.ToString()
-                        ? "text-light"
-                        : contaBancaria.ValorSaldoAtual > 0
-                            ? "text-primary"
-                            : contaBancaria.ValorSaldoAtual < 0
-                                ? "text-danger"
-                                : "text-secondary";
+                    ? "text-light"
+                    : contaBancaria.ValorSaldoAtual > 0
+                    ? "text-primary"
+                    : contaBancaria.ValorSaldoAtual < 0
+                    ? "text-danger"
+                    : "text-secondary";
 
                     var classe = contaBancaria.Id.ToString() == id?.ToString()
-                        ? "active bg-secondary fw-bold" : "";
+                    ? "active bg-secondary fw-bold" : "";
 
                     <li class="nav-item col-sm-12">
                         <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark shadow p-0 ps-2 pt-2 pb-2 mb-2 @classe">
                             @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
                             {
                                 <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
-                                     height="48" width="48" asp-append-version="true" class="rounded float-start" />
+                         height="48" width="48" asp-append-version="true" class="rounded float-start" />
                             }
                             <div class="p-0 ps-2 pe-1 text-truncate">
                                 <span class="text-break">@contaBancaria.Nome</span><br />
@@ -159,8 +158,8 @@
 
                                     @{
                                         var classeBotao = Model.Contas.Count > 0
-                                            ? "btn-primary"
-                                            : "btn-secondary disabled";
+                                        ? "btn-primary"
+                                        : "btn-secondary disabled";
                                     }
                                     <a class="btn btn-lg @classeBotao" asp-action="Criar" asp-route-idContaBancaria="@id" role="button">
                                         Cadastrar
@@ -175,23 +174,23 @@
                     @foreach (var item in Model.Movimentos)
                     {
                         var corFundoConciliada = item.AgendamentoItemId != null
-                            ? "bg-success bg-opacity-10"
-                            : string.Empty;
+                        ? "bg-success bg-opacity-10"
+                        : string.Empty;
 
                         var corFont = item.ValorReal > 0
-                            ? "text-primary"
-                            : item.ValorReal < 0
-                                ? "text-danger"
-                                : "text-secondary";
+                        ? "text-primary"
+                        : item.ValorReal < 0
+                        ? "text-danger"
+                        : "text-secondary";
 
                         <tr class="align-middle">
                             <td data-title="Categoria">
                                 <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
-                                     title="@item.Categoria.Nome"
-                                     height="42" width="42"
-                                     alt="@item.Categoria.Nome"
-                                     class="d-none d-sm-inline"
-                                     asp-append-version="true" />
+                             title="@item.Categoria.Nome"
+                             height="42" width="42"
+                             alt="@item.Categoria.Nome"
+                             class="d-none d-sm-inline"
+                             asp-append-version="true" />
 
                                 <span class="d-sm-none">
                                     @Html.DisplayFor(modelItem => item.Categoria.Nome)
@@ -244,18 +243,18 @@
             </div>
 
             @Html.PagedListPager(
-                Model.Movimentos,
-                page => Url.Action("Index", new { page }),
-                new PagedListRenderOptions
-                {
-                    PageClasses = new string[] { "page-link" },
-                    UlElementClasses = new string[] { "pagination justify-content-center" },
-                    LiElementClasses = new string[] { "page-item" },
-                    DisplayItemSliceAndTotal = false,
-                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
-                })
+        Model.Movimentos,
+        page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination justify-content-center" },
+        LiElementClasses = new string[] { "page-item" },
+        DisplayItemSliceAndTotal = false,
+        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        })
         }
     </div>
 </div>

@@ -1,8 +1,10 @@
-﻿@using MinhaCarteira.Cliente.Recursos.Models.Enum;
+﻿@using MinhaCarteira.Cliente.Recursos.Models.Base
+@using MinhaCarteira.Cliente.Recursos.Models.Enum;
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common;
-@model IPagedList<MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel>
+@using MinhaCarteira.Comum.Definicao.Modelo;
+@model ListaBaseViewModel<MinhaCarteira.Cliente.Recursos.Models.AgendamentoItemViewModel>
 
 @{
     await Html.RenderPartialAsync("_PartialAlertas");
@@ -23,32 +25,30 @@
                 <form asp-action="Index" method="get" class="p-3">
                     <div class="row mb-2">
                         <div class="col-sm-3">
-                            <label class="form-label">Campo</label>
-                            <select class="form-select">
-                                <option>Data</option>
-                            </select>
+                            <label asp-for="OpcaoAtual.NomePropriedade" class="form-label"></label>
+                            <input asp-for="OpcaoAtual.NomePropriedade" class="form-control" />
+                            <span asp-validation-for="OpcaoAtual.NomePropriedade" class="text-danger"></span>
                         </div>
 
-                        <div class="col-sm-3">
-                            <label class="form-label">Operador</label>
-                            <select class="form-select">
-                                <option>Data</option>
+                        <div class="col-sm-3 col-lg-2">
+                            <label asp-for="OpcaoAtual.Operador" class="form-label"></label>
+                            <select asp-for="OpcaoAtual.Operador" class="form-select">
+                                @foreach (var c in Enum.GetValues(typeof(TipoOperadorBusca)).Cast<TipoOperadorBusca>())
+                                {
+                                    <option value="@c">@c</option>
+                                }
                             </select>
+                            <span asp-validation-for="OpcaoAtual.Operador" class="text-danger"></span>
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label">Valor</label>
-                            <input id="txtCategoria" class="form-control" />
-                            <span class="text-danger"></span>
+                            <label asp-for="OpcaoAtual.Valor" class="form-label"></label>
+                            <input asp-for="OpcaoAtual.Valor" class="form-control" />
+                            <span asp-validation-for="OpcaoAtual.Valor" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="row justify-content-end pe-2">
-                        <a class="btn btn-success col-5 col-sm-2 col-lg-1 me-2" asp-action="Criar">
-                            <i class="fa fa-add"></i>
-                            <span>Criar</span>
-                        </a>
-
                         <button class="btn btn-primary col-5 col-sm-2 col-lg-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
@@ -68,25 +68,25 @@
             <tr>
                 <th style="width: 50px;"></th>
                 <th style="width: 80px;">
-                    @Html.DisplayNameFor(m => m.First().Data)
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Data)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(m => m.First().Agendamento.Descricao)
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Agendamento.Descricao)
                 </th>
                 <th class="text-end" style="width: 140px;">
-                    @Html.DisplayNameFor(m => m.First().Valor)
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Valor)
                 </th>
                 <th style="width: 180px;">
-                    @Html.DisplayNameFor(m => m.First().Agendamento.Categoria.Nome)
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Agendamento.Categoria.Nome)
                 </th>
                 <th style="width: 100px;">
-                    @Html.DisplayNameFor(m => m.First().Agendamento.NomeCentroClassificacao)
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Agendamento.NomeCentroClassificacao)
                 </th>
                 <th style="width: 130px;">Ações</th>
             </tr>
         </thead>
         <tbody>
-            @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model == null || !Model.Any()))
+            @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model == null || !Model.Itens.Any()))
             {
                 <tr class="align-middle">
                     <td colspan="10" class="p-0 m-0">
@@ -106,7 +106,7 @@
             }
             else
             {
-                @foreach (var item in Model)
+                @foreach (var item in Model.Itens)
                 {
                     var classLinha = item.StatusParcela switch
                     {
@@ -166,14 +166,14 @@
         </tbody>
     </table>
 
-    @if (Model != null && Model.Any())
+    @if (Model != null && Model.Itens.Any())
     {
         <div style="float: right">
-            Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+            Página @(Model.Itens.PageCount < Model.Itens.PageNumber ? 0 : Model.Itens.PageNumber) de @Model.Itens.PageCount
         </div>
 
         @Html.PagedListPager(
-                 Model,
+                 Model.Itens,
                  page => Url.Action("Index", new { page }),
                  new PagedListRenderOptions
                  {

@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.StaticFiles;
 using MinhaCarteira.Cliente.Recursos.Attributes;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class CategoriaViewModel : IEntidade
+    public class CategoriaViewModel : BaseViewModel, IEntidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }

@@ -10,14 +10,14 @@ using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Filtro;
-using X.PagedList;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
     [Authorize(Roles = "Admin")]
     public abstract class BaseController<TEntidade, TEntidadeViewModel> : Controller
         where TEntidade : class, IEntidade
-        where TEntidadeViewModel : class, IEntidade
+        where TEntidadeViewModel : BaseViewModel, IEntidade
     {
         private readonly IMapper _mapper;
         protected IMapper Mapper => _mapper;
@@ -54,7 +54,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             var resposta = await _servico.Navegar(criterio);
             var itens = _mapper.Map<List<TEntidadeViewModel>>(resposta.Dados);
             return new Tuple<int, IList<TEntidadeViewModel>>(
-                resposta.TotalRegistros, 
+                resposta.TotalRegistros,
                 itens);
         }
         protected virtual async Task<Tuple<TEntidadeViewModel, TEntidade>> ExecutarAntesSalvar(
@@ -74,7 +74,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(item);
         }
 
-        public virtual async Task<IActionResult> Index(int? page)
+        public virtual async Task<IActionResult> Index(int? page, ListaBaseViewModel<TEntidadeViewModel> model)
         {
             try
             {
@@ -83,9 +83,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                     Pagina = page ?? 1
                 };
 
+                var opcao = model.OpcaoAtual;
+                if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
+                    !string.IsNullOrWhiteSpace(opcao?.Valor))
+                    criterio.OpcoesFiltro.Add(opcao);
+
                 var itens = await ObterTodos(criterio);
-                var itensPaginados = new StaticPagedList<TEntidadeViewModel>(
-                    itens.Item2, criterio.Pagina, criterio.ItensPorPagina, itens.Item1);
+                var itensPaginados = new ListaBaseViewModel<TEntidadeViewModel>(
+                    itens.Item2, criterio, itens.Item1);
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itensPaginados);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
@@ -114,14 +119,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                     ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
                 }
 
-                return View(new List<TEntidadeViewModel>().ToPagedList());
+                return View(new ListaBaseViewModel<TEntidadeViewModel>());
             }
             catch (Exception e)
             {
                 var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(new List<TEntidadeViewModel>().ToPagedList());
+                return View(new ListaBaseViewModel<TEntidadeViewModel>());
             }
         }
 

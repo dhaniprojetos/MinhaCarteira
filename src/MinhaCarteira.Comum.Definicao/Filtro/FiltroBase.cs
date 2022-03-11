@@ -4,12 +4,18 @@ using MinhaCarteira.Comum.Definicao.Modelo;
 
 namespace MinhaCarteira.Comum.Definicao.Filtro
 {
-    public struct FiltroOpcao
+    public class FiltroOpcao
     {
+        public FiltroOpcao()
+        {
+            Operador = TipoOperadorBusca.Contem;
+            NomePropriedade = string.Empty; 
+            Valor = string.Empty;
+        }
         public FiltroOpcao(
             string nomePropriedade,
             TipoOperadorBusca operador,
-            object valor)
+            string valor)
         {
             NomePropriedade = nomePropriedade;
             Valor = valor;
@@ -17,7 +23,7 @@ namespace MinhaCarteira.Comum.Definicao.Filtro
         }
 
         public string NomePropriedade { get; set; }
-        public object Valor { get; set; }
+        public string Valor { get; set; }
         public TipoOperadorBusca Operador { get; set; }
     }
 

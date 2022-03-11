@@ -10,7 +10,8 @@ using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Filtro;
-using X.PagedList;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
+using MinhaCarteira.Comum.Definicao.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -161,19 +162,29 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index(int? page)
+        public override async Task<IActionResult> Index(int? page,
+            ListaBaseViewModel<AgendamentoViewModel> model)
         {
             try
             {
-                var criterio = new FiltroBase()
+                var filtroAgendamento = new FiltroBase()
                 {
-                    Pagina = page ?? 1
+                    Pagina = page ?? 1,
+                    OpcoesFiltro = {
+                        new FiltroOpcao("DataInicial", TipoOperadorBusca.MaiorOuIgual, DateTime.Now.AddDays(-90).ToString()),
+                        //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
+                    }
                 };
 
-                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(90);
+                var opcao = model.OpcaoAtual;
+                if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
+                    !string.IsNullOrWhiteSpace(opcao?.Valor))
+                    filtroAgendamento.OpcoesFiltro.Add(opcao);
+
+                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(filtroAgendamento);
                 var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
-                var itensPagedList = await itens
-                    .ToPagedListAsync(criterio.Pagina, criterio.ItensPorPagina);
+                var itensPagedList = new ListaBaseViewModel<AgendamentoItemViewModel>(
+                    itens, filtroAgendamento, itens.Count);
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itensPagedList);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
@@ -202,14 +213,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                     ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
                 }
 
-                return View(new List<AgendamentoItemViewModel>().ToPagedList());
+                return View(new ListaBaseViewModel<AgendamentoItemViewModel>());
             }
             catch (Exception e)
             {
                 var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(new List<AgendamentoItemViewModel>().ToPagedList());
+                return View(new ListaBaseViewModel<AgendamentoItemViewModel>());
             }
         }
 

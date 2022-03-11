@@ -211,7 +211,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string id, int? page)
+        public async Task<IActionResult> Index(string id, int? page, ListaMovimentoBancarioViewModel model)
         {
             try
             {
@@ -220,10 +220,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 {
                     Pagina = page ?? 1,
                     OpcoesFiltro = {
-                        new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta),
+                        new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta.ToString()),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
                     }
                 };
+
+                if (!string.IsNullOrWhiteSpace(model.OpcaoAtual.NomePropriedade) &&
+                    !string.IsNullOrWhiteSpace(model.OpcaoAtual.Valor))
+                    filtroMovimento.OpcoesFiltro.Add(model.OpcaoAtual);
 
                 var item = await ObterMovimentosConta(idConta, filtroMovimento);
 

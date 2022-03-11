@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class ContaBancariaViewModel : IEntidade
+    public class ContaBancariaViewModel : BaseViewModel, IEntidade
     {
         public int Id { get; set; }
         public string Nome { get; set; }

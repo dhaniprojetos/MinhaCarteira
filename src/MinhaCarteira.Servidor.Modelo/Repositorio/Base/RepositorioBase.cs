@@ -7,7 +7,6 @@ using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
     public abstract class RepositorioBase<TEntidade> : ICrud<TEntidade>
         where TEntidade : class, IEntidade
     {
-        protected Expression<Func<TEntidade, bool>> SimpleComparison(IList<FiltroOpcao> queryFilterObjects)
+        protected Expression<Func<Tipo, bool>> SimpleComparison<Tipo>(IList<FiltroOpcao> queryFilterObjects)
         {
             //initialize the body expression
             BinaryExpression bodyExpression = null;
@@ -132,7 +131,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             if (bodyExpression == null)
                 throw new Exception("Null Expression.");
 
-            var finalExpression = Expression.Lambda<Func<TEntidade, bool>>(bodyExpression, parameterExpression);
+            var finalExpression = Expression.Lambda<Func<Tipo, bool>>(bodyExpression, parameterExpression);
 
             return finalExpression;
         }
@@ -140,7 +139,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             IQueryable<TEntidade> source,
             IList<FiltroOpcao> opcoesFiltro)
         {
-            var filtro = SimpleComparison(opcoesFiltro);
+            var filtro = SimpleComparison<TEntidade>(opcoesFiltro);
 
             return source.Where(filtro);
         }

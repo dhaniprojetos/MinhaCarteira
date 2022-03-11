@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class AgendamentoViewModel : IEntidade
+    public class AgendamentoViewModel : BaseViewModel, IEntidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }

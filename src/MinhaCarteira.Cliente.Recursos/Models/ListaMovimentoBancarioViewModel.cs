@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using MinhaCarteira.Cliente.Recursos.Models.Base;
+using System.Collections.Generic;
 using X.PagedList;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class ListaMovimentoBancarioViewModel
+    public class ListaMovimentoBancarioViewModel : BaseViewModel
     {
         public ListaMovimentoBancarioViewModel()
         {

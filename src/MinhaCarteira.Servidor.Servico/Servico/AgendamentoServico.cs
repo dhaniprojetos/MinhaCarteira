@@ -115,10 +115,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico
             return itemDb;
         }
 
-        public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
+        public async Task<Tuple<int, IList<AgendamentoItem>>> ContasAVencer(ICriterio filtro)
         {
             var itens = await ((AgendamentoRepositorio)Repositorio)
-                .ContasAVencer(qtdDias);
+                .ContasAVencer(filtro);
 
             return itens;
         }
