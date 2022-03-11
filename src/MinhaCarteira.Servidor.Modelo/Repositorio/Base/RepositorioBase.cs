@@ -31,7 +31,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                 }
                 else if (lambdaExpression.Body is UnaryExpression expression3)
                 {
-                    return ((MemberExpression)expression3.Operand);
+                    return (MemberExpression)expression3.Operand;
                 }
             }
             return null;

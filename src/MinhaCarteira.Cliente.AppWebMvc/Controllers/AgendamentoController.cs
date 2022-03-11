@@ -171,7 +171,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 {
                     Pagina = page ?? 1,
                     OpcoesFiltro = {
-                        new FiltroOpcao("Data", TipoOperadorBusca.MaiorOuIgual, DateTime.Now.AddDays(-90).ToString()),
+                        //new FiltroOpcao("Data", TipoOperadorBusca.MenorOuIgual, DateTime.Now.AddDays(120).ToString()),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
                     }
                 };
@@ -184,7 +184,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(filtroAgendamento);
                 var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
                 var itensPagedList = new ListaBaseViewModel<AgendamentoItemViewModel>(
-                    itens, filtroAgendamento, itens.Count);
+                    itens, filtroAgendamento, resposta.TotalRegistros)
+                {
+                    OpcaoAtual = opcao
+                };
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itensPagedList);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;

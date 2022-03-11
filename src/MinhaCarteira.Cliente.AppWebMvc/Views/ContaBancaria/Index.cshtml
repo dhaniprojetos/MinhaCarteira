@@ -11,6 +11,9 @@
     ViewData["Icone"] = "<i class='fa fa-credit-card fa-lg text-primary'></i>";
     ViewData["LinkNovo"] = Url.Action("Criar");
 }
+@section Scripts{
+    <script src="~/js/views/paginacao.js" asp-append-version="true"></script>
+}
 
 <div class="accordion mb-3">
     <div class="accordion-item">
@@ -21,7 +24,9 @@
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body p-0">
-                <form asp-action="Index" method="get" class="p-3">
+                <form asp-action="Index" method="get" class="p-3" id="formBusca">
+                    <input id="page" name="page" type="hidden" />
+
                     <div class="row mb-2">
                         <div class="col-sm-3">
                             <label asp-for="OpcaoAtual.NomePropriedade" class="form-label"></label>

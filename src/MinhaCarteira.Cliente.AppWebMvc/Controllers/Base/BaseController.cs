@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Cliente.Recursos.Models.Base;
+using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
@@ -91,6 +92,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
                 var itens = await ObterTodos(criterio);
                 var itensPaginados = new ListaBaseViewModel<TEntidadeViewModel>(
                     itens.Item2, criterio, itens.Item1);
+                
+                itensPaginados.OpcaoAtual = opcao;
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itensPaginados);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;

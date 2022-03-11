@@ -11,6 +11,9 @@
     ViewData["Icone"] = "<i class='fa fa-arrow-down-1-9 fa-lg text-primary'></i>";
     ViewData["LinkNovo"] = Url.Action("Criar", new { idContaBancaria = id });
 }
+@section Scripts{
+    <script src="~/js/views/paginacao.js" asp-append-version="true"></script>
+}
 
 <div class="accordion mb-3">
     <div class="accordion-item">
@@ -23,7 +26,9 @@
         </div>
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body p-0">
-                <form asp-action="Index" method="get" class="p-3">
+                <form asp-action="Index" method="get" class="p-3" id="formBusca">
+                    <input id="page" name="page" type="hidden" />
+
                     <div class="row mb-2">
                         <div class="col-sm-3">
                             <label asp-for="OpcaoAtual.NomePropriedade" class="form-label"></label>
@@ -114,7 +119,7 @@
                             @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
                             {
                                 <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
-                         height="48" width="48" asp-append-version="true" class="rounded float-start" />
+                                     height="48" width="48" asp-append-version="true" class="rounded float-start" />
                             }
                             <div class="p-0 ps-2 pe-1 text-truncate">
                                 <span class="text-break">@contaBancaria.Nome</span><br />
@@ -186,11 +191,11 @@
                         <tr class="align-middle">
                             <td data-title="Categoria">
                                 <img src="data:@item.Categoria.MimeType;base64,@item.Categoria.IconeCategoria"
-                             title="@item.Categoria.Nome"
-                             height="42" width="42"
-                             alt="@item.Categoria.Nome"
-                             class="d-none d-sm-inline"
-                             asp-append-version="true" />
+                                     title="@item.Categoria.Nome"
+                                     height="42" width="42"
+                                     alt="@item.Categoria.Nome"
+                                     class="d-none d-sm-inline"
+                                     asp-append-version="true" />
 
                                 <span class="d-sm-none">
                                     @Html.DisplayFor(modelItem => item.Categoria.Nome)
