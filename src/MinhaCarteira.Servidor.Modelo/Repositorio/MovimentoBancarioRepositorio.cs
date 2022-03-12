@@ -5,9 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Helper;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
+using MinhaCarteira.Servidor.Modelo.Helper;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
@@ -34,15 +37,45 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
                     .ThenInclude(ti => ti.CategoriaPai);
         }
 
-        public async Task<IList<MovimentoBancario>> ObterMovimentosParaConciliacao()
+        public async Task<Tuple<int, IList<MovimentoBancario>>> ObterMovimentosParaConciliacao(ICriterio criterio)
         {
-            var itens = await
-                AdicionarIncludes(Contexto.MovimentosBancarios)
-                .AsNoTracking()
-                .Where(w => w.AgendamentoItemId == null)
-                .ToListAsync();
+            var tab = criterio.AdicionarIncludes
+                ? AdicionarIncludes(Contexto.MovimentosBancarios).AsNoTracking()
+                : Contexto.MovimentosBancarios.AsNoTracking();
 
-            return itens;
+            if (criterio != null && criterio.OpcoesFiltro.Any())
+            {
+                criterio.OpcoesFiltro.Add(new FiltroOpcao("AgendamentoItemId", TipoOperadorBusca.Igual, null));
+
+                var filtro = SimpleComparison<MovimentoBancario>(criterio.OpcoesFiltro);
+
+                tab = tab.Where(filtro);
+            }
+
+            var totalRegistros = await tab.CountAsync();
+
+            if (!string.IsNullOrWhiteSpace(criterio.Ordenacao))
+                tab = tab.OrderBy(criterio.Ordenacao);
+
+            IList<MovimentoBancario> itens;
+
+            if (criterio.ItensPorPagina <= 1)
+                itens = await tab.ToListAsync();
+            else itens = await tab
+                    .Skip((criterio.Pagina - 1) * criterio.ItensPorPagina)
+                    .Take(criterio.ItensPorPagina)
+                    .ToListAsync();
+
+            return new Tuple<int, IList<MovimentoBancario>>(totalRegistros, itens);
+
+
+            //var itens = await
+            //    AdicionarIncludes(Contexto.MovimentosBancarios)
+            //    .AsNoTracking()
+            //    .Where(w => w.AgendamentoItemId == null)
+            //    .ToListAsync();
+            //
+            //return itens;
         }
 
         public async Task<bool> ConciliarParcela(int id, string idMovimentos)

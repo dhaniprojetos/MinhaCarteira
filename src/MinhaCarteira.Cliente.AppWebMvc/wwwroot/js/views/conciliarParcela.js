@@ -55,10 +55,13 @@ function removerTodos(e) {
 };
 
 function carregarMovimentos(e) {
+    var datastring = $("#formConciliar").serialize();
     $.ajax({
         url: window.siteRoot + 'agendamento/obterMovimentos',
-        data: { "prefix": "teste" },
         type: "POST",
+        data: datastring,
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
         success: function (data) {
             $("#origem").empty();
 
@@ -75,7 +78,7 @@ function carregarMovimentos(e) {
             });
         },
         error: function (response) {
-            alert(response.responseText);
+            //alert(response.responseText);
         },
         failure: function (response) {
             alert(response.responseText);

@@ -18,14 +18,17 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
     public class AgendamentoController : BaseController<Agendamento, AgendamentoViewModel>
     {
         private readonly IMovimentoServico _movimentoServico;
+        private readonly IContaBancariaServico _contaBancariaServico;
 
         public AgendamentoController(
             IAgendamentoServico servico,
             IMapper mapper,
-            IMovimentoServico movimentoServico)
+            IMovimentoServico movimentoServico,
+            IContaBancariaServico contaBancariaServico)
             : base(servico, mapper)
         {
             _movimentoServico = movimentoServico;
+            _contaBancariaServico = contaBancariaServico;
         }
 
         protected override async Task<AgendamentoViewModel> InicializarViewModel(AgendamentoViewModel viewModel)
@@ -118,16 +121,40 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ObterMovimentos(string prefix)
+        public async Task<JsonResult> ObterMovimentos(ConciliarAgendamentoViewModel model)
         {
-            var resp = await _movimentoServico.ObterMovimentosParaConciliacao();
+            var filtro = new FiltroBase
+            {
+                ItensPorPagina = 0,
+                AdicionarIncludes = false,
+                OpcoesFiltro = new List<FiltroOpcao>
+                {
+                    new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, model.ContaBancariaId.ToString()),
+                    new FiltroOpcao("Valor", TipoOperadorBusca.MaiorOuIgual, model.ValorInicial.ToString()),
+                    new FiltroOpcao("Valor", TipoOperadorBusca.MenorOuIgual, model.ValorFinal.ToString()),
+                    new FiltroOpcao("DataMovimento", TipoOperadorBusca.MaiorOuIgual, model.DataInicial.ToString()),
+                    new FiltroOpcao("DataMovimento", TipoOperadorBusca.MenorOuIgual, model.DataFinal.ToString()),
+                }
+            };
+
+            if (!string.IsNullOrWhiteSpace(model.Descricao))
+                filtro.OpcoesFiltro.Add(new FiltroOpcao(
+                    "Descricao",
+                    TipoOperadorBusca.Contem,
+                    model.Descricao));
+
+            var resp = await _movimentoServico.ObterMovimentosParaConciliacao(filtro);
 
             return Json(resp.Dados);
         }
 
         public async Task<IActionResult> ConciliarParcela(int id)
         {
-            var item = await ObterParcelaPorId(id);
+            var parcela = await ObterParcelaPorId(id);
+            var retornoApi = await _contaBancariaServico.Navegar(null);
+            var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
+
+            var item = new ConciliarAgendamentoViewModel(contas, parcela);
             return View(item);
         }
 
