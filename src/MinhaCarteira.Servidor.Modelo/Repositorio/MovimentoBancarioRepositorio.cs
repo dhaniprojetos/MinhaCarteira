@@ -18,10 +18,10 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
         {
         }
 
-        protected override IQueryable<MovimentoBancario> AdicionarOrdenacao(IQueryable<MovimentoBancario> source)
-        {
-            return source.OrderByDescending(o => o.DataMovimento).ThenBy(tb => tb.Id);
-        }
+        //protected override IQueryable<MovimentoBancario> AdicionarOrdenacao(IQueryable<MovimentoBancario> source)
+        //{
+        //    return source.OrderByDescending(o => o.DataMovimento).ThenBy(tb => tb.Id);
+        //}
 
         protected override IQueryable<MovimentoBancario> AdicionarIncludes(IQueryable<MovimentoBancario> source)
         {

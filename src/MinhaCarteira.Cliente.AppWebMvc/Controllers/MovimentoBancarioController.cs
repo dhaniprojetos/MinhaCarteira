@@ -219,6 +219,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 var filtroMovimento = new FiltroBase()
                 {
                     Pagina = page ?? 1,
+                    Ordenacao = "DataMovimento desc, Id",
                     OpcoesFiltro = {
                         new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta.ToString()),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))

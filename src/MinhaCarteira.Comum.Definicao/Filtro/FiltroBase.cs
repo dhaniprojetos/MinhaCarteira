@@ -37,6 +37,7 @@ namespace MinhaCarteira.Comum.Definicao.Filtro
 
         public bool AdicionarIncludes { get; set; }
         public IList<FiltroOpcao> OpcoesFiltro { get; set; }
+        public string Ordenacao { get; set; }
 
         public int Pagina { get; set; } = 1;
         public int ItensPorPagina { get; set; } = 20;

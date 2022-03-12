@@ -5,6 +5,7 @@ using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
+using MinhaCarteira.Servidor.Modelo.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -183,8 +184,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
             return source;
         }
         protected virtual IQueryable<TEntidade> AdicionarOrdenacao(
-            IQueryable<TEntidade> source)
+            IQueryable<TEntidade> source, ICriterio filtro)
         {
+            if (!string.IsNullOrWhiteSpace(filtro.Ordenacao))
+                return source.OrderBy(filtro.Ordenacao);
+
             return source;
         }
         protected virtual async Task<IList<TEntidade>> ExecutarAntesAlterar(
@@ -316,7 +320,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
 
             var totalRegistros = await tab.CountAsync();
 
-            tab = AdicionarOrdenacao(tab);
+            tab = AdicionarOrdenacao(tab, criterio);
 
             IList<TEntidade> itens;
 

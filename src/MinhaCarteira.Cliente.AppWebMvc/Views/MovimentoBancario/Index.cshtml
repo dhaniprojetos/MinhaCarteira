@@ -19,7 +19,7 @@
     <div class="accordion-item">
         <div>
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     Filtros
                 </button>
             </h2>
@@ -104,22 +104,22 @@
                 @foreach (var contaBancaria in Model.Contas)
                 {
                     var corFont = contaBancaria.Id.ToString() == id?.ToString()
-                    ? "text-light"
-                    : contaBancaria.ValorSaldoAtual > 0
-                    ? "text-primary"
-                    : contaBancaria.ValorSaldoAtual < 0
-                    ? "text-danger"
-                    : "text-secondary";
+                        ? "text-light"
+                        : contaBancaria.ValorSaldoAtual > 0
+                            ? "text-primary"
+                            : contaBancaria.ValorSaldoAtual < 0
+                                ? "text-danger"
+                                : "text-secondary";
 
                     var classe = contaBancaria.Id.ToString() == id?.ToString()
-                    ? "active bg-secondary fw-bold" : "";
+                        ? "active bg-secondary fw-bold" : "";
 
                     <li class="nav-item col-sm-12">
-                        <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark shadow p-0 ps-2 pt-2 pb-2 mb-2 @classe">
+                        <a asp-action="Index" asp-route-id="@contaBancaria.Id" class="nav-link link-dark shadow-sm border p-2 m-0 mb-1 @classe">
                             @if (!string.IsNullOrWhiteSpace(contaBancaria.InstituicaoFinanceira.Icone))
                             {
                                 <img src="data:@contaBancaria.InstituicaoFinanceira.MimeType;base64,@contaBancaria.InstituicaoFinanceira.Icone"
-                                     height="48" width="48" asp-append-version="true" class="rounded float-start" />
+                                     height="48" width="48" asp-append-version="true" class="float-start" />
                             }
                             <div class="p-0 ps-2 pe-1 text-truncate">
                                 <span class="text-break">@contaBancaria.Nome</span><br />

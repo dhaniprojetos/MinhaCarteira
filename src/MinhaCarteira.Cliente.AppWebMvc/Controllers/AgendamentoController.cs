@@ -170,6 +170,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 var filtroAgendamento = new FiltroBase()
                 {
                     Pagina = page ?? 1,
+                    Ordenacao = "Data, Agendamento.Descricao",
                     OpcoesFiltro = {
                         //new FiltroOpcao("Data", TipoOperadorBusca.MenorOuIgual, DateTime.Now.AddDays(120).ToString()),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))

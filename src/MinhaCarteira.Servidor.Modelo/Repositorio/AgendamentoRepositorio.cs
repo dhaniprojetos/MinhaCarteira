@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using System;
+using MinhaCarteira.Servidor.Modelo.Helper;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
@@ -107,6 +108,9 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             }
 
             var totalRegistros = await tab.CountAsync();
+
+            if (!string.IsNullOrWhiteSpace(criterio.Ordenacao))
+                tab = tab.OrderBy(criterio.Ordenacao);
 
             IList<AgendamentoItem> itens;
 
