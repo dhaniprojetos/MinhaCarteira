@@ -4,6 +4,10 @@
     } else {
         event.returnValue = false;
     }
-    $("#page").val($(this).html());
+
+    var url = new URL($(this)[0].href);
+    var page = url.searchParams.get("page");
+
+    $("#page").val(page);
     $("#formBusca").submit();
 });

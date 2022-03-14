@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<div class="table-responsive-sm">
+<div class="table-responsive">
     <table class="table table-hover">
         <thead>
             <tr>
@@ -131,25 +131,30 @@
             }
         </tbody>
     </table>
+</div>
 
-    @if (Model != null && Model.Itens.Any())
-    {
-        <div style="float: right">
-            Página @(Model.Itens.PageCount < Model.Itens.PageNumber ? 0 : Model.Itens.PageNumber) de @Model.Itens.PageCount
-        </div>
-
-        @Html.PagedListPager(
-            Model.Itens,
-            page => Url.Action("Index", new { page }),
+@if (Model != null && Model.Itens.Any())
+{
+    <div class="row m-0 table-responsive">
+        <div class="col-sm-6">
+            @Html.PagedListPager(
+                Model.Itens,
+                page => Url.Action("Index", new { page }),
                 new PagedListRenderOptions
                 {
                     PageClasses = new string[] { "page-link" },
-                    UlElementClasses = new string[] { "pagination justify-content-center" },
+                    UlElementClasses = new string[] { "pagination justify-content-start" },
                     LiElementClasses = new string[] { "page-item" },
                     DisplayItemSliceAndTotal = false,
                     DisplayEllipsesWhenNotShowingAllPageNumbers = true,
                     DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                    MaximumPageNumbersToDisplay = 4
                 })
-    }
-</div>
+        </div>
+
+        <div class="col-sm-6 text-end">
+            Página @(Model.Itens.PageCount < Model.Itens.PageNumber ? 0 : Model.Itens.PageNumber) de @Model.Itens.PageCount
+        </div>
+    </div>
+}

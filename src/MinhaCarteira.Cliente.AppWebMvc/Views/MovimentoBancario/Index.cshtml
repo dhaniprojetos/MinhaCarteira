@@ -243,23 +243,28 @@
 
         @if (Model.Movimentos.Count > 0)
         {
-            <div style="float: right">
-                Página @(Model.Movimentos.PageCount < Model.Movimentos.PageNumber ? 0 : Model.Movimentos.PageNumber) de @Model.Movimentos.PageCount
-            </div>
+            <div class="row m-0 table-responsive">
+                <div class="col-sm-6">
+                    @Html.PagedListPager(
+                        Model.Movimentos,
+                        page => Url.Action("Index", new { page }),
+                        new PagedListRenderOptions
+                        {
+                            PageClasses = new string[] { "page-link" },
+                            UlElementClasses = new string[] { "pagination justify-content-start" },
+                            LiElementClasses = new string[] { "page-item" },
+                            DisplayItemSliceAndTotal = false,
+                            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                            MaximumPageNumbersToDisplay = 4
+                        })
+                </div>
 
-            @Html.PagedListPager(
-        Model.Movimentos,
-        page => Url.Action("Index", new { page }),
-        new PagedListRenderOptions
-        {
-        PageClasses = new string[] { "page-link" },
-        UlElementClasses = new string[] { "pagination justify-content-center" },
-        LiElementClasses = new string[] { "page-item" },
-        DisplayItemSliceAndTotal = false,
-        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
-        })
+                <div class="col-sm-6 text-end">
+                    Página @(Model.Movimentos.PageCount < Model.Movimentos.PageNumber ? 0 : Model.Movimentos.PageNumber) de @Model.Movimentos.PageCount
+                </div>
+            </div>
         }
     </div>
 </div>
