@@ -137,13 +137,11 @@ function carregarMovimentos(e) {
 $("#formConciliar").submit(function (e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
 
-    var form = $(this);
-    var idParcela = $("#Id").val();
+    var idParcela = $("#Parcela_Id").val();
     var idMovimentos = "";
 
     $("#destino option").each(function () {
         idMovimentos += $(this).val() + ",";
-        // Add $(this).val() to your list
     });
 
     console.log(idParcela);
