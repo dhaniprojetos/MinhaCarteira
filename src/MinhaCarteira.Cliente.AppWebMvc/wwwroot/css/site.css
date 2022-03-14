@@ -15,6 +15,16 @@
     }
 }
 
+.subtitle {
+    width: 100%;
+}
+
+@media (max-width: 350px) {
+    .subtitle {
+        max-width: 45%;
+    }
+}
+
 footer {
     position: absolute;
     bottom: 0;

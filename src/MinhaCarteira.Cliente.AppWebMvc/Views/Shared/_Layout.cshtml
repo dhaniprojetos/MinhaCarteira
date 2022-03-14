@@ -137,10 +137,10 @@
     <div id="page-container">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3 p-0 ps-2 pe-2 ps-xl-3 pe-xl-3 ps-xxl-5 pe-xxl-5 navbar-light bg-secondary bg-opacity-25 border-bottom shadow-sm">
             <div class="container-fluid" style="height:74px;">
-                <a class="navbar-brand" asp-action="Index">
-                    <span class="fs-4">
+                <a class="navbar-brand subtitle" asp-action="Index">
+                    <span>
                         @Html.Raw(ViewData["Icone"])
-                        @ViewData["Title"]
+                        <span class="fs-4 align-middle text-truncate me-0">@ViewData["Title"]</span>
                     </span>
                 </a>
 
