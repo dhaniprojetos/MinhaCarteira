@@ -129,13 +129,18 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 AdicionarIncludes = false,
                 OpcoesFiltro = new List<FiltroOpcao>
                 {
-                    new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, model.ContaBancariaId.ToString()),
                     new FiltroOpcao("Valor", TipoOperadorBusca.MaiorOuIgual, model.ValorInicial.ToString()),
                     new FiltroOpcao("Valor", TipoOperadorBusca.MenorOuIgual, model.ValorFinal.ToString()),
                     new FiltroOpcao("DataMovimento", TipoOperadorBusca.MaiorOuIgual, model.DataInicial.ToString()),
                     new FiltroOpcao("DataMovimento", TipoOperadorBusca.MenorOuIgual, model.DataFinal.ToString()),
                 }
             };
+
+            if (model.ContaBancariaId > 0)
+                filtro.OpcoesFiltro.Add(new FiltroOpcao(
+                    "ContaBancariaId",
+                    TipoOperadorBusca.Igual,
+                    model.ContaBancariaId.ToString()));
 
             if (!string.IsNullOrWhiteSpace(model.Descricao))
                 filtro.OpcoesFiltro.Add(new FiltroOpcao(

@@ -20,13 +20,13 @@ namespace MinhaCarteira.Cliente.Recursos.Models
             ContasBancarias = contas
                 .Select(s => new SelectListItem(s.Nome, s.Id.ToString()))
                 .ToList();
-            
+
             ContaBancariaId = parcela.ContaBancariaId ?? parcela.Agendamento.ContaBancariaId;
 
             Parcela = parcela;
-            
-            DataInicial = parcela.Data.AddDays(-3);
-            DataFinal = parcela.Data.AddDays(3);
+
+            DataInicial = (parcela.DataPagamento ?? parcela.Data).AddDays(-3);
+            DataFinal = (parcela.DataPagamento ?? parcela.Data).AddDays(3);
 
             ValorInicial = (parcela.ValorPago ?? parcela.Valor) - 10;
             ValorFinal = (parcela.ValorPago ?? parcela.Valor) + 10;
