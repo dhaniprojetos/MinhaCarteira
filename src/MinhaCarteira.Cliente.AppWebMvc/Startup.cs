@@ -45,6 +45,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc
                     options.LoginPath = new PathString("/conta/logar");
                     options.AccessDeniedPath = new PathString("/conta/acessonegado");
                 });
+
+            services.AddProgressiveWebApp();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
