@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using MinhaCarteira.Cliente.Recursos.AutoMapper;
 using MinhaCarteira.Cliente.Recursos.Middleware;
 using Newtonsoft.Json;
+using WebEssentials.AspNetCore.Pwa;
 
 namespace MinhaCarteira.Cliente.AppWebMvc
 {
@@ -46,7 +47,12 @@ namespace MinhaCarteira.Cliente.AppWebMvc
                     options.AccessDeniedPath = new PathString("/conta/acessonegado");
                 });
 
-            services.AddProgressiveWebApp();
+            var options = new PwaOptions()
+            {
+                BaseRoute = Configuration.GetValue<string>("BaseRoutePwa")
+            };
+
+            services.AddProgressiveWebApp(options);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

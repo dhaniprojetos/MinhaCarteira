@@ -10,7 +10,7 @@
     function updateStaticCache() {
         return caches.open(version)
             .then(function (cache) {
-                return cache.addAll(urlsToCache);
+                return cache.addAll([]);
             });
     }
 
