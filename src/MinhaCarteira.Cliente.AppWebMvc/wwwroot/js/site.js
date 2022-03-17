@@ -14,19 +14,6 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-/*
- $(document).ready(function () {
- 
-    $(".dropdown-toggle").dropdown();
-});
-*/
-
-$(document).ready(function () {
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-});
-
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
         .register(window.siteRoot + '/js/service-worker.js')

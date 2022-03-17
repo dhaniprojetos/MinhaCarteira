@@ -31,6 +31,10 @@
         "docs/navbar-fixed-left.min.css",
         "docs/navbar-fixed-right.min.css"
       ]
+    },
+    {
+      "library": "admin-lte@3.2.0",
+      "destination": "wwwroot/lib/admin-lte/"
     }
   ]
 }

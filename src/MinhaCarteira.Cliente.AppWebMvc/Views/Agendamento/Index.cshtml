@@ -75,13 +75,13 @@
                 <th style="width: 80px;">
                     @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Data)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Agendamento.Descricao)
-                </th>
                 <th class="text-end" style="width: 140px;">
                     @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Valor)
                 </th>
-                <th style="width: 180px;">
+                <th>
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Agendamento.Descricao)
+                </th>
+                <th style="width: 250px;">
                     @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Agendamento.Categoria.Nome)
                 </th>
                 <th style="width: 100px;">
@@ -135,11 +135,11 @@
                         <td data-title="@Html.DisplayNameFor(model => item.Data)">
                             @Html.DisplayFor(modelItem => item.DataPagamento)
                         </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.Agendamento.Descricao)">
-                            @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
-                        </td>
                         <td data-title="@Html.DisplayNameFor(model => item.ValorPago)" class="text-end fw-bold @corFont">
                             @Html.DisplayFor(modelItem => item.ValorPago)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.Agendamento.Descricao)">
+                            @Html.DisplayFor(modelItem => item.Agendamento.Descricao)
                         </td>
                         <td data-title="@Html.DisplayNameFor(model => item.NomePessoa)">
                             @Html.DisplayFor(modelItem => item.NomePessoa)

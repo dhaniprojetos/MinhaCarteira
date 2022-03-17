@@ -16,159 +16,116 @@
         <link rel="manifest" href="/minhacarteira/cliente/manifest.production.json">
     </environment>
 
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap&text=dhaniprojetos" rel="stylesheet">
 
-    <link rel="stylesheet" href="~/lib/bootstrap-navbar-sidebar/dist/navbar-fixed-left.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap-navbar-sidebar/docs/docs.min.js" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css">
+    <link rel="stylesheet" href="~/lib/admin-lte/css/adminlte.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
     <link rel="stylesheet" href="~/css/site.css" />
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-    <header>
-        <nav class="navbar fixed-left navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-end p-0 shadow">
-            <div class="container bg-secondary bg-opacity-50 border-bottom justify-content-center" style="height: 75px;">
-                <a class="navbar-brand me-0" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="img-fluid" src="~/img/dhani.png" />
-                    <span class="navbar-brand d-inline d-sm-none align-middle fs-4 me-1"
-                          style="font-family: 'Raleway', sans-serif;">dhani projetos</span>
-                </a>
+<body class="sidebar-mini layout-navbar-fixed">
+    <div class="wrapper shadow">
 
-                <button class="navbar-toggler p-2 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
-                <ul class="navbar-nav flex-grow-1 ps-3 ps-sm-0">
+        <header class="main-header">
+            <nav class="navbar navbar-expand bg-light shadow">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Agendamento" asp-action="Index">Agendamento</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="MovimentoBancario" asp-action="Index">Movimento</a>
-                    </li>
-
-                    <li class="nav-item d-grid d-sm-none d-md-grid">
-                        <ul class="navbar-nav text-decoration-none">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="ContaBancaria" asp-action="Index">Contas</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Pessoa" asp-action="Index">Pessoa</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="CentroClassificacao" asp-action="Index">Centro de Classificação</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="InstituicaoFinanceira" asp-action="Index">Instituição</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown d-sm-inline d-none d-md-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Módulos
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                            <i class="fas fa-bars"></i>
                         </a>
-
-                        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Pessoa" asp-action="Index">Pessoa</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="CentroClassificacao" asp-action="Index">Centro de Classificação</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="InstituicaoFinanceira" asp-action="Index">Instituição</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
+                <span class="brand-text">
+                    @*@Html.Raw(ViewData["Icone"])*@
+                    <span class="align-middle text-truncate me-0 fs-5">@ViewData["Title"]</span>
+                </span>
+            </nav>
+        </header>
 
-                <ul class="navbar-nav flex-grow-1" id="menuLogin">
-                    @if (User.Identity is not { IsAuthenticated: true })
-                    {
-                        <li>
-                            <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Logar">Login</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-user"></i>
-                                @User.Identity.Name
-                            </a>
+        <aside class="main-sidebar sidebar-dark-blue elevation-3">
+            <a class="brand-link ps-1 text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="brand-image ms-0" src="~/img/dhani.png" alt="Icone DhaniProjetos">
+                <span class="brand-text">dhani projetos</span>
+            </a>
 
-                            <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Conta" asp-action="Sair">Sair</a></li>
-                            </ul>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <div id="page-container">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3 p-0 ps-2 pe-2 ps-xl-3 pe-xl-3 ps-xxl-5 pe-xxl-5 navbar-light bg-secondary bg-opacity-25 border-bottom shadow-sm">
-            <div class="container-fluid" style="height:74px;">
-                <a class="navbar-brand subtitle" asp-action="Index">
-                    <span>
-                        @Html.Raw(ViewData["Icone"])
-                        <span class="fs-4 align-middle text-truncate me-0">@ViewData["Title"]</span>
-                    </span>
-                </a>
-
-                @if (ViewData["LinkNovo"] != null)
-                {
-                    <ul class="navbar-nav justify-content-end">
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a class='btn btn-success' href="@ViewData["LinkNovo"]">
-                                <i class='fa fa-add d-none'></i>
-                                <span>Novo</span>
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="nav-icon fa fa-home-alt"></i> <p>Home</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="Agendamento" asp-action="Index">
+                                <i class="nav-icon fa fa-calendar-day"></i> <p>Agendamento</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="MovimentoBancario" asp-action="Index">
+                                <i class='nav-icon fa fa-arrow-down-1-9'></i> <p>Movimento</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="ContaBancaria" asp-action="Index">
+                                <i class='nav-icon fa fa-credit-card'></i> <p>Contas</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="Pessoa" asp-action="Index">
+                                <i class='nav-icon fa fa-user'></i> <p>Cliente / Fornecedor</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="Categoria" asp-action="Index">
+                                <i class='nav-icon fa fa-square-check'></i> <p>Categoria</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="CentroClassificacao" asp-action="Index">
+                                <i class='nav-icon fa fa-house'></i> <p>Centro de Classificação</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="InstituicaoFinanceira" asp-action="Index">
+                                <i class='nav-icon fa fa-building-columns'></i> <p>Instituição</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a is-active-route class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class='nav-icon fa fa-key'></i> <p>Privacy</p>
                             </a>
                         </li>
                     </ul>
-                }
+                </nav>
             </div>
-        </nav>
+        </aside>
 
-        <main role="main" class="container-fuid ps-2 pe-2 ps-xl-3 pe-xl-3 ps-xxl-5 pe-xxl-5">
-            @RenderBody()
+        <main class="content-wrapper">
+            <section class="container-fuid p-3 pe-xl-3 ps-xxl-5 pe-xxl-5" role="main">
+                @RenderBody()
+            </section>
         </main>
 
-        <br /><br /><br /><br />
-        <footer class="border-top footer text-muted">
-            <div class="container-fluid">
-                &copy; 2022 - MinhaCarteira - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <footer class="main-footer">
+            <strong>Copyright ©@DateTime.Now.Year <a class="link-primary text-decoration-none" href="https://dhaniprojetos.com">DhaniProjetos</a>.</strong>
+            Todos os direitos reservados.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Versão</b> 1.2.0
             </div>
         </footer>
     </div>
@@ -188,11 +145,12 @@
         </script>
     }
 
-    <script src="~/lib/font-awesome/js/solid.min.js"></script>
-    <script src="~/lib/font-awesome/js/fontawesome.min.js"></script>
+    <script src="~/lib/font-awesome/js/all.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/lib/admin-lte/js/adminlte.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/someeRemoveAds.js" asp-append-version="true"></script>
 
