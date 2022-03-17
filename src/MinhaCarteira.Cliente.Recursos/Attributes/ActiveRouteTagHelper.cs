@@ -59,15 +59,15 @@ namespace MinhaCarteira.Cliente.Recursos.Attributes
 
         private bool ShouldBeActive()
         {
-            string currentController = ViewContext.RouteData.Values["Controller"].ToString();
-            string currentAction = ViewContext.RouteData.Values["Action"].ToString();
+            string currentController = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
+            string currentAction = ViewContext.RouteData.Values["Action"].ToString().ToLower();
 
             if (!string.IsNullOrWhiteSpace(Controller) && Controller.ToLower() != currentController.ToLower())
             {
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(Action) && Action.ToLower() != currentAction.ToLower())
+            if (!string.IsNullOrWhiteSpace(Action) && Action.ToLower() != currentAction.ToLower() && currentAction == "index")
             {
                 return false;
             }

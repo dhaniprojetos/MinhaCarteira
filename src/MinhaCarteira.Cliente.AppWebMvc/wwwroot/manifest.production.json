@@ -2,8 +2,8 @@
   "name": "MinhaCarteira - DhaniProjetos",
   "short_name": "MinhaCarteira",
   "description": "Aplicativo voltado para o controle financeiro doméstico.",
-  "theme_color": "#FF8000",
-  "background_color": "#FF8000",
+  "theme_color": "#F0F0F0",
+  "background_color": "#F0F0F0",
   "display": "standalone",
   "start_url": "/minhacarteira/cliente/",
   "icons": [
