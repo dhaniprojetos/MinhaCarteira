@@ -1,6 +1,6 @@
 {
-  "name": "MinhaCarteira - DhaniProjetos",
-  "short_name": "MinhaCarteira",
+  "name": "Minha Carteira - DhaniProjetos",
+  "short_name": "Minha Carteira",
   "description": "Aplicativo voltado para o controle financeiro doméstico.",
   "theme_color": "#F0F0F0",
   "background_color": "#F0F0F0",
@@ -8,22 +8,22 @@
   "start_url": "/minhacarteira/cliente/",
   "icons": [
     {
-      "src": "/minhacarteira/cliente/img/dhani_1282.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "/minhacarteira/cliente/img/dhani_1922.png",
+      "src": "/minhacarteira/cliente/img/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/minhacarteira/cliente/img/dhani_2562.png",
+      "src": "/minhacarteira/cliente/img/icon-256x256.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "/minhacarteira/cliente/img/dhani_5122.png",
+      "src": "/minhacarteira/cliente/img/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/minhacarteira/cliente/img/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

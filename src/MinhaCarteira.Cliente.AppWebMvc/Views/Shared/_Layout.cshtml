@@ -5,7 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>@ViewData["Title"] - MinhaCarteira.Cliente.AppWebMvc</title>
-    <meta name="theme-color" content="#FF8000" />
+    <meta name="theme-color" content="#F0F0F0" />
+
+    <link href="img/splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="img/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
 
     <environment include="Development">
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -29,8 +40,13 @@
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="sidebar-mini layout-navbar-fixed">
+<body class="sidebar-mini layout-fixed layout-navbar-fixed" data-preload-duration="50">
     <div class="wrapper shadow">
+        <!-- Preloader -->
+        <div class="preloader d-sm-none flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="~/img/dhani.png" alt="Icone DhaniProjetos" height="48" width="96">
+            <span class="brand-text" style="font-family: 'Raleway', sans-serif;">dhani projetos</span>
+        </div>
 
         <header class="main-header">
             <nav class="navbar navbar-expand bg-light shadow">
@@ -63,7 +79,7 @@
             </nav>
         </header>
 
-        <aside class="main-sidebar sidebar-dark-light position-fixed elevation-3" style="padding-top: 60px;">
+        <aside class="main-sidebar sidebar-dark-light elevation-3">
             <a class="brand-link text-decoration-none ps-1 pt-3"
                asp-area="" asp-controller="Home" asp-action="Index">
                 <img class="brand-image ms-0" src="~/img/dhani.png" alt="Icone DhaniProjetos">
@@ -72,7 +88,7 @@
 
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" id="menuLogin" data-widget="treeview" role="menu" data-accordion="false">
                         @if (User.Identity is not { IsAuthenticated: true })
                         {
                             <li class="nav-item">
@@ -95,7 +111,9 @@
 
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">Sair</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">
+                                            <i class="nav-icon fa fa-door-open"></i> <p>Sair</p>
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -104,7 +122,7 @@
                 </div>
 
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" id="menuLateral" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a is-active-route class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="nav-icon fa fa-home-alt"></i> <p>Home</p>
