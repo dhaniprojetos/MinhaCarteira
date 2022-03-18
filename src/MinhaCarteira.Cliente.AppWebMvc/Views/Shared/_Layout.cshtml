@@ -40,7 +40,7 @@
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="sidebar-mini layout-fixed layout-navbar-fixed" data-preload-duration="50">
+<body class="sidebar-mini layout-fixed layout-navbar-fixed" data-preload-duration="100">
     <div class="wrapper shadow">
         <!-- Preloader -->
         <div class="preloader d-sm-none flex-column justify-content-center align-items-center">
@@ -52,7 +52,9 @@
             <nav class="navbar navbar-expand bg-light shadow">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="padding-top:10px;">
+                        <a class="nav-link" data-widget="pushmenu"
+                           data-enable-remember="true"
+                           href="#" role="button" style="padding-top:10px;">
                             <i class="fas fa-bars"></i>
                         </a>
                     </li>
@@ -67,14 +69,14 @@
 
                 @if (ViewData["LinkNovo"] != null)
                 {
-                    <ul class="navbar-nav justify-content-end">
-                        <li class="nav-item">
-                            <a class='btn btn-success' href="@ViewData["LinkNovo"]">
-                                <i class='fa fa-add d-none'></i>
-                                <span>Novo</span>
-                            </a>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav justify-content-end">
+                    <li class="nav-item">
+                        <a class='btn btn-success' href="@ViewData["LinkNovo"]">
+                            <i class='fa fa-add d-none'></i>
+                            <span>Novo</span>
+                        </a>
+                    </li>
+                </ul>
                 }
             </nav>
         </header>
@@ -91,32 +93,32 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" id="menuLogin" data-widget="treeview" role="menu" data-accordion="false">
                         @if (User.Identity is not { IsAuthenticated: true })
                         {
-                            <li class="nav-item">
-                                <a asp-area="" asp-controller="Conta" asp-action="Logar" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p>Login</p>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Conta" asp-action="Logar" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Login</p>
+                            </a>
+                        </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p>
-                                        @User.Identity.Name
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    @User.Identity.Name
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
 
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">
-                                            <i class="nav-icon fa fa-door-open"></i> <p>Sair</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">
+                                        <i class="nav-icon fa fa-door-open"></i> <p>Sair</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         }
                     </ul>
                 </div>
@@ -182,6 +184,7 @@
         </aside>
 
         <main class="content-wrapper">
+            <div id="wipearea" style="position:absolute;top:0;left:0;height:100%; width:10%;"></div>
             <section class="container-fuid p-3 pe-xl-3 ps-xxl-5 pe-xxl-5" role="main">
                 @RenderBody()
             </section>
@@ -198,27 +201,28 @@
 
     @if (!String.IsNullOrWhiteSpace(Context.Request.PathBase.Value))
     {
-        <script type="text/javascript">
+    <script type="text/javascript">
             /* LIVE - includes virtual directory */
             window.siteRoot = "@Context.Request.Scheme" + "://" + "@Context.Request.Host.Value" + "@Context.Request.PathBase.Value" + "/";
-        </script>
+    </script>
     }
     else
     {
-        <script type="text/javascript">
+    <script type="text/javascript">
             /* DEBUG - no virutal directory, e.g. IIS Express */
             window.siteRoot = "@Context.Request.Scheme" + "://" + "@Context.Request.Host.Value" + "/";
-        </script>
+    </script>
     }
 
-    <script src="~/lib/font-awesome/js/all.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/lib/font-awesome/js/all.js"></script>
     <script src="~/lib/admin-lte/js/adminlte.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/someeRemoveAds.js" asp-append-version="true"></script>
+    <script src="~/js/gestos.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
