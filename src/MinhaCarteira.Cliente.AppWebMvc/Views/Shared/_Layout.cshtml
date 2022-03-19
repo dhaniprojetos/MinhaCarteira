@@ -69,14 +69,14 @@
 
                 @if (ViewData["LinkNovo"] != null)
                 {
-                <ul class="navbar-nav justify-content-end">
-                    <li class="nav-item">
-                        <a class='btn btn-success' href="@ViewData["LinkNovo"]">
-                            <i class='fa fa-add d-none'></i>
-                            <span>Novo</span>
-                        </a>
-                    </li>
-                </ul>
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <a class='btn btn-success' href="@ViewData["LinkNovo"]">
+                                <i class='fa fa-add d-none'></i>
+                                <span>Novo</span>
+                            </a>
+                        </li>
+                    </ul>
                 }
             </nav>
         </header>
@@ -93,32 +93,32 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" id="menuLogin" data-widget="treeview" role="menu" data-accordion="false">
                         @if (User.Identity is not { IsAuthenticated: true })
                         {
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Conta" asp-action="Logar" class="nav-link">
-                                <i class="nav-icon fas fa-user"></i>
-                                <p>Login</p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Conta" asp-action="Logar" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>Login</p>
+                                </a>
+                            </li>
                         }
                         else
                         {
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-user"></i>
-                                <p>
-                                    @User.Identity.Name
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>
+                                        @User.Identity.Name
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
 
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">
-                                        <i class="nav-icon fa fa-door-open"></i> <p>Sair</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">
+                                            <i class="nav-icon fa fa-door-open"></i> <p>Sair</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -183,8 +183,8 @@
             </div>
         </aside>
 
+        <div id="wipearea" class="d-sm-none position-absolute h-100" style="width:25px; z-index:0;"></div>
         <main class="content-wrapper">
-            <div id="wipearea" style="position:absolute;top:0;left:0;height:100%; width:25%;"></div>
             <section class="container-fuid p-3 pe-xl-3 ps-xxl-5 pe-xxl-5" role="main">
                 @RenderBody()
             </section>
@@ -201,17 +201,17 @@
 
     @if (!String.IsNullOrWhiteSpace(Context.Request.PathBase.Value))
     {
-    <script type="text/javascript">
+        <script type="text/javascript">
             /* LIVE - includes virtual directory */
             window.siteRoot = "@Context.Request.Scheme" + "://" + "@Context.Request.Host.Value" + "@Context.Request.PathBase.Value" + "/";
-    </script>
+        </script>
     }
     else
     {
-    <script type="text/javascript">
+        <script type="text/javascript">
             /* DEBUG - no virutal directory, e.g. IIS Express */
             window.siteRoot = "@Context.Request.Scheme" + "://" + "@Context.Request.Host.Value" + "/";
-    </script>
+        </script>
     }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

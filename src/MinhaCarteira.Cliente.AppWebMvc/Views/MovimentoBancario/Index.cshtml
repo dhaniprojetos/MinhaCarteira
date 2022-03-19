@@ -87,18 +87,18 @@
 </form>
 
 <div class="row m-0">
-    <div class="d-flex flex-column col-md-6 col-lg-4 col-xl-3">
+    <div class="d-flex flex-column col-md-6 col-lg-4 col-xl-3 mb-3 p-0">
         <button class="navbar-toggler text-start"
                 type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebarSupportedContent"
                 aria-controls="sidebarSupportedContent"
                 aria-expanded="true" aria-label="Toggle navigation"
-                style="height: 24px;">
+                style="height: 25px;">
             <i class="fas fa-align-left"></i>
             <span>Conta bancária</span>
         </button>
 
-        <hr>
+        <hr style="border:0; border-top: 3px solid #999; color: transparent;">
         <ul class="nav nav-pills flex-column collapse show" id="sidebarSupportedContent">
 
             @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model.Contas == null || !Model.Contas.Any()))
@@ -150,7 +150,7 @@
         </ul>
     </div>
 
-    <div class="table-responsive col-md-6 col-lg-8 col-xl-9" id="no-more-tables">
+    <div class="table-responsive col-md-6 col-lg-8 col-xl-9 p-0" id="no-more-tables">
         <table class="table table-hover">
             <thead>
                 <tr>
