@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo;
 
@@ -9,19 +10,23 @@ namespace MinhaCarteira.Comum.Definicao.Filtro
         public FiltroOpcao()
         {
             Operador = TipoOperadorBusca.Contem;
-            NomePropriedade = string.Empty; 
+            NomePropriedade = string.Empty;
             Valor = string.Empty;
+            Visivel = true;
         }
         public FiltroOpcao(
             string nomePropriedade,
             TipoOperadorBusca operador,
-            string valor)
+            string valor,
+            bool visivel = true)
         {
             NomePropriedade = nomePropriedade;
             Valor = valor;
             Operador = operador;
+            Visivel = visivel;
         }
 
+        public bool Visivel { get; set; } = true;
         public string NomePropriedade { get; set; }
         public string Valor { get; set; }
         public TipoOperadorBusca Operador { get; set; }

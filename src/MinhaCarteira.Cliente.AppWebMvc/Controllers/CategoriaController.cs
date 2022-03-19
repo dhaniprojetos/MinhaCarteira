@@ -32,7 +32,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             criterio.ItensPorPagina = 5;
             criterio.OpcoesFiltro.Add(
-                new FiltroOpcao("IdCategoriaPai", Comum.Definicao.Modelo.TipoOperadorBusca.Igual, null));
+                new FiltroOpcao("IdCategoriaPai", Comum.Definicao.Modelo.TipoOperadorBusca.Igual, null, false));
 
             var resposta = await Servico.Navegar(criterio);
             var itens = resposta.Dados;
@@ -100,9 +100,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index(int? page, ListaBaseViewModel<CategoriaViewModel> model)
+        public override async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<CategoriaViewModel> model)
         {
-            return await base.Index(page, model);
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

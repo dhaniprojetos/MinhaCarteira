@@ -1,6 +1,8 @@
 ﻿using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json;
 using X.PagedList;
 
 namespace MinhaCarteira.Cliente.Recursos.Models.Base
@@ -29,5 +31,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models.Base
 
         public IPagedList<TEntidadeViewModel> Itens { get; set; }
         public FiltroOpcao OpcaoAtual { get; set; }
+        public FiltroBase Filtro { get; set; }
+        public string FiltroJson { get => JsonConvert.SerializeObject(Filtro); }
     }
 }

@@ -12,19 +12,19 @@
     ViewData["LinkNovo"] = Url.Action("Criar");
 }
 @section Scripts{
-    <script src="~/js/views/paginacao.js" asp-append-version="true"></script>
+<script src="~/js/views/paginacao.js" asp-append-version="true"></script>
 }
 
-<div class="accordion mb-3">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                Filtros
-            </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body p-0">
-                <form asp-action="Index" method="get" class="p-3" id="formBusca">
+<form asp-action="Index" method="get" id="formBusca">
+    <div class="accordion mb-1">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Filtros
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
                     <input id="page" name="page" type="hidden" />
 
                     <div class="row mb-2">
@@ -53,18 +53,36 @@
                     </div>
 
                     <div class="row justify-content-end pe-2">
-                        <button class="btn btn-primary col-5 col-sm-2 col-lg-1">
+                        <button class="btn btn-primary col-5 col-sm-2 col-lg-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
                             </svg>
                             <span>Buscar</span>
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    @if (Model != null && Model.Filtro != null)
+    {
+        <input type="hidden" name="filtroJson" id="filtroJson" value="@Model.FiltroJson" />
+        <ul class="list-group list-group-horizontal mb-3">
+
+            @foreach (var filtro in Model.Filtro.OpcoesFiltro.Where(w => w.Visivel))
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">@filtro.NomePropriedade</div>
+                        @filtro.Valor
+                    </div>
+                    @*<span class="badge bg-primary rounded-pill ms-2 p-2">&times;</span>*@
+                </li>
+            }
+        </ul>
+    }
+</form>
 
 <div class="table-responsive">
     <table class="table table-hover">
@@ -138,19 +156,19 @@
     <div class="row m-0 table-responsive">
         <div class="col-sm-6">
             @Html.PagedListPager(
-                Model.Itens,
-                page => Url.Action("Index", new { page }),
-                new PagedListRenderOptions
-                {
-                    PageClasses = new string[] { "page-link" },
-                    UlElementClasses = new string[] { "pagination justify-content-start" },
-                    LiElementClasses = new string[] { "page-item" },
-                    DisplayItemSliceAndTotal = false,
-                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
-                    MaximumPageNumbersToDisplay = 4
-                })
+        Model.Itens,
+        page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination justify-content-start" },
+        LiElementClasses = new string[] { "page-item" },
+        DisplayItemSliceAndTotal = false,
+        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        MaximumPageNumbersToDisplay = 4
+        })
         </div>
 
         <div class="col-sm-6 text-end">

@@ -12,6 +12,7 @@ using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -194,20 +195,22 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? page,
+        public async Task<IActionResult> Index(int? page, string filtroJson,
             ListaBaseViewModel<AgendamentoItemViewModel> model)
         {
             try
             {
-                var filtroAgendamento = new FiltroBase()
-                {
-                    Pagina = page ?? 1,
-                    Ordenacao = "Data, Agendamento.Descricao",
-                    OpcoesFiltro = {
-                        //new FiltroOpcao("Data", TipoOperadorBusca.MenorOuIgual, DateTime.Now.AddDays(120).ToString()),
+                var filtroAgendamento = !string.IsNullOrWhiteSpace(filtroJson)
+                    ? JsonConvert.DeserializeObject<FiltroBase>(filtroJson)
+                    : new FiltroBase()
+                    {
+                        Pagina = page ?? 1,
+                        Ordenacao = "Data, Agendamento.Descricao",
+                        OpcoesFiltro = {
+                        //new FiltroOpcao("Data", TipoOperadorBusca.MenorOuIgual, DateTime.Now.AddDays(30).ToString()),
                         //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
-                    }
-                };
+                        }
+                    };
 
                 var opcao = model.OpcaoAtual;
                 if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
@@ -219,7 +222,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 var itensPagedList = new ListaBaseViewModel<AgendamentoItemViewModel>(
                     itens, filtroAgendamento, resposta.TotalRegistros)
                 {
-                    OpcaoAtual = opcao
+                    OpcaoAtual = opcao,
+                    Filtro = filtroAgendamento,
                 };
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itensPagedList);

@@ -1,4 +1,6 @@
 ﻿using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.Recursos.Models.Base
 {
@@ -10,7 +12,8 @@ namespace MinhaCarteira.Cliente.Recursos.Models.Base
         }
 
         public bool PodeExibirPainelAvisoVazio => true;
-        public FiltroBase Filtro { get; set; }
+        public ICriterio Filtro { get; set; }
+        public string FiltroJson { get => JsonConvert.SerializeObject(Filtro); }
         public FiltroOpcao OpcaoAtual { get; set; }
     }
 }

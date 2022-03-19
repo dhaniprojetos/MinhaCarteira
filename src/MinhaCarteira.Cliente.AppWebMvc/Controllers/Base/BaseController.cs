@@ -75,14 +75,16 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(item);
         }
 
-        public virtual async Task<IActionResult> Index(int? page, ListaBaseViewModel<TEntidadeViewModel> model)
+        public virtual async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<TEntidadeViewModel> model)
         {
             try
             {
-                var criterio = new FiltroBase()
-                {
-                    Pagina = page ?? 1
-                };
+                var criterio = !string.IsNullOrWhiteSpace(filtroJson)
+                    ? JsonConvert.DeserializeObject<FiltroBase>(filtroJson)
+                    : new FiltroBase()
+                    {
+                        Pagina = page ?? 1
+                    };
 
                 var opcao = model.OpcaoAtual;
                 if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
@@ -91,9 +93,13 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 
                 var itens = await ObterTodos(criterio);
                 var itensPaginados = new ListaBaseViewModel<TEntidadeViewModel>(
-                    itens.Item2, criterio, itens.Item1);
-                
-                itensPaginados.OpcaoAtual = opcao;
+                    itens.Item2, criterio, itens.Item1)
+                {
+                    Filtro = criterio,
+                    OpcaoAtual = opcao
+                };
+
+                //itensPaginados.OpcaoAtual = opcao;
 
                 if (!TempData.ContainsKey("RetornoApi")) return View(itensPaginados);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;

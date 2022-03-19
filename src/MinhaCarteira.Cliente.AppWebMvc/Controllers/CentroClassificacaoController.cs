@@ -26,9 +26,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index(int? page, ListaBaseViewModel<CentroClassificacaoViewModel> model)
+        public override async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<CentroClassificacaoViewModel> model)
         {
-            return await base.Index(page, model);
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

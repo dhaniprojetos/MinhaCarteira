@@ -204,27 +204,30 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                     movimentos,
                     filtroMovimento.Pagina,
                     filtroMovimento.ItensPorPagina,
-                    totalMovimentos)
+                    totalMovimentos),
+                Filtro = filtroMovimento
             };
 
             return item;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string id, int? page, ListaMovimentoBancarioViewModel model)
+        public async Task<IActionResult> Index(string id, int? page, string filtroJson, ListaMovimentoBancarioViewModel model)
         {
             try
             {
                 var idConta = int.Parse(id ?? "1");
-                var filtroMovimento = new FiltroBase()
-                {
-                    Pagina = page ?? 1,
-                    Ordenacao = "DataMovimento desc, Id",
-                    OpcoesFiltro = {
-                        new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta.ToString()),
-                        //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
-                    }
-                };
+                var filtroMovimento = !string.IsNullOrWhiteSpace(filtroJson)
+                    ? JsonConvert.DeserializeObject<FiltroBase>(filtroJson)
+                    : new FiltroBase()
+                    {
+                        Pagina = page ?? 1,
+                        Ordenacao = "DataMovimento desc, Id",
+                        OpcoesFiltro = {
+                            new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta.ToString(), false),
+                            //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
+                        }
+                    };
 
                 if (!string.IsNullOrWhiteSpace(model.OpcaoAtual.NomePropriedade) &&
                     !string.IsNullOrWhiteSpace(model.OpcaoAtual.Valor))
@@ -237,7 +240,6 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
 
                 return View(item);
-
             }
             catch (Refit.ApiException ex)
             {
