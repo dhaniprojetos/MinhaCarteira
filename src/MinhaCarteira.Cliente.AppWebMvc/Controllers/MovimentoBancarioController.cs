@@ -217,21 +217,26 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             try
             {
                 var idConta = int.Parse(id ?? "1");
-                var filtroMovimento = !string.IsNullOrWhiteSpace(filtroJson)
-                    ? JsonConvert.DeserializeObject<FiltroBase>(filtroJson)
-                    : new FiltroBase()
-                    {
-                        Pagina = page ?? 1,
-                        Ordenacao = "DataMovimento desc, Id",
-                        OpcoesFiltro = {
-                            new FiltroOpcao("ContaBancariaId", TipoOperadorBusca.Igual, idConta.ToString(), false),
-                            //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
-                        }
-                    };
+                var filtro = string.IsNullOrWhiteSpace(filtroJson)
+                    ? new FiltroBase()
+                    : JsonConvert.DeserializeObject<FiltroBase>(filtroJson);
 
                 if (!string.IsNullOrWhiteSpace(model.OpcaoAtual.NomePropriedade) &&
                     !string.IsNullOrWhiteSpace(model.OpcaoAtual.Valor))
-                    filtroMovimento.OpcoesFiltro.Add(model.OpcaoAtual);
+                    filtro.OpcoesFiltro.Add(model.OpcaoAtual);
+
+                var filtroMovimento = new FiltroBase()
+                {
+                    Pagina = page ?? 1,
+                    Ordenacao = "DataMovimento desc, Id",
+                    OpcoesFiltro = filtro.OpcoesFiltro.Distinct().ToList()
+                };
+
+                filtroMovimento.OpcoesFiltro.Add(new FiltroOpcao(
+                    "ContaBancariaId", 
+                    TipoOperadorBusca.Igual, 
+                    idConta.ToString(), 
+                    false));
 
                 var item = await ObterMovimentosConta(idConta, filtroMovimento);
 

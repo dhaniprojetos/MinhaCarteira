@@ -13,6 +13,7 @@ using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -200,22 +201,21 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             try
             {
-                var filtroAgendamento = !string.IsNullOrWhiteSpace(filtroJson)
-                    ? JsonConvert.DeserializeObject<FiltroBase>(filtroJson)
-                    : new FiltroBase()
-                    {
-                        Pagina = page ?? 1,
-                        Ordenacao = "Data, Agendamento.Descricao",
-                        OpcoesFiltro = {
-                        //new FiltroOpcao("Data", TipoOperadorBusca.MenorOuIgual, DateTime.Now.AddDays(30).ToString()),
-                        //new FiltroOpcao("DataMovimento"  , TipoOperadorBusca.Maior, DateTime.Now.AddDays(-20))
-                        }
-                    };
+                var filtro = string.IsNullOrWhiteSpace(filtroJson)
+                    ? new FiltroBase()
+                    : JsonConvert.DeserializeObject<FiltroBase>(filtroJson);
 
                 var opcao = model.OpcaoAtual;
                 if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
                     !string.IsNullOrWhiteSpace(opcao?.Valor))
-                    filtroAgendamento.OpcoesFiltro.Add(opcao);
+                    filtro.OpcoesFiltro.Add(opcao);
+
+                var filtroAgendamento = new FiltroBase()
+                {
+                    Pagina = page ?? 1,
+                    Ordenacao = "Data, Agendamento.Descricao",
+                    OpcoesFiltro = filtro.OpcoesFiltro.Distinct().ToList()
+                };
 
                 var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(filtroAgendamento);
                 var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);

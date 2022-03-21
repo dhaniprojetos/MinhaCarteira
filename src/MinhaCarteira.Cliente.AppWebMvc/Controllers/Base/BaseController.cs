@@ -79,17 +79,20 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
         {
             try
             {
-                var criterio = !string.IsNullOrWhiteSpace(filtroJson)
-                    ? JsonConvert.DeserializeObject<FiltroBase>(filtroJson)
-                    : new FiltroBase()
-                    {
-                        Pagina = page ?? 1
-                    };
+                var filtro = string.IsNullOrWhiteSpace(filtroJson)
+                    ? new FiltroBase()
+                    : JsonConvert.DeserializeObject<FiltroBase>(filtroJson);
 
                 var opcao = model.OpcaoAtual;
                 if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
                     !string.IsNullOrWhiteSpace(opcao?.Valor))
-                    criterio.OpcoesFiltro.Add(opcao);
+                    filtro.OpcoesFiltro.Add(opcao);
+
+                var criterio = new FiltroBase()
+                {
+                    Pagina = page ?? 1,
+                    OpcoesFiltro = filtro.OpcoesFiltro.Distinct().ToList()
+                };
 
                 var itens = await ObterTodos(criterio);
                 var itensPaginados = new ListaBaseViewModel<TEntidadeViewModel>(
