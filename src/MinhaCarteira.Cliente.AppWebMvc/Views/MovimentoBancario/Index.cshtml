@@ -155,7 +155,7 @@
             <thead>
                 <tr>
                     <th style="width:50px;"></th>
-                    <th style="width:10px;"></th>
+                    <th style="width:36px;"></th>
                     <th class="text-end" style="width:80px;">
                         Data
                     </th>
@@ -240,16 +240,16 @@
                                 @Html.DisplayFor(modelItem => item.Descricao)
                             </td>
                             <td data-title="Ação">
-                                <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
+                                <a title="Alterar" class="btn btn-outline-primary btn-acao p-0 pt-1 pb-1" asp-action="Alterar" asp-route-id="@item.Id">
                                     <i class="fa-solid fa-lg fa-pen-to-square"></i>
                                 </a>
-                                <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
+                                <a title="Detalhes" class="btn btn-outline-success btn-acao p-0 pt-1 pb-1" asp-action="Detalhes" asp-route-id="@item.Id">
                                     <i class="fa-solid fa-lg fa-info-circle"></i>
                                 </a>
-                                <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
+                                <a title="Remover" class="btn btn-outline-danger btn-acao p-0 pt-1 pb-1" asp-action="Deletar" asp-route-id="@item.Id">
                                     <i class="fa-solid fa-lg fa-trash-can"></i>
                                 </a>
-                                <a title="Clonar registro" class="btn btn-outline-info p-0 pt-1 pb-1" style="width: 40px;" asp-action="Clonar" asp-route-id="@item.Id">
+                                <a title="Clonar registro" class="btn btn-outline-info btn-acao p-0 pt-1 pb-1" asp-action="Clonar" asp-route-id="@item.Id">
                                     <i class="fa-solid fa-lg fa-clone"></i>
                                 </a>
                             </td>

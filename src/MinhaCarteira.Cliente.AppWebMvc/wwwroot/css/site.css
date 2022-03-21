@@ -11,6 +11,11 @@
     position: absolute;
 }
 
+.btn-acao {
+    height: 34px;
+    width: 40px;
+}
+
 @media only screen and (max-width: 572px) {
 
     /* Force table to not be like tables anymore */
