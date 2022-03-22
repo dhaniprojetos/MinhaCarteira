@@ -154,14 +154,14 @@
 @if (Model != null && Model.Itens.Any())
 {
     <div class="row m-0 table-responsive">
-        <div class="col-sm-6">
+        <div class="col-sm-6 p-0">
             @Html.PagedListPager(
         Model.Itens,
         page => Url.Action("Index", new { page }),
         new PagedListRenderOptions
         {
         PageClasses = new string[] { "page-link" },
-        UlElementClasses = new string[] { "pagination justify-content-start" },
+        UlElementClasses = new string[] { "pagination" },
         LiElementClasses = new string[] { "page-item" },
         DisplayItemSliceAndTotal = false,
         DisplayEllipsesWhenNotShowingAllPageNumbers = true,
@@ -171,7 +171,7 @@
         })
         </div>
 
-        <div class="col-sm-6 text-end">
+        <div class="col-sm-6 p-0 text-end">
             Página @(Model.Itens.PageCount < Model.Itens.PageNumber ? 0 : Model.Itens.PageNumber) de @Model.Itens.PageCount
         </div>
     </div>

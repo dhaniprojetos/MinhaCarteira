@@ -62,7 +62,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc
             {
                 NumberFormat =
                 {
-                    CurrencySymbol = "R$"
+                    CurrencySymbol = "R$",
+                    CurrencyPositivePattern = 2
                 }
             };
 

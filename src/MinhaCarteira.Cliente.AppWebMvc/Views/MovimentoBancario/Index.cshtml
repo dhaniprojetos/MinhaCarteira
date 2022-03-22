@@ -262,14 +262,14 @@
         @if (Model.Movimentos.Count > 0)
         {
             <div class="row m-0 table-responsive">
-                <div class="col-sm-6">
+                <div class="col-sm-6 p-0">
                     @Html.PagedListPager(
                 Model.Movimentos,
                 page => Url.Action("Index", new { page }),
                 new PagedListRenderOptions
                 {
                 PageClasses = new string[] { "page-link" },
-                UlElementClasses = new string[] { "pagination justify-content-start" },
+                UlElementClasses = new string[] { "pagination" },
                 LiElementClasses = new string[] { "page-item" },
                 DisplayItemSliceAndTotal = false,
                 DisplayEllipsesWhenNotShowingAllPageNumbers = true,
@@ -279,7 +279,7 @@
                 })
                 </div>
 
-                <div class="col-sm-6 text-end">
+                <div class="col-sm-6 p-0 text-end">
                     Página @(Model.Movimentos.PageCount < Model.Movimentos.PageNumber ? 0 : Model.Movimentos.PageNumber) de @Model.Movimentos.PageCount
                 </div>
             </div>
