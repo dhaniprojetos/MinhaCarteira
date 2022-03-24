@@ -36,11 +36,10 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
         public async Task<bool> AtualizarSaldoConta(string id)
         {
-            //var filtro = !string.IsNullOrWhiteSpace(id)
-            //    ? $"where conta.id in ({id})"
-            //    : string.Empty;
+            var filtro = !string.IsNullOrWhiteSpace(id)
+                ? $"where conta.id in ({id})"
+                : string.Empty;
 
-            var filtro = $"where conta.id in ({id})";
             var cmdSql = $@"
 update ContaBancaria
    set ValorSaldoAtual = ValorSaldoInicial + tmp.Saldo
@@ -53,7 +52,6 @@ inner join (
     {filtro}
     group by conta.Id
 )tmp on tmp.Id = conta.Id
-
 ";
 
             var afetadas = await Contexto.Database.ExecuteSqlRawAsync(cmdSql);

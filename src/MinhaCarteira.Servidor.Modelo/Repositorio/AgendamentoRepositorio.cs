@@ -16,6 +16,30 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
         public AgendamentoRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }
 
+        public override async Task<IList<Agendamento>> IncluirRange(IList<Agendamento> itens)
+        {
+            itens.ToList().ForEach(item =>
+            {
+                if (item.CentroClassificacao?.Id > 0)
+                    Contexto.Entry(item.CentroClassificacao).State =
+                        EntityState.Unchanged;
+
+                if (item.Pessoa?.Id > 0)
+                    Contexto.Entry(item.Pessoa).State =
+                        EntityState.Unchanged;
+
+                if (item.Categoria?.Id > 0)
+                    Contexto.Entry(item.Categoria).State =
+                        EntityState.Unchanged;
+
+                if (item.ContaBancaria?.Id > 0)
+                    Contexto.Entry(item.ContaBancaria).State =
+                        EntityState.Unchanged;
+            });
+
+            return await base.IncluirRange(itens);
+        }
+
         protected override IQueryable<Agendamento> AdicionarIncludes(IQueryable<Agendamento> source)
         {
             return source

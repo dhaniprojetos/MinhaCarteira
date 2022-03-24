@@ -104,6 +104,25 @@ where Id={movimento.ContaBancariaId} and DataSaldoInicial < '{movimento.DataMovi
 
         public async override Task<IList<MovimentoBancario>> IncluirRange(IList<MovimentoBancario> itens)
         {
+            itens.ToList().ForEach(item =>
+            {
+                if (item.CentroClassificacao?.Id > 0)
+                    Contexto.Entry(item.CentroClassificacao).State =
+                        EntityState.Unchanged;
+
+                if (item.Pessoa?.Id > 0)
+                    Contexto.Entry(item.Pessoa).State =
+                        EntityState.Unchanged;
+
+                if (item.Categoria?.Id > 0)
+                    Contexto.Entry(item.Categoria).State =
+                        EntityState.Unchanged;
+
+                if (item.ContaBancaria?.Id > 0)
+                    Contexto.Entry(item.ContaBancaria).State =
+                        EntityState.Unchanged;
+            });
+
             var itensDb = await base.IncluirRange(itens);
 
             foreach (var item in itensDb)
