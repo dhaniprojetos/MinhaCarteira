@@ -34,8 +34,9 @@ namespace MinhaCarteira.Cliente.Recursos.AutoMapper
             CreateMap<Agendamento, AgendamentoViewModel>();
             CreateMap<AgendamentoViewModel, Agendamento>();
             
-            CreateMap<Usuario, UsuarioViewModel>();
-            CreateMap<UsuarioViewModel, Usuario>();
+            CreateMap<UserInfo, UsuarioViewModel>();
+            CreateMap<UserToken, UsuarioViewModel>();
+            CreateMap<UsuarioViewModel, UserInfo>();
         }
     }
 }

@@ -12,7 +12,6 @@ using MinhaCarteira.Cliente.Recursos.Refit;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers

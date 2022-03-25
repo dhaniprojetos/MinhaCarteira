@@ -3,7 +3,6 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Teste.Mock.Interface;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace MinhaCarteira.Teste.Mock.Faker

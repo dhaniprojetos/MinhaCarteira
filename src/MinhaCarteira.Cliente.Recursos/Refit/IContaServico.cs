@@ -8,6 +8,6 @@ namespace MinhaCarteira.Cliente.Recursos.Refit
     public interface IContaServico
     {
         [Post("/login")]
-        Task<Resposta<Usuario>> Logar(Usuario item);
+        Task<Resposta<UserToken>> Logar(UserInfo item);
     }
 }

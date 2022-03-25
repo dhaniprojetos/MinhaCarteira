@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
@@ -10,7 +11,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
-        public string Role { get; set; }
+        public string Roles { get; set; }
         public string TokenAcesso { get; set; }
     }
 }

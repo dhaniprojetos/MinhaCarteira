@@ -11,7 +11,7 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
         public static IServiceCollection AdicionarAutenticacao(
             this IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(Configuracao.Segredo);
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuracao.Segredo));
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -22,10 +22,12 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ClockSkew = System.TimeSpan.Zero
                 };
             });
 

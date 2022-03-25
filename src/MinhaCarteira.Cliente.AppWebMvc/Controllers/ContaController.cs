@@ -42,7 +42,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
             try
             {
-                var itemMap = _mapper.Map<Usuario>(conta);
+                var itemMap = _mapper.Map<UserInfo>(conta);
                 var resposta = await _servico.Logar(itemMap);
                 var userDb = _mapper.Map<UsuarioViewModel>(resposta.Dados);
 
@@ -50,7 +50,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 {
                     new(ClaimTypes.Name, userDb.Username),
                     new("FullName", userDb.Username),
-                    new(ClaimTypes.Role, userDb.Role)
+                    new(ClaimTypes.Role, userDb.Roles)
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

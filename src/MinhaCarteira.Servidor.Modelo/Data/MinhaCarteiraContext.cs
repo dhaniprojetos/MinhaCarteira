@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Servidor.Modelo.Maps;
 
 namespace MinhaCarteira.Servidor.Modelo.Data
 {
-    public class MinhaCarteiraContext : DbContext
+    public class MinhaCarteiraContext : IdentityDbContext
     {
         public MinhaCarteiraContext(
             DbContextOptions<MinhaCarteiraContext> options) : base(options)
