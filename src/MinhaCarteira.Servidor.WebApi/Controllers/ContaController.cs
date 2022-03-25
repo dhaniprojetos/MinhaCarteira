@@ -19,7 +19,10 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             if (!(usuario.Username == "hempmax" && usuario.Password == "maxhemp"))
             {
                 var excecao = new Exception("Usuário ou senha inválidos.");
-                return NotFound(new Resposta<Exception>(excecao, excecao.Message));
+                return NotFound(new Resposta<Exception>(excecao, excecao.Message)
+                {
+                    StatusCode = 404
+                });
             }
 
             usuario.Role = "Admin";

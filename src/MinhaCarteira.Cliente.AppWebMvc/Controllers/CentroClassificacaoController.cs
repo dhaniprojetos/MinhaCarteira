@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 
@@ -25,9 +26,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<CentroClassificacaoViewModel> model)
         {
-            return base.Index();
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

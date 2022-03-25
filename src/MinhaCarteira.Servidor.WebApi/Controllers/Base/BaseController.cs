@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
@@ -22,24 +24,37 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
         {
             var objResult = (ObjectResult)resposta;
             if (objResult != null && objResult.Value is IRespostaServico resp)
+            {
                 resp.StatusCode = objResult.StatusCode;
+                if (resp.StatusCode >= 400 && resp.Mensagem != "Nenhum registro localizado.")
+                    resp.BemSucedido = false;
+            }
         }
 
         protected IServicoCrud<TEntidade> Servico { get; }
 
         [HttpGet]
-        public async Task<IActionResult> Navegar()
+        public async Task<IActionResult> Navegar([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] FiltroBase criterio)
         {
             IActionResult resposta;
             try
             {
-                var itens = await Servico.Navegar(null);
-                resposta = itens == null || itens.Count == 0
-                    ? NotFound(new Resposta<IList<TEntidade>>(
+                criterio ??= new FiltroBase();
+
+                var itens = await Servico.Navegar(criterio);
+
+                resposta = itens == null || itens.Item2.Count == 0
+                    ? NotFound(new RespostaPaginada<IList<TEntidade>>(
                         null,
+                        criterio.Pagina,
+                        criterio.ItensPorPagina,
+                        itens.Item1,
                         "Nenhum registro localizado."))
-                    : Ok(new Resposta<IList<TEntidade>>(
-                        itens,
+                    : Ok(new RespostaPaginada<IList<TEntidade>>(
+                        itens.Item2,
+                        criterio.Pagina,
+                        criterio.ItensPorPagina,
+                        itens.Item1,
                         "Itens localizados com sucesso."));
             }
             catch (Exception e)
@@ -92,10 +107,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                             "Itens cadastrados com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar cadastrar os itens enviados.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar cadastrar os itens enviados."));
             }
             catch (Exception e)
             {
@@ -120,10 +132,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         "Itens alterados com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar alterar os itens enviados.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar alterar os itens enviados."));
             }
             catch (Exception e)
             {
@@ -150,10 +159,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                             "Item cadastrado com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar cadastrar o item enviado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar cadastrar o item enviado."));
             }
             catch (Exception e)
             {
@@ -178,10 +184,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         "Item alterado com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar alterar o item enviado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar alterar o item enviado."));
 
                 return resposta;
             }
@@ -211,10 +214,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
                         $"{linhasAfetadas} {msg} com sucesso."))
                     : NotFound(new Resposta<IList<TEntidade>>(
                         null,
-                        "Falha ao tentar remover o item enviado.")
-                    {
-                        BemSucedido = false
-                    });
+                        "Falha ao tentar remover o item enviado."));
             }
             catch (Exception e)
             {

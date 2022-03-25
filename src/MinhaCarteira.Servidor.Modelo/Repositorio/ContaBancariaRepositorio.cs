@@ -39,19 +39,19 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             var filtro = !string.IsNullOrWhiteSpace(id)
                 ? $"where conta.id in ({id})"
                 : string.Empty;
+
             var cmdSql = $@"
 update ContaBancaria
    set ValorSaldoAtual = ValorSaldoInicial + tmp.Saldo
 from ContaBancaria conta
 inner join (
-	select conta.Id
-		 , sum(case when mov.TipoMovimento = 0 then Valor * -1 else Valor end) Saldo
-	from MovimentoBancario mov
-	inner join ContaBancaria conta on conta.Id = mov.ContaBancariaId
-	where mov.DataMovimento > conta.DataSaldoInicial
-	group by conta.Id
+    select conta.Id
+         , isnull(sum(case when mov.TipoMovimento = 0 then Valor * -1 else Valor end), 0) Saldo
+    from ContaBancaria conta
+    left join MovimentoBancario mov on conta.Id = mov.ContaBancariaId and mov.DataMovimento > conta.DataSaldoInicial
+    {filtro}
+    group by conta.Id
 )tmp on tmp.Id = conta.Id
-{filtro}
 ";
 
             var afetadas = await Contexto.Database.ExecuteSqlRawAsync(cmdSql);

@@ -7,6 +7,7 @@ using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -42,24 +43,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             return await Task.FromResult(true);
         }
-        //protected override async Task<IList<InstituicaoFinanceiraViewModel>> ObterTodos()
-        //{
-        //    var src = _config
-        //        .GetSection("DefinicaoArquivos")["UploadRepositorioImagens"];
-        //
-        //    src = Path.Combine(src, "instituicaoFinanceira");
-        //    src = src.Replace("wwwroot/", "");
-        //    
-        //    var itens = await base.ObterTodos();
-        //    itens.ToList().ForEach(f => f.PathImagens = src);
-        //
-        //    return itens;
-        //}
-
+        
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<InstituicaoFinanceiraViewModel> model)
         {
-            return base.Index();
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

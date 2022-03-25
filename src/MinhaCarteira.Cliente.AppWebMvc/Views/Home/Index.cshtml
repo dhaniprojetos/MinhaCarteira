@@ -1,19 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Página inicial";
+    ViewData["Icone"] = "<i class='fa fa-home text-primary'></i>";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <a class="btn btn-success mb-2" asp-action="Index" asp-controller="Agendamento">Agendamento</a>
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="MovimentoBancario">Movimento Bancário</a>
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="CentroClassificacao">Centro de Classificação</a>
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="Categoria">Categoria</a>
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="ContaBancaria">Conta Bancaria</a>
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="InstituicaoFinanceira">Instituição Financeira</a>
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="Pessoa">Pessoa</a>
 </div>
-
-<div class="text-center">
-    <a class="btn btn-success" asp-action="Index" asp-controller="Agendamento">Agendamento</a>
-    <a class="btn btn-primary" asp-action="Index" asp-controller="MovimentoBancario">Movimento Bancário</a>
-    <a class="btn btn-primary" asp-action="Index" asp-controller="CentroClassificacao">Centro de Classificação</a>
-    <a class="btn btn-primary" asp-action="Index" asp-controller="Categoria">Categoria</a>
-    <a class="btn btn-primary" asp-action="Index" asp-controller="ContaBancaria">Conta Bancaria</a>
-    <a class="btn btn-primary" asp-action="Index" asp-controller="InstituicaoFinanceira">Instituição Financeira</a>
-    <a class="btn btn-primary" asp-action="Index" asp-controller="Pessoa">Pessoa</a>
-</div>
-

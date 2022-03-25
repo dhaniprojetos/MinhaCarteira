@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class MovimentoBancarioViewModel : IEntidade
+    public class MovimentoBancarioViewModel : BaseViewModel, IEntidade
     {
         [DisplayFormat(DataFormatString = "{0:d}", NullDisplayText = "Auto")]
         public int Id { get; set; }

@@ -9,20 +9,28 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using MinhaCarteira.Cliente.Recursos.Refit;
+using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
+using MinhaCarteira.Comum.Definicao.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class AgendamentoController : BaseController<Agendamento, AgendamentoViewModel>
     {
         private readonly IMovimentoServico _movimentoServico;
+        private readonly IContaBancariaServico _contaBancariaServico;
 
         public AgendamentoController(
             IAgendamentoServico servico,
             IMapper mapper,
-            IMovimentoServico movimentoServico)
+            IMovimentoServico movimentoServico,
+            IContaBancariaServico contaBancariaServico)
             : base(servico, mapper)
         {
             _movimentoServico = movimentoServico;
+            _contaBancariaServico = contaBancariaServico;
         }
 
         protected override async Task<AgendamentoViewModel> InicializarViewModel(AgendamentoViewModel viewModel)
@@ -115,16 +123,45 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ObterMovimentos(string prefix)
+        public async Task<JsonResult> ObterMovimentos(ConciliarAgendamentoViewModel model)
         {
-            var resp = await _movimentoServico.ObterMovimentosParaConciliacao();
+            var filtro = new FiltroBase
+            {
+                ItensPorPagina = 0,
+                AdicionarIncludes = false,
+                OpcoesFiltro = new List<FiltroOpcao>
+                {
+                    new FiltroOpcao("Valor", TipoOperadorBusca.MaiorOuIgual, model.ValorInicial.ToString()),
+                    new FiltroOpcao("Valor", TipoOperadorBusca.MenorOuIgual, model.ValorFinal.ToString()),
+                    new FiltroOpcao("DataMovimento", TipoOperadorBusca.MaiorOuIgual, model.DataInicial.ToString()),
+                    new FiltroOpcao("DataMovimento", TipoOperadorBusca.MenorOuIgual, model.DataFinal.ToString()),
+                }
+            };
+
+            if (model.ContaBancariaId > 0)
+                filtro.OpcoesFiltro.Add(new FiltroOpcao(
+                    "ContaBancariaId",
+                    TipoOperadorBusca.Igual,
+                    model.ContaBancariaId.ToString()));
+
+            if (!string.IsNullOrWhiteSpace(model.Descricao))
+                filtro.OpcoesFiltro.Add(new FiltroOpcao(
+                    "Descricao",
+                    TipoOperadorBusca.Contem,
+                    model.Descricao));
+
+            var resp = await _movimentoServico.ObterMovimentosParaConciliacao(filtro);
 
             return Json(resp.Dados);
         }
 
         public async Task<IActionResult> ConciliarParcela(int id)
         {
-            var item = await ObterParcelaPorId(id);
+            var parcela = await ObterParcelaPorId(id);
+            var retornoApi = await _contaBancariaServico.Navegar(null);
+            var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
+
+            var item = new ConciliarAgendamentoViewModel(contas, parcela);
             return View(item);
         }
 
@@ -158,23 +195,56 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return Json(new { redirectToUrl = Url.Action("Index", "Agendamento") });
         }
 
-        #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(int? page, string filtroJson,
+            ListaBaseViewModel<AgendamentoItemViewModel> model)
         {
             try
             {
-                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(90);
-                var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
+                var filtro = string.IsNullOrWhiteSpace(filtroJson)
+                    ? new FiltroBase()
+                    : JsonConvert.DeserializeObject<FiltroBase>(filtroJson);
 
-                if (!TempData.ContainsKey("RetornoApi")) return View(itens);
+                var opcao = model.OpcaoAtual;
+                if (!string.IsNullOrWhiteSpace(opcao?.NomePropriedade) &&
+                    !string.IsNullOrWhiteSpace(opcao?.Valor))
+                    filtro.OpcoesFiltro.Add(opcao);
+
+                var filtroAgendamento = new FiltroBase()
+                {
+                    Pagina = page ?? 1,
+                    Ordenacao = "Data, Agendamento.Descricao",
+                    OpcoesFiltro = filtro.OpcoesFiltro.Distinct().ToList()
+                };
+
+                var resposta = await ((IAgendamentoServico)Servico).ContasAVencer(filtroAgendamento);
+                var itens = Mapper.Map<List<AgendamentoItemViewModel>>(resposta.Dados);
+                var itensPagedList = new ListaBaseViewModel<AgendamentoItemViewModel>(
+                    itens, filtroAgendamento, resposta.TotalRegistros)
+                {
+                    OpcaoAtual = opcao,
+                    Filtro = filtroAgendamento,
+                };
+
+                if (!TempData.ContainsKey("RetornoApi")) return View(itensPagedList);
                 var retorno = TempData["RetornoApi"].ToString() ?? string.Empty;
                 ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
 
-                return View(itens);
+                return View(itensPagedList);
             }
             catch (Refit.ApiException ex)
             {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                    ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    return RedirectToAction("Logar", "Conta");
+
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                if (retornoApi == null)
+                    retornoApi = new Resposta<Exception>(ex, ex.Message)
+                    {
+                        StatusCode = (int)ex.StatusCode
+                    };
+
                 if (!TempData.ContainsKey("RetornoApi"))
                     ViewBag.RetornoApi = retornoApi;
                 else
@@ -183,17 +253,19 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                     ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
                 }
 
-                return View(new List<AgendamentoItemViewModel>());
+                return View(new ListaBaseViewModel<AgendamentoItemViewModel>());
             }
             catch (Exception e)
             {
                 var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(new List<AgendamentoItemViewModel>());
+                return View(new ListaBaseViewModel<AgendamentoItemViewModel>());
             }
         }
 
+
+        #region Métodos sobrescritos apenas manter as views
         public override async Task<IActionResult> Criar()
         {
             return await base.Criar();

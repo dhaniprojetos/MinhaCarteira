@@ -1,6 +1,7 @@
 ﻿@using MinhaCarteira.Comum.Definicao.Interface.Servico
 
-@if (ViewBag?.RetornoApi != null)
+@if (ViewBag?.RetornoApi != null && 
+     ViewBag.RetornoApi.Mensagem != "Nenhum registro localizado.")
 {
     var retornoApi = ViewBag.RetornoApi as IRespostaServico;
     var classAlert = "alert-success";
@@ -12,7 +13,7 @@
         classFont = "fa-circle-exclamation";
     }
 
-    <div class="alert @classAlert myAlert-bottom alert-dismissible fade show" role="alert">
+    <div class="alert @classAlert alert-dismissible fade show position-fixed bottom-0 end-0 me-3" style="z-index: 9999;" role="alert">
         <span class="fa @classFont" style="font-size:17px;"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         <strong></strong> @Html.Raw(retornoApi.Mensagem)

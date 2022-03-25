@@ -8,7 +8,7 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
     {
         public int Id { get; set; }
         public int? IdAuxiliar { get; set; }
-        public TipoMovimento TipoMovimento { get; set; }   
+        public TipoMovimento TipoMovimento { get; set; }
         public DateTime DataMovimento { get; set; }
         public string Descricao { get; set; }
         public decimal Valor { get; set; }

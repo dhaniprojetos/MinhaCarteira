@@ -7,8 +7,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Cliente.AppWebMvc.Controllers.Base;
 using MinhaCarteira.Cliente.Recursos.Models;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -24,17 +28,33 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             _categoriaServico = categoriaServico;
         }
 
-        protected override async Task<IList<CategoriaViewModel>> ObterTodos()
+        protected override async Task<Tuple<int, IList<CategoriaViewModel>>> ObterTodos(ICriterio criterio)
         {
-            var resposta = await Servico.Navegar();
-            var itens = Mapper.Map<List<CategoriaViewModel>>(
-                resposta.Dados);
-        
-            return itens?.OrderBy(o => o.Caminho).ToList();
+            criterio.ItensPorPagina = 5;
+            criterio.OpcoesFiltro.Add(
+                new FiltroOpcao("IdCategoriaPai", Comum.Definicao.Modelo.TipoOperadorBusca.Igual, null, false));
+
+            var resposta = await Servico.Navegar(criterio);
+            var itens = resposta.Dados;
+            var itensExpandidos = resposta.Dados
+                .SelectMany(s => s.SubCategoria)
+                .ToList();
+            
+            itensExpandidos
+                .ForEach(f => f.CategoriaPai = itens.FirstOrDefault(item => item.Id == f.IdCategoriaPai));
+
+            itensExpandidos.AddRange(itens);
+
+            var itensViewModel = Mapper.Map<List<CategoriaViewModel>>(
+                itensExpandidos);
+
+            return new Tuple<int, IList<CategoriaViewModel>>(
+                resposta.TotalRegistros,
+                itensViewModel?.OrderBy(o => o.Caminho).ToList());
         }
         protected override async Task<CategoriaViewModel> InicializarViewModel(CategoriaViewModel viewModel)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
             viewModel.AdicionarCategorias(resp.Dados);
 
             return await Task.FromResult(viewModel);
@@ -54,7 +74,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 model.NomeArquivo = viewModel.IconeForm.FileName;
             }
 
-            if (viewModel.Id == 0) 
+            if (viewModel.Id == 0)
                 return await base.ExecutarAntesSalvar(viewModel, model);
 
             var itemDb = await ObterPorId(viewModel.Id);
@@ -67,7 +87,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterCategorias(string prefix)
         {
-            var resp = await _categoriaServico.Navegar();
+            var resp = await _categoriaServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Caminho, val = s.Id })
@@ -80,9 +100,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override async Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<CategoriaViewModel> model)
         {
-            return await base.Index();
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

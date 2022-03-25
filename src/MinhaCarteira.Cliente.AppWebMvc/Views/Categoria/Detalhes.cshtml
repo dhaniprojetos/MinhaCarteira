@@ -1,42 +1,42 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.CategoriaViewModel
 
 @{
-    ViewData["Title"] = "Detalhes";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Categoria";
+    ViewData["Icone"] = "<i class='fa fa-square-check fa-lg text-primary'></i>";
 }
 
 <h1>Detalhes</h1>
-
+<hr />
 <div>
-    <h4>CategoriaViewModel</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Id)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.Id)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Nome)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.Nome)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdAuxiliar)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.IdAuxiliar)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdAuxiliar)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.IdAuxiliar)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdCategoriaPai)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.IdCategoriaPai)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdCategoriaPai)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.IdCategoriaPai)
         </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Alterar", "Alterar", new { id = Model.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>

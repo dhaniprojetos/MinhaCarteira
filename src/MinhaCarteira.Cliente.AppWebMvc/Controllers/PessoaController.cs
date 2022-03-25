@@ -5,6 +5,7 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -24,9 +25,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override  async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<PessoaViewModel> model)
         {
-            return base.Index();
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

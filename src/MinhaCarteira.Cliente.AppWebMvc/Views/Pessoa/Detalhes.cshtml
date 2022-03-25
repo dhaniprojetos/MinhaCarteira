@@ -1,44 +1,45 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.PessoaViewModel
 
 @{
-    ViewData["Title"] = "Detalhes";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Cliente / Fornecedor";
+    ViewData["Icone"] = "<i class='fa fa-user fa-lg text-primary'></i>";
 }
 
 <h1>Detalhes</h1>
+<hr />
 
 <div>
-    <h4>PessoaViewModel</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+            @Html.DisplayNameFor(m => m.Id)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(m => m.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdAuxiliar)
+            @Html.DisplayNameFor(m => m.IdAuxiliar)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdAuxiliar)
+            @Html.DisplayFor(m => m.IdAuxiliar)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
+            @Html.DisplayNameFor(m => m.Nome)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
+            @Html.DisplayFor(m => m.Nome)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EhCliente)
+            @Html.DisplayNameFor(m => m.EhCliente)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EhCliente)
+            @Html.DisplayFor(m => m.EhCliente)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EhFornecedor)
+            @Html.DisplayNameFor(m => m.EhFornecedor)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EhFornecedor)
+            @Html.DisplayFor(m => m.EhFornecedor)
         </dd>
     </dl>
 </div>

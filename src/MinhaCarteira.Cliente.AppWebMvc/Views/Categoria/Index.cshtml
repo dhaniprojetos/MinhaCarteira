@@ -1,55 +1,178 @@
-﻿@model IEnumerable<MinhaCarteira.Cliente.Recursos.Models.CategoriaViewModel>
+﻿@using MinhaCarteira.Cliente.Recursos.Models.Base
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common;
+@using MinhaCarteira.Comum.Definicao.Modelo;
+@model ListaBaseViewModel<MinhaCarteira.Cliente.Recursos.Models.CategoriaViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Categoria";
+    ViewData["Icone"] = "<i class='fa fa-square-check fa-lg text-primary'></i>";
+    ViewData["LinkNovo"] = Url.Action("Criar");
+}
+@section Scripts{
+<script src="~/js/views/paginacao.js" asp-append-version="true"></script>
 }
 
-<h1>Index</h1>
-@{await Html.RenderPartialAsync("_PartialAlertas");}
+<form asp-action="Index" method="get" id="formBusca">
+    <div class="accordion mb-1 fa-ca">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Filtros
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <input id="page" name="page" type="hidden" />
 
-<p>
-    <a asp-action="Criar">Create New</a>
-</p>
-<table class="table table-hover table-responsive-sm">
-    <thead>
-        <tr>
-            <th></th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoriaPai)
-            </th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="align-middle">
-                <td class="p-0 ps-2" style="width: 50px;">
-                    <img src="data:@item.MimeType;base64,@item.IconeCategoria"
+                    <div class="row mb-2">
+                        <div class="col-sm-3">
+                            <label asp-for="OpcaoAtual.NomePropriedade" class="form-label"></label>
+                            <input asp-for="OpcaoAtual.NomePropriedade" class="form-control" />
+                            <span asp-validation-for="OpcaoAtual.NomePropriedade" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-sm-3 col-lg-2">
+                            <label asp-for="OpcaoAtual.Operador" class="form-label"></label>
+                            <select asp-for="OpcaoAtual.Operador" class="form-select">
+                                @foreach (var c in Enum.GetValues(typeof(TipoOperadorBusca)).Cast<TipoOperadorBusca>())
+                                {
+                                    <option value="@c">@c</option>
+                                }
+                            </select>
+                            <span asp-validation-for="OpcaoAtual.Operador" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-7">
+                            <label asp-for="OpcaoAtual.Valor" class="form-label"></label>
+                            <input asp-for="OpcaoAtual.Valor" class="form-control" />
+                            <span asp-validation-for="OpcaoAtual.Valor" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end pe-2">
+                        <button class="btn btn-primary col-5 col-sm-2 col-lg-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                            </svg>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Filtro != null)
+    {
+        <input type="hidden" name="filtroJson" id="filtroJson" value="@Model.FiltroJson" />
+        <ul class="list-group list-group-horizontal mb-3">
+
+            @foreach (var filtro in Model.Filtro.OpcoesFiltro.Where(w => w.Visivel))
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">@filtro.NomePropriedade</div>
+                        @filtro.Valor
+                    </div>
+                    @*<span class="badge bg-primary rounded-pill ms-2 p-2">&times;</span>*@
+                </li>
+            }
+        </ul>
+    }
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Itens.FirstOrDefault().CategoriaPai)
+                </th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if ((ViewBag?.RetornoApi == null || ViewBag?.RetornoApi.BemSucedido) && (Model == null || !Model.Itens.Any()))
+            {
+                <tr class="align-middle">
+                    <td colspan="10" class="p-0 m-0">
+                        <div class="p-5 mb-4 bg-light rounded-3">
+                            <div class="container-fluid">
+                                <h1 class="display-5 fw-bold">Categoria</h1>
+                                <p class="col-md-12 fs-4">Você não possui nenhuma categoria a ser listada por aqui.</p>
+                                <p class="col-md-12 fs-6">Clique no botão abaixo para cadastrar um novo item.</p>
+
+                                <a class="btn btn-lg btn-primary" asp-action="Criar" role="button">
+                                    Cadastrar
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model.Itens)
+                {
+                    <tr class="align-middle">
+                        <td class="p-0 ps-2" style="width: 50px;">
+                            <img src="data:@item.MimeType;base64,@item.IconeCategoria"
                          height="42" width="42"
                          asp-append-version="true" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td class="text-start">
-                    @Html.DisplayFor(modelItem => item.NomeCategoriaPai)
-                </td>
-                <td style="width: 160px;">
-                    <a title="Alterar" class="btn btn-outline-primary p-0 pt-1 pb-1" style="width: 40px;" asp-action="Alterar" asp-route-id="@item.Id">
-                        <i class="fa-solid fa-lg fa-pen-to-square"></i>
-                    </a>
-                    <a title="Detalhes" class="btn btn-outline-success p-0 pt-1 pb-1" style="width: 40px;" asp-action="Detalhes" asp-route-id="@item.Id">
-                        <i class="fa-solid fa-lg fa-info-circle"></i>
-                    </a>
-                    <a title="Remover" class="btn btn-outline-danger p-0 pt-1 pb-1" style="width: 40px;" asp-action="Deletar" asp-route-id="@item.Id">
-                        <i class="fa-solid fa-lg fa-trash-can"></i>
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td class="text-start">
+                            @Html.DisplayFor(modelItem => item.NomeCategoriaPai)
+                        </td>
+                        <td style="width: 160px;">
+                            <a title="Alterar" class="btn btn-outline-primary btn-acao p-0 pt-1 pb-1" asp-action="Alterar" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-lg fa-pen-to-square"></i>
+                            </a>
+                            <a title="Detalhes" class="btn btn-outline-success btn-acao p-0 pt-1 pb-1" asp-action="Detalhes" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-lg fa-info-circle"></i>
+                            </a>
+                            <a title="Remover" class="btn btn-outline-danger btn-acao p-0 pt-1 pb-1" asp-action="Deletar" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-lg fa-trash-can"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model != null && Model.Itens.Any())
+{
+    <div class="row m-0 table-responsive">
+        <div class="col-sm-6 p-0">
+            @Html.PagedListPager(
+        Model.Itens,
+        page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination" },
+        LiElementClasses = new string[] { "page-item" },
+        DisplayItemSliceAndTotal = false,
+        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        MaximumPageNumbersToDisplay = 4
+        })
+        </div>
+
+        <div class="col-sm-6 p-0 text-end">
+            Página @(Model.Itens.PageCount < Model.Itens.PageNumber ? 0 : Model.Itens.PageNumber) de @Model.Itens.PageCount
+        </div>
+    </div>
+}

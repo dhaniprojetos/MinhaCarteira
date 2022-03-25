@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
@@ -14,10 +15,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico
         {
         }
 
-        public async Task<IList<MovimentoBancario>> ObterMovimentosParaConciliacao()
+        public async Task<Tuple<int, IList<MovimentoBancario>>> ObterMovimentosParaConciliacao(ICriterio criterio)
         {
             var itens = await((MovimentoBancarioRepositorio)Repositorio)
-                .ObterMovimentosParaConciliacao();
+                .ObterMovimentosParaConciliacao(criterio);
 
             return itens;
         }

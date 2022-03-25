@@ -5,6 +5,9 @@ using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 using System.Linq;
 using System.Threading.Tasks;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using System;
+using MinhaCarteira.Servidor.Modelo.Helper;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
@@ -12,6 +15,30 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
     {
         public AgendamentoRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }
+
+        public override async Task<IList<Agendamento>> IncluirRange(IList<Agendamento> itens)
+        {
+            itens.ToList().ForEach(item =>
+            {
+                if (item.CentroClassificacao?.Id > 0)
+                    Contexto.Entry(item.CentroClassificacao).State =
+                        EntityState.Unchanged;
+
+                if (item.Pessoa?.Id > 0)
+                    Contexto.Entry(item.Pessoa).State =
+                        EntityState.Unchanged;
+
+                if (item.Categoria?.Id > 0)
+                    Contexto.Entry(item.Categoria).State =
+                        EntityState.Unchanged;
+
+                if (item.ContaBancaria?.Id > 0)
+                    Contexto.Entry(item.ContaBancaria).State =
+                        EntityState.Unchanged;
+            });
+
+            return await base.IncluirRange(itens);
+        }
 
         protected override IQueryable<Agendamento> AdicionarIncludes(IQueryable<Agendamento> source)
         {
@@ -91,23 +118,51 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             return itens;
         }
 
-        public async Task<IList<AgendamentoItem>> ContasAVencer(int qtdDias)
+        public async Task<Tuple<int, IList<AgendamentoItem>>> ContasAVencer(ICriterio criterio)
         {
-            var itens = await 
-                AdicionarIncludesParcela(Contexto.AgendamentoItens)
-                .AsNoTracking()
-                .Where(w => !w.EstahPaga && w.Data < System.DateTime.Now.AddDays(qtdDias) ||
-                            w.Data > System.DateTime.Now.AddDays(qtdDias * -1) && w.Data < System.DateTime.Now.AddDays(qtdDias))
-                .OrderBy(o => o.Data)
-                .ThenBy(tb => tb.ContaBancariaId)
-                .ToListAsync();
+            var tab = criterio.AdicionarIncludes
+                ? AdicionarIncludesParcela(Contexto.AgendamentoItens).AsNoTracking()
+                : Contexto.AgendamentoItens.AsNoTracking();
 
-            return itens;
+            if (criterio != null && criterio.OpcoesFiltro.Any())
+            {
+                var filtro = SimpleComparison<AgendamentoItem>(criterio.OpcoesFiltro);
+
+                tab = tab.Where(filtro);
+            }
+
+            var totalRegistros = await tab.CountAsync();
+
+            if (!string.IsNullOrWhiteSpace(criterio.Ordenacao))
+                tab = tab.OrderBy(criterio.Ordenacao);
+
+            IList<AgendamentoItem> itens;
+
+            if (criterio.ItensPorPagina <= 1)
+                itens = await tab.ToListAsync();
+            else itens = await tab
+                    .Skip((criterio.Pagina - 1) * criterio.ItensPorPagina)
+                    .Take(criterio.ItensPorPagina)
+                    .ToListAsync();
+
+            return new Tuple<int, IList<AgendamentoItem>>(totalRegistros, itens);
+
+
+            //var itens = await 
+            //    AdicionarIncludesParcela(Contexto.AgendamentoItens)
+            //    .AsNoTracking()
+            //    .Where(w => !w.EstahPaga && w.Data < System.DateTime.Now.AddDays(qtdDias) ||
+            //                w.Data > System.DateTime.Now.AddDays(qtdDias * -1) && w.Data < System.DateTime.Now.AddDays(qtdDias))
+            //    .OrderBy(o => o.Data)
+            //    .ThenBy(tb => tb.ContaBancariaId)
+            //    .ToListAsync();
+            //
+            //return itens;
         }
 
         public async Task<AgendamentoItem> ObterParcelaPorId(int id)
         {
-            var item = await 
+            var item = await
                 AdicionarIncludesParcela(Contexto.AgendamentoItens)
                 .AsNoTracking()
                 .Where(w => w.Id == id)
@@ -130,7 +185,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
             Contexto.Entry(itemDb).State = EntityState.Detached;
 
-            return null;
+            return parcela;
         }
 
         public async Task<bool> ConciliarParcela(int id)

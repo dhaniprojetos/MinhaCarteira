@@ -1,4 +1,5 @@
 ﻿using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
@@ -15,17 +16,46 @@ namespace MinhaCarteira.Teste.WebApi.Crud
         AgendamentoBuilder,
         AgendamentoServico>
     {
+        private readonly IServicoCrud<CentroClassificacao> _centroClassificacaoServico;
+        private readonly IServicoCrud<Pessoa> _pessoaServico;
+        private readonly IServicoCrud<Categoria> _categoriaServico;
+        private readonly IContaBancariaServico _contaBancariaServico;
+
         public AgendamentoTesteCrud(
             IBuilder<Agendamento> builder,
             IAgendamentoServico servico,
-            ITestOutputHelper output)
-            : base(builder, servico, output) { }
+            ITestOutputHelper output,
+            IServicoCrud<CentroClassificacao> centroClassificacaoServico,
+            IServicoCrud<Pessoa> pessoaServico,
+            IServicoCrud<Categoria> categoriaServico,
+            IContaBancariaServico contaBancariaServico)
+            : base(builder, servico, output)
+        {
+            _centroClassificacaoServico = centroClassificacaoServico;
+            _pessoaServico = pessoaServico;
+            _categoriaServico = categoriaServico;
+            _contaBancariaServico = contaBancariaServico;
+        }
 
         [Fact]
         public async Task TestarMetodosCrud()
         {
+            await Task.Delay(4 * 1000);
+            var filtro = new FiltroBase();
+            var retornoCentrosClassificacao = await _centroClassificacaoServico.Navegar(filtro);
+            var centros = retornoCentrosClassificacao.Item2;
+
+            var retornoPessoa = await _pessoaServico.Navegar(filtro);
+            var pessoas = retornoPessoa.Item2;
+
+            var retornoCategoria = await _categoriaServico.Navegar(filtro);
+            var categorias = retornoCategoria.Item2;
+
+            var retornoContas = await _contaBancariaServico.Navegar(filtro);
+            var contas = retornoContas.Item2;
+
             var qtdTeste = 4;
-            var itens = await IncluirItensAsync(qtdTeste);
+            var itens = await IncluirItensAsync(qtdTeste, centros, pessoas, categorias, contas);
             var qtdItensAdicionados = itens.Length;
             Assert.Equal(qtdTeste, qtdItensAdicionados);
 

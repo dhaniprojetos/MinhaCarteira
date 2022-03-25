@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using MinhaCarteira.Cliente.Recursos.Models.Enum;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 
 namespace MinhaCarteira.Cliente.Recursos.Models
 {
-    public class AgendamentoItemViewModel
+    public class AgendamentoItemViewModel : BaseViewModel
     {
         public int Id { get; set; }
         public int AgendamentoId { get; set; }

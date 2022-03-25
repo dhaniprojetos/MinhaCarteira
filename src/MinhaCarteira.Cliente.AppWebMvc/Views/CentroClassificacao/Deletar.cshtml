@@ -1,45 +1,45 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.CentroClassificacaoViewModel
 
 @{
-    ViewData["Title"] = "Deletar";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Centro de Classificação";
+    ViewData["Icone"] = "<i class='fa fa-house fa-lg text-primary'></i>";
 }
 
 <h1>Deletar</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tem certeza que deseja remover este registro?</h3>
+<hr />
 <div>
-    <h4>CentroClassificacaoViewModel</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+            @Html.DisplayNameFor(m => m.Id)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(m => m.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdAuxiliar)
+            @Html.DisplayNameFor(m => m.IdAuxiliar)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdAuxiliar)
+            @Html.DisplayFor(m => m.IdAuxiliar)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
+            @Html.DisplayNameFor(m => m.Nome)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
+            @Html.DisplayFor(m => m.Nome)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EhDespesa)
+            @Html.DisplayNameFor(m => m.EhDespesa)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EhDespesa)
+            @Html.DisplayFor(m => m.EhDespesa)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EhReceita)
+            @Html.DisplayNameFor(m => m.EhReceita)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EhReceita)
+            @Html.DisplayFor(m => m.EhReceita)
         </dd>
     </dl>
 

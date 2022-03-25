@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Cliente.Recursos.Refit;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using Newtonsoft.Json;
+using X.PagedList;
+using MinhaCarteira.Cliente.Recursos.Models.Base;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -27,7 +31,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         protected override async Task<ContaBancariaViewModel> InicializarViewModel(ContaBancariaViewModel viewModel)
         {
-            var resp = await _instituicaoFinanceiraServico.Navegar();
+            var resp = await _instituicaoFinanceiraServico.Navegar(null);
             viewModel.AdicionarInstituicoesFinanceiras(resp.Dados);
 
             return viewModel;
@@ -48,7 +52,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         [HttpPost]
         public async Task<JsonResult> ObterInstituicoesFinanceira(string prefix)
         {
-            var resp = await _instituicaoFinanceiraServico.Navegar();
+            var resp = await _instituicaoFinanceiraServico.Navegar(null);
 
             var items = resp.Dados
                 .Select(s => new { label = s.Nome, val = s.Id })
@@ -61,17 +65,30 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AtualizarSaldoConta(string idsContaBancaria)
+        public async Task<IActionResult> AtualizarSaldoConta(string id)
         {
-            var resp = await ((IContaBancariaServico)Servico).AtualizarSaldoConta(idsContaBancaria);
-
+            try
+            {
+                var resp = await ((IContaBancariaServico)Servico).AtualizarSaldoConta(id);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(resp);
+            }
+            catch (Refit.ApiException ex)
+            {
+                TempData["RetornoApi"] = ex.Content;
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
         #region Métodos sobrescritos apenas manter as views
-        public override Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page, string filtroJson, ListaBaseViewModel<ContaBancariaViewModel> model)
         {
-            return base.Index();
+            return await base.Index(page, filtroJson, model);
         }
 
         public override async Task<IActionResult> Criar()

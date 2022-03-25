@@ -1,12 +1,12 @@
 ﻿@model MinhaCarteira.Cliente.Recursos.Models.CategoriaViewModel
 
 @{
-    ViewData["Title"] = "Criar";
+    await Html.RenderPartialAsync("_PartialAlertas");
+    ViewData["Title"] = "Categoria";
+    ViewData["Icone"] = "<i class='fa fa-square-check fa-lg text-primary'></i>";
 }
 
-<h1>Criar</h1>
-
-<h4>CategoriaViewModel</h4>
+<h1>Novo</h1>
 <hr />
 <form asp-action="Criar" enctype="multipart/form-data" method="post">
 

@@ -9,6 +9,6 @@ namespace MinhaCarteira.Cliente.Recursos.Refit
     public interface IContaBancariaServico : IServicoBase<ContaBancaria>
     {
         [Post("/atualizar-saldo-conta")]
-        Task<Resposta<bool>> AtualizarSaldoConta(string ididsContaBancaria);
+        Task<Resposta<bool>> AtualizarSaldoConta(string idsContaBancaria);
     }
 }

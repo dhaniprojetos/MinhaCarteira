@@ -14,9 +14,10 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-/*
- $(document).ready(function () {
- 
-    $(".dropdown-toggle").dropdown();
-});
-*/
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register(window.siteRoot + '/js/service-worker.js')
+        .then(function () {
+            //console.log('Service Worker Registered');
+        });
+}
