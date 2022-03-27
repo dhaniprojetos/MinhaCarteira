@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Servidor.Modelo.Maps;
@@ -8,8 +9,8 @@ namespace MinhaCarteira.Servidor.Modelo.Data
     public class MinhaCarteiraContext : IdentityDbContext
     {
         public MinhaCarteiraContext(
-            DbContextOptions<MinhaCarteiraContext> options) : base(options)
-        { }
+            DbContextOptions<MinhaCarteiraContext> options)
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,10 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             modelBuilder.ApplyConfiguration(new MovimentoBancarioMap());
             modelBuilder.ApplyConfiguration(new AgendamentoMap());
             modelBuilder.ApplyConfiguration(new AgendamentoItemMap());
+
+            modelBuilder.ApplyConfiguration(new UserIdentityMap());
+            modelBuilder.ApplyConfiguration(new UserIdentityRolesMap());
+            modelBuilder.ApplyConfiguration(new UserIdentityInRolesMap());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MinhaCarteira.Servidor.Modelo.Migrations
 {
-    public partial class IdentityUser : Migration
+    public partial class identityUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -151,6 +151,21 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "fab4fac1-c546-41de-aebc-a14da6895711", "1", "Admin", "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "7aede9ac-6431-40d2-9375-1f81bdbbb764", 0, "facda8a7-0bb2-40ae-9a5d-f889e1af4ac4", "administrador@dhaniprojetos.com", true, false, null, "ADMINISTRADOR@DHANIPROJETOS.COM", "ADMIN", "AQAAAAEAACcQAAAAEPdbjALt3imHkhR4B5Cdhz5gyuU1a3MC/La/Sejr2xcMtvt/BlSP0DMwSHtK8cSmVA==", null, true, "", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "fab4fac1-c546-41de-aebc-a14da6895711", "7aede9ac-6431-40d2-9375-1f81bdbbb764" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

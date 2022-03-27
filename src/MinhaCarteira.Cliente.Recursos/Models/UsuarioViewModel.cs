@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
 
 namespace MinhaCarteira.Cliente.Recursos.Models

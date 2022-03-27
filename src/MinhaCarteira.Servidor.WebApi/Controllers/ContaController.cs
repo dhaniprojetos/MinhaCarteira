@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MinhaCarteira.Comum.Definicao.Entidade;
@@ -12,14 +13,11 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
     public class ContaController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
         public ContaController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -53,9 +51,14 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             //    isPersistent: false,
             //    lockoutOnFailure: false);
 
+            var e = new Exception("Login inválido.");
+
             var user = await _userManager.FindByNameAsync(model.Username);
+            if (user == null)
+                return BadRequest(new Resposta<Exception>(e, e.Message));
+
             var result = await _userManager.CheckPasswordAsync(user, model.Password);
-            var roles = await _userManager.GetRolesAsync(user);
+            //var roles = await _userManager.GetRolesAsync(user);
 
             if (result)
             {
@@ -64,10 +67,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
                 return Ok(resposta);
             }
             else
-            {
-                ModelState.AddModelError(string.Empty, "Login inválido.");
-                return BadRequest(ModelState);
-            }
+                return BadRequest(new Resposta<Exception>(e, e.Message));
         }
 
         //[Route("login")]
