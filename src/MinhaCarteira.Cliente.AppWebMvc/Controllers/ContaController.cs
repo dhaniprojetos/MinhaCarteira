@@ -50,8 +50,11 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 {
                     new(ClaimTypes.Name, userDb.Username),
                     new("FullName", userDb.Username),
-                    new(ClaimTypes.Role, userDb.Roles)
+                    //new(ClaimTypes.Role, userDb.Roles)
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                foreach (var role in userDb.Roles)
+                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
 
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await Request.HttpContext.SignInAsync(

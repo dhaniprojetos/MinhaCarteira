@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,12 +46,6 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<Resposta<UserToken>>> Login([FromBody] UserInfo model)
         {
-            //var result = await _signInManager.PasswordSignInAsync(
-            //    userName: model.Usuario,
-            //    password: model.Password,
-            //    isPersistent: false,
-            //    lockoutOnFailure: false);
-
             var e = new Exception("Login inválido.");
 
             var user = await _userManager.FindByNameAsync(model.Username);
@@ -58,37 +53,16 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
                 return BadRequest(new Resposta<Exception>(e, e.Message));
 
             var result = await _userManager.CheckPasswordAsync(user, model.Password);
-            //var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
             if (result)
             {
                 var resposta = TokenServico.BuildToken(model);
-                resposta.Dados.Roles = "Admin";
+                resposta.Dados.Roles = roles;
                 return Ok(resposta);
             }
             else
                 return BadRequest(new Resposta<Exception>(e, e.Message));
         }
-
-        //[Route("login")]
-        //[HttpPost]
-        //[AllowAnonymous]
-        //public IActionResult Login(Usuario usuario)
-        //{
-        //    if (!(usuario.Username == "hempmax" && usuario.Password == "maxhemp"))
-        //    {
-        //        var excecao = new Exception("Usuário ou senha inválidos.");
-        //        return NotFound(new Resposta<Exception>(excecao, excecao.Message)
-        //        {
-        //            StatusCode = 404
-        //        });
-        //    }
-        //
-        //    usuario.Role = "Admin";
-        //    usuario.Password = string.Empty;
-        //    usuario.TokenAcesso = TokenServico.GerarToken(usuario);
-        //
-        //    return Ok(new Resposta<Usuario>(usuario));
-        //}
     }
 }
