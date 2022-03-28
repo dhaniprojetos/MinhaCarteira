@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Servidor.Modelo.Maps;
 
 namespace MinhaCarteira.Servidor.Modelo.Data
 {
-    public class MinhaCarteiraContext : IdentityDbContext
+    public class MinhaCarteiraContext : DbContext
     {
         public MinhaCarteiraContext(
             DbContextOptions<MinhaCarteiraContext> options)
@@ -23,13 +21,14 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             modelBuilder.ApplyConfiguration(new AgendamentoMap());
             modelBuilder.ApplyConfiguration(new AgendamentoItemMap());
 
-            modelBuilder.ApplyConfiguration(new UserIdentityMap());
-            modelBuilder.ApplyConfiguration(new UserIdentityRolesMap());
-            modelBuilder.ApplyConfiguration(new UserIdentityInRolesMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
+            //modelBuilder.ApplyConfiguration(new UserIdentityRolesMap());
+            //modelBuilder.ApplyConfiguration(new UserIdentityInRolesMap());
 
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<InstituicaoFinanceira> InstituicoesFinanceira { get; set; }
         public DbSet<ContaBancaria> ContasBancaria { get; set; }

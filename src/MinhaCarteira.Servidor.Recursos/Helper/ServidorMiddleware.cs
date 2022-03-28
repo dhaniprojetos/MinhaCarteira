@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
@@ -20,17 +19,8 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
                 options.UseSqlServer(connectionString);
             });
 
-            services
-                .AddIdentity<IdentityUser, IdentityRole>(options =>
-                {
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireDigit = false;
-                })
-                .AddEntityFrameworkStores<MinhaCarteiraContext>()
-                .AddDefaultTokenProviders();
+            services.AddScoped<ICrud<Usuario>, UsuarioRepositorio>();
+            services.AddScoped<IServicoCrud<Usuario>, UsuarioServico>();
 
             services.AddScoped<ICrud<Pessoa>, PessoaRepositorio>();
             services.AddScoped<IServicoCrud<Pessoa>, PessoaServico>();
