@@ -18,6 +18,7 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
                 Sobrenome = "do Sistema",
                 Username = usuario,
                 Email = email,
+                Senha = "admin"
                 //SenhaHash = passwordHasher.HashPassword(null, "admin"),
 
                 //NormalizedUserName = usuario.ToUpper(),
