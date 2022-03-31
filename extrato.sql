@@ -61,7 +61,8 @@
         group by conta.Id, conta.ValorSaldoInicial
     )grp;
 
-    select ext.*
+    select row_number() over (partition by ext.ContaBancariaId, substring(convert(nvarchar(8), ext.Data, 112), 1, 6) order by ext.ContaBancariaId, ext.Data) idx
+		 , ext.ContaBancariaId, ext.Data, ext.Descricao, ext.Valor, ext.Saldo
     into ##extratoDiario
     from ##extrato ext
     inner join (
@@ -69,20 +70,18 @@
         from ##extrato
         group by ContaBancariaId, data
     )tmp on ext.Idx = tmp.Idx and ext.ContaBancariaId = tmp.ContaBancariaId and ext.Data = tmp.Data
-    order by ext.Data, ext.ContaBancariaId;
+    order by ext.ContaBancariaId, ext.Data;
     
-    select row_number() over (partition by ext.ContaBancariaId, ext.MesAno order by ext.MesAno) Idx
-         , ext.ContaBancariaId
-         , ext.MesAno
-         , ext.Descricao
-         , ext.Valor
-         , ext.Saldo
-    into ##extratoMensal
-    from (
-        select ContaBancariaId
-             , substring(convert(nvarchar(8), Data, 112), 1, 6) MesAno
-             , Descricao
-             , Valor
-             , Saldo 
-        from ##extratoDiario
-    ) ext;
+	select ext.idx, ext.ContaBancariaId, grp.MesAno, ext.Descricao, ext.Valor, ext.Saldo
+	into ##extratoMensal
+	from ##extratoDiario ext
+	inner join (
+		select max(idx) idx
+				, ContaBancariaId
+				, substring(convert(nvarchar(8), Data, 112), 1, 6) MesAno
+		from ##extratoDiario
+		group by ContaBancariaId, substring(convert(nvarchar(8), Data, 112), 1, 6)
+	) grp on grp.idx = ext.idx 
+			and grp.contabancariaid = ext.contabancariaid 
+			and grp.MesAno = substring(convert(nvarchar(8), ext.Data, 112), 1, 6)
+	order by grp.ContaBancariaId, grp.MesAno
