@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Entidade.Relatorio;
 using MinhaCarteira.Servidor.Modelo.Maps;
 
 namespace MinhaCarteira.Servidor.Modelo.Data
@@ -12,6 +13,9 @@ namespace MinhaCarteira.Servidor.Modelo.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ExtratoDiario>().HasNoKey();
+            modelBuilder.Entity<ExtratoMensal>().HasNoKey();
+
             modelBuilder.ApplyConfiguration(new PessoaMap());
             modelBuilder.ApplyConfiguration(new InstituicaoFinanceiraMap());
             modelBuilder.ApplyConfiguration(new ContaBancariaMap());
@@ -32,5 +36,8 @@ namespace MinhaCarteira.Servidor.Modelo.Data
         public DbSet<MovimentoBancario> MovimentosBancarios { get; set; }
         public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<AgendamentoItem> AgendamentoItens { get; set; }
+
+        public DbSet<ExtratoDiario> ExtratoDiario { get; set; }
+        public DbSet<ExtratoMensal> ExtratoMensal { get; set; }
     }
 }

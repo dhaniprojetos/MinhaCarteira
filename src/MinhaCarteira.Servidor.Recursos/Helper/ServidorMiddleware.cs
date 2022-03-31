@@ -19,6 +19,9 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
                 options.UseSqlServer(connectionString);
             });
 
+            services.AddScoped(typeof(RelatorioServico));
+            services.AddScoped(typeof(RelatorioRepositorio));
+
             services.AddScoped<ICrud<Pessoa>, PessoaRepositorio>();
             services.AddScoped<IServicoCrud<Pessoa>, PessoaServico>();
 

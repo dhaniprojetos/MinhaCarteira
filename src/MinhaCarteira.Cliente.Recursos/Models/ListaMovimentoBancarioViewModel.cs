@@ -1,5 +1,4 @@
 ﻿using MinhaCarteira.Cliente.Recursos.Models.Base;
-using MinhaCarteira.Comum.Definicao.Filtro;
 using System.Collections.Generic;
 using X.PagedList;
 
