@@ -23,19 +23,19 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
             services.AddScoped(typeof(RelatorioRepositorio));
 
             services.AddScoped<ICrud<Pessoa>, PessoaRepositorio>();
-            services.AddScoped<IServicoCrud<Pessoa>, PessoaServico>();
+            services.AddScoped<IPessoaServico, PessoaServico>();
 
             services.AddScoped<ICrud<InstituicaoFinanceira>, InstituicaoFinanceiraRepositorio>();
-            services.AddScoped<IServicoCrud<InstituicaoFinanceira>, InstituicaoFinanceiraServico>();
+            services.AddScoped<IInstituicaoFinanceiraServico, InstituicaoFinanceiraServico>();
 
             services.AddScoped<ICrud<ContaBancaria>, ContaBancariaRepositorio>();
             services.AddScoped<IContaBancariaServico, ContaBancariaServico>();
 
             services.AddScoped<ICrud<Categoria>, CategoriaRepositorio>();
-            services.AddScoped<IServicoCrud<Categoria>, CategoriaServico>();
+            services.AddScoped<ICategoriaServico, CategoriaServico>();
 
             services.AddScoped<ICrud<CentroClassificacao>, CentroClassificacaoRepositorio>();
-            services.AddScoped<IServicoCrud<CentroClassificacao>, CentroClassificacaoServico>();
+            services.AddScoped<ICentroClassificacaoServico, CentroClassificacaoServico>();
 
             services.AddScoped<ICrud<MovimentoBancario>, MovimentoBancarioRepositorio>();
             services.AddScoped<IMovimentoBancarioServico, MovimentoBancarioServico>();

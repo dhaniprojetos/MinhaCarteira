@@ -8,10 +8,12 @@ using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using MinhaCarteira.Servidor.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Servidor.Controle.Servico;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
-    public class MovimentoBancarioController : BaseController<MovimentoBancario>
+    public class MovimentoBancarioController : 
+        BaseController<MovimentoBancario, IMovimentoBancarioServico>
     {
         public MovimentoBancarioController(IMovimentoBancarioServico servico)
             : base(servico) { }
@@ -24,7 +26,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             {
                 criterio ??= new FiltroBase();
 
-                var itens = await ((IMovimentoBancarioServico)Servico).ObterMovimentosParaConciliacao(criterio);
+                var itens = await Servico.ObterMovimentosParaConciliacao(criterio);
 
                 resposta = itens == null || itens.Item2.Count == 0
                     ? NotFound(new RespostaPaginada<IList<MovimentoBancario>>(

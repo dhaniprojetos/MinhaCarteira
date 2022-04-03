@@ -6,17 +6,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
 using MinhaCarteira.Teste.Mock.Interface;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Teste.WebApi.Crud.Base
 {
     public class TesteBase<TEntidade, TBuilder, TServico>
         where TEntidade : class, IEntidade
         where TBuilder : IBuilder<TEntidade>
-        where TServico : class, IServicoCrud<TEntidade>
+        where TServico : IServicoCrud<TEntidade, ICrud<TEntidade>>
     {
         public TesteBase(
             IBuilder<TEntidade> builder,
-            IServicoCrud<TEntidade> servico,
+            IServicoCrud<TEntidade, ICrud<TEntidade>> servico,
             ITestOutputHelper output)
         {
             Builder = builder;
@@ -28,7 +29,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
             typeof(TEntidade).Name;
         protected readonly ITestOutputHelper _output;
         protected IBuilder<TEntidade> Builder { get; }
-        protected IServicoCrud<TEntidade> Servico { get; }
+        protected IServicoCrud<TEntidade, ICrud<TEntidade>> Servico { get; }
 
         private IList<TEntidade> GerarItens(int qtdItens, params object[] args)
         {

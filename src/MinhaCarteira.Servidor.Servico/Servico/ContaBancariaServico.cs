@@ -7,7 +7,8 @@ using MinhaCarteira.Servidor.Modelo.Repositorio;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class ContaBancariaServico : ServicoBase<ContaBancaria>, IContaBancariaServico
+    public class ContaBancariaServico 
+        : ServicoBase<ContaBancaria, ICrud<ContaBancaria>>, IContaBancariaServico
     {
         public ContaBancariaServico(ICrud<ContaBancaria> repositorio) : base(repositorio)
         {

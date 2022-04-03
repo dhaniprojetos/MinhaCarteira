@@ -1,9 +1,12 @@
-﻿using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+﻿using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Comum.Definicao.Interface.Servico
 {
-    public interface IServicoCrud<TEntidade> : ICrud<TEntidade>
+    public interface IServicoCrud<TEntidade, TCrud> : ICrud<TEntidade>
+        where TEntidade: class, IEntidade
+        where TCrud : ICrud<TEntidade>
     {
-        ICrud<TEntidade> Repositorio { get; }
+        TCrud Repositorio { get; }
     }
 }

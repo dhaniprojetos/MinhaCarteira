@@ -16,12 +16,12 @@ namespace MinhaCarteira.Teste.WebApi.Crud
         ContaBancariaBuilder,
         ContaBancariaServico>
     {
-        private readonly IServicoCrud<InstituicaoFinanceira> _instituicaoFinanceiroServico;
+        private readonly IInstituicaoFinanceiraServico _instituicaoFinanceiroServico;
 
         public ContaBancariaTesteCrud(
             IBuilder<ContaBancaria> builder,
             IContaBancariaServico servico,
-            IServicoCrud<InstituicaoFinanceira> instituicaoFinanceiroServico,
+            IInstituicaoFinanceiraServico instituicaoFinanceiroServico,
             ITestOutputHelper output)
             : base(builder, servico, output)
         {

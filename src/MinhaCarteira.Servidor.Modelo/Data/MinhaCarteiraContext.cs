@@ -13,8 +13,15 @@ namespace MinhaCarteira.Servidor.Modelo.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ExtratoDiario>().HasNoKey();
-            modelBuilder.Entity<ExtratoMensal>().HasNoKey();
+            modelBuilder.ApplyConfiguration(new ExtratoDiarioMap());
+            modelBuilder.ApplyConfiguration(new ExtratoMensalMap());
+
+            modelBuilder.HasSequence<int>("PapelIds").StartsAt(100);
+            modelBuilder.HasSequence<int>("UsuarioIds").StartsAt(100);
+
+            modelBuilder.ApplyConfiguration(new PapelMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new UsuarioPapelMap());
 
             modelBuilder.ApplyConfiguration(new PessoaMap());
             modelBuilder.ApplyConfiguration(new InstituicaoFinanceiraMap());
@@ -28,6 +35,7 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<InstituicaoFinanceira> InstituicoesFinanceira { get; set; }
         public DbSet<ContaBancaria> ContasBancaria { get; set; }

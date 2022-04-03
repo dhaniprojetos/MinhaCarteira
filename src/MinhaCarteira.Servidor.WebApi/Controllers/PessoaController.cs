@@ -4,9 +4,10 @@ using MinhaCarteira.Servidor.WebApi.Controllers.Base;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
-    public class PessoaController : BaseController<Pessoa>
+    public class PessoaController : 
+        BaseController<Pessoa, IPessoaServico>
     {
-        public PessoaController(IServicoCrud<Pessoa> servico)
+        public PessoaController(IPessoaServico servico)
             : base(servico)
         {
         }

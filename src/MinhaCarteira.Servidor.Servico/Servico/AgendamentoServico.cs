@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class AgendamentoServico : ServicoBase<Agendamento>, IAgendamentoServico
+    public class AgendamentoServico : ServicoBase<Agendamento, ICrud<Agendamento>>, IAgendamentoServico
     {
         private readonly ICrud<MovimentoBancario> _movimentoRepositorio;
 

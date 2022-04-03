@@ -17,7 +17,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     {
         public InstituicaoFinanceiraTesteCrud(
             IBuilder<InstituicaoFinanceira> builder,
-            IServicoCrud<InstituicaoFinanceira> servico,
+            IInstituicaoFinanceiraServico servico,
             ITestOutputHelper output)
             : base(builder, servico, output) { }
 

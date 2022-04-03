@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
@@ -13,9 +15,11 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class BaseController<TEntidade> : ControllerBase
+    public class BaseController<TEntidade, TServico> : ControllerBase
+        where TEntidade : class, IEntidade
+        where TServico : IServicoCrud<TEntidade, ICrud<TEntidade>>
     {
-        public BaseController(IServicoCrud<TEntidade> servico)
+        public BaseController(TServico servico)
         {
             Servico = servico;
         }
@@ -31,7 +35,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
             }
         }
 
-        protected IServicoCrud<TEntidade> Servico { get; }
+        protected TServico Servico { get; }
 
         [HttpGet]
         public async Task<IActionResult> Navegar([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] FiltroBase criterio)

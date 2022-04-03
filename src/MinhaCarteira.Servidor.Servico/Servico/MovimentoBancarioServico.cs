@@ -9,7 +9,8 @@ using MinhaCarteira.Servidor.Modelo.Repositorio;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class MovimentoBancarioServico : ServicoBase<MovimentoBancario>, IMovimentoBancarioServico
+    public class MovimentoBancarioServico 
+        : ServicoBase<MovimentoBancario, ICrud<MovimentoBancario>>, IMovimentoBancarioServico
     {
         public MovimentoBancarioServico(ICrud<MovimentoBancario> repositorio) : base(repositorio)
         {

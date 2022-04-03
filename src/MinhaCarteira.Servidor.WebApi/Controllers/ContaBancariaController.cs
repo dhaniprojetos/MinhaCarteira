@@ -8,7 +8,8 @@ using MinhaCarteira.Servidor.WebApi.Controllers.Base;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
-    public class ContaBancariaController : BaseController<ContaBancaria>
+    public class ContaBancariaController : 
+        BaseController<ContaBancaria, IContaBancariaServico>
     {
         public ContaBancariaController(IContaBancariaServico servico) : base(servico)
         {
@@ -21,7 +22,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             IActionResult resposta;
             try
             {
-                var bemSucedido = await ((IContaBancariaServico)Servico).AtualizarSaldoConta(idsContaBancaria);
+                var bemSucedido = await Servico.AtualizarSaldoConta(idsContaBancaria);
                 resposta = !bemSucedido
                     ? NotFound(new Resposta<bool>(
                         false,

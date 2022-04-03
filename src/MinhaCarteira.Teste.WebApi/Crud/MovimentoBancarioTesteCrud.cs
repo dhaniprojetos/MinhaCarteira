@@ -16,9 +16,9 @@ namespace MinhaCarteira.Teste.WebApi.Crud
         MovimentoBancarioBuilder,
         MovimentoBancarioServico>
     {
-        private readonly IServicoCrud<CentroClassificacao> _centroClassificacaoServico;
-        private readonly IServicoCrud<Pessoa> _pessoaServico;
-        private readonly IServicoCrud<Categoria> _categoriaServico;
+        private readonly ICentroClassificacaoServico _centroClassificacaoServico;
+        private readonly IPessoaServico _pessoaServico;
+        private readonly ICategoriaServico _categoriaServico;
         private readonly IContaBancariaServico _contaBancariaServico;
 
 
@@ -27,9 +27,9 @@ namespace MinhaCarteira.Teste.WebApi.Crud
             IMovimentoBancarioServico servico,
             ITestOutputHelper output,
             IContaBancariaServico contaBancariaServico,
-            IServicoCrud<CentroClassificacao> centroClassificacaoServico,
-            IServicoCrud<Pessoa> pessoaServico,
-            IServicoCrud<Categoria> categoriaServico)
+            ICentroClassificacaoServico centroClassificacaoServico,
+            IPessoaServico pessoaServico,
+            ICategoriaServico categoriaServico)
             : base(builder, servico, output)
         {
             _centroClassificacaoServico = centroClassificacaoServico;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MinhaCarteira.Comum.Definicao.Interface.Servico
 {
-    public interface IAgendamentoServico : IServicoCrud<Agendamento>
+    public interface IAgendamentoServico : IServicoCrud<Agendamento, ICrud<Agendamento>>
     {
         Task<Tuple<int, IList<AgendamentoItem>>> ContasAVencer(ICriterio filtro);
         Task<AgendamentoItem> ObterParcelaPorId(int id);

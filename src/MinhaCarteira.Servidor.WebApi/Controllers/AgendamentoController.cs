@@ -11,7 +11,8 @@ using MinhaCarteira.Comum.Definicao.Filtro;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
-    public class AgendamentoController : BaseController<Agendamento>
+    public class AgendamentoController : 
+        BaseController<Agendamento, IAgendamentoServico>
     {
         public AgendamentoController(IAgendamentoServico servico) : base(servico)
         {
@@ -25,7 +26,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             try
             {
                 criterio ??= new FiltroBase();
-                var itens = await ((IAgendamentoServico)Servico).ContasAVencer(criterio);
+                var itens = await Servico.ContasAVencer(criterio);
                 resposta = itens == null || itens.Item2.Count == 0
                     ? NotFound(new RespostaPaginada<IList<AgendamentoItem>>(
                         null,
@@ -56,7 +57,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             IActionResult resposta;
             try
             {
-                var itens = await ((IAgendamentoServico)Servico).ObterParcelaPorId(id);
+                var itens = await Servico.ObterParcelaPorId(id);
                 resposta = itens == null
                     ? NotFound(new Resposta<AgendamentoItem>(
                         null,
@@ -81,7 +82,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             IActionResult resposta;
             try
             {
-                var itens = await ((IAgendamentoServico)Servico).BaixarParcela(parcela);
+                var itens = await Servico.BaixarParcela(parcela);
                 resposta = itens == null
                     ? NotFound(new Resposta<AgendamentoItem>(
                         null,
@@ -106,7 +107,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             IActionResult resposta;
             try
             {
-                var conciliado = await ((IAgendamentoServico)Servico).ConciliarParcela(id, idMovimentos);
+                var conciliado = await Servico.ConciliarParcela(id, idMovimentos);
                 resposta = !conciliado
                     ? NotFound(new Resposta<bool>(
                         conciliado,

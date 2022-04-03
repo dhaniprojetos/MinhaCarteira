@@ -18,7 +18,7 @@ namespace MinhaCarteira.Servidor.Recursos.Servico
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, usuario.Username),
-                    new Claim(ClaimTypes.Role, usuario.Role)
+                    //new Claim(ClaimTypes.Role, usuario.Role)
                 }),
                 
                 SigningCredentials = new SigningCredentials(

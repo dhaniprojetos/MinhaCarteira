@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MinhaCarteira.Cliente.Recursos\MinhaCarteira.Cliente.Recursos.csproj" />
     <ProjectReference Include="..\MinhaCarteira.Comum.Definicao\MinhaCarteira.Comum.Definicao.csproj" />
   </ItemGroup>
 

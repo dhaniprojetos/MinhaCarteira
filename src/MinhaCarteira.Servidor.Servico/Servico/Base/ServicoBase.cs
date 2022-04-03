@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico.Base
 {
-    public class ServicoBase<TEntidade> : IServicoCrud<TEntidade>
+    public class ServicoBase<TEntidade, TCrud> : IServicoCrud<TEntidade, TCrud>
         where TEntidade : class, IEntidade
+        where TCrud : ICrud<TEntidade>
     {
         public int TotalRegistros { get; set; }
 
@@ -25,8 +26,8 @@ namespace MinhaCarteira.Servidor.Controle.Servico.Base
             this.disposed = true;
         }
 
-        public ICrud<TEntidade> Repositorio { get; }
-        public ServicoBase(ICrud<TEntidade> repositorio)
+        public TCrud Repositorio { get; }
+        public ServicoBase(TCrud repositorio)
         {
             Repositorio = repositorio;
         }

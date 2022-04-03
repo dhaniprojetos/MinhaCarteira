@@ -17,7 +17,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     {
         public CentroClassificacaoTesteCrud(
             IBuilder<CentroClassificacao> builder,
-            IServicoCrud<CentroClassificacao> servico,
+            ICentroClassificacaoServico servico,
             ITestOutputHelper output)
             : base(builder, servico, output) { }
 
