@@ -2,7 +2,7 @@
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Comum.Definicao.Helper;
 using MinhaCarteira.Comum.Definicao.Interface.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Helper;

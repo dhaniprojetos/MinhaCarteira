@@ -1,5 +1,5 @@
 ﻿using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using X.PagedList;
@@ -10,7 +10,7 @@ namespace MinhaCarteira.Cliente.Recursos.Models.Base
     {
         public ListaBaseViewModel()
         {
-            OpcaoAtual = OpcaoAtual == null ? new FiltroOpcao() : OpcaoAtual;
+            OpcaoAtual ??= new FiltroOpcao();
 
             Itens = new StaticPagedList<TEntidadeViewModel>(
                 subset: new List<TEntidadeViewModel>(),

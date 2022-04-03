@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using MinhaCarteira.Comum.Definicao.Filtro;
 using MinhaCarteira.Cliente.Recursos.Models.Base;
 using System.Linq;

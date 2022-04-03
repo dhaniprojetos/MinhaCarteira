@@ -1,5 +1,5 @@
 ﻿using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.Recursos.Models.Base
@@ -8,10 +8,10 @@ namespace MinhaCarteira.Cliente.Recursos.Models.Base
     {
         public BaseViewModel()
         {
-            OpcaoAtual = OpcaoAtual == null ? new FiltroOpcao() : OpcaoAtual;
+            OpcaoAtual ??= new FiltroOpcao();
         }
 
-        public bool PodeExibirPainelAvisoVazio => true;
+        //public bool PodeExibirPainelAvisoVazio => true;
         public ICriterio Filtro { get; set; }
         public string FiltroJson { get => JsonConvert.SerializeObject(Filtro); }
         public FiltroOpcao OpcaoAtual { get; set; }

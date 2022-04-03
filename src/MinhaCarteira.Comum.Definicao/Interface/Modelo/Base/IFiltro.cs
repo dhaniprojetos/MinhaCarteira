@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace MinhaCarteira.Comum.Definicao.Interface.Modelo
+namespace MinhaCarteira.Comum.Definicao.Interface.Modelo.Base
 {
     public interface IFiltro<TEntidade>
     {

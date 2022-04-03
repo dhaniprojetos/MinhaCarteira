@@ -11,7 +11,7 @@ using MinhaCarteira.Cliente.Recursos.Models.Base;
 using MinhaCarteira.Cliente.Recursos.Refit.Base;
 using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using X.PagedList;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers

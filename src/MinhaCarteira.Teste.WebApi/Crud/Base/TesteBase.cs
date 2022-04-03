@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
 using MinhaCarteira.Teste.Mock.Interface;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 
 namespace MinhaCarteira.Teste.WebApi.Crud.Base
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MinhaCarteira.Comum.Definicao.Filtro;
 
-namespace MinhaCarteira.Comum.Definicao.Interface.Modelo
+namespace MinhaCarteira.Comum.Definicao.Interface.Modelo.Base
 {
     public interface ICriterio
     {

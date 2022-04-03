@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MinhaCarteira.Comum.Definicao.Interface.Modelo
+namespace MinhaCarteira.Comum.Definicao.Interface.Modelo.Base
 {
     public interface ICrud<TEntidade> : IDisposable
     {

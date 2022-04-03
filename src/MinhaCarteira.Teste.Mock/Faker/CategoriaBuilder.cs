@@ -11,6 +11,8 @@ namespace MinhaCarteira.Teste.Mock.Faker
         // ReSharper disable once UnusedParameter.Local
         private static Faker<Categoria> ItemFake(int id)
         {
+            Console.WriteLine(id);
+
             var faker = new Faker<Categoria>("pt_BR")
                 .StrictMode(false)
                 .RuleFor(p => p.Nome, f => f.Commerce.ProductName())

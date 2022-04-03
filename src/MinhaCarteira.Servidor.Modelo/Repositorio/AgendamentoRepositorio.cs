@@ -5,7 +5,7 @@ using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 using System.Linq;
 using System.Threading.Tasks;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using System;
 using MinhaCarteira.Servidor.Modelo.Helper;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
 
 namespace MinhaCarteira.Comum.Definicao.Filtro
