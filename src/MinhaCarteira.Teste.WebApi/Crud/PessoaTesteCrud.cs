@@ -1,19 +1,20 @@
 ﻿using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
-using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
 using MinhaCarteira.Teste.WebApi.Crud.Base;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 using MinhaCarteira.Teste.Mock.Interface;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Teste.WebApi.Crud
 {
     public class PessoaTesteCrud : TesteBase<
         Pessoa, 
         PessoaBuilder, 
-        PessoaServico>
+        IPessoaServico,
+        IPessoaRepositorio>
     {
         public PessoaTesteCrud(
             IBuilder<Pessoa> builder,

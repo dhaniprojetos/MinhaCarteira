@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using System;
 using MinhaCarteira.Servidor.Modelo.Helper;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
-    public class AgendamentoRepositorio : RepositorioBase<Agendamento>
+    public class AgendamentoRepositorio 
+        : RepositorioBase<Agendamento>, IAgendamentoRepositorio
     {
         public AgendamentoRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }

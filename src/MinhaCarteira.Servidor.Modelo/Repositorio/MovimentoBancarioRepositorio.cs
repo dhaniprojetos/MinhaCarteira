@@ -15,7 +15,8 @@ using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
-    public class MovimentoBancarioRepositorio : RepositorioBase<MovimentoBancario>
+    public class MovimentoBancarioRepositorio 
+        : RepositorioBase<MovimentoBancario>, Comum.Definicao.Interface.Modelo.IMovimentoBancarioRepositorio
     {
         public MovimentoBancarioRepositorio(MinhaCarteiraContext contexto) : base(contexto)
         {

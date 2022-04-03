@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
-using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
-using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
 using MinhaCarteira.Teste.Mock.Interface;
 using MinhaCarteira.Teste.WebApi.Crud.Base;
@@ -14,7 +14,8 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     public class AgendamentoTesteCrud : TesteBase<
         Agendamento,
         AgendamentoBuilder,
-        AgendamentoServico>
+        IAgendamentoServico,
+        IAgendamentoRepositorio>
     {
         private readonly ICentroClassificacaoServico _centroClassificacaoServico;
         private readonly IPessoaServico _pessoaServico;

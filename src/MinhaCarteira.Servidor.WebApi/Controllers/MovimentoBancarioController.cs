@@ -8,12 +8,12 @@ using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using MinhaCarteira.Servidor.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaCarteira.Comum.Definicao.Filtro;
-using MinhaCarteira.Servidor.Controle.Servico;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
     public class MovimentoBancarioController : 
-        BaseController<MovimentoBancario, IMovimentoBancarioServico>
+        BaseController<MovimentoBancario, IMovimentoBancarioServico, IMovimentoBancarioRepositorio>
     {
         public MovimentoBancarioController(IMovimentoBancarioServico servico)
             : base(servico) { }

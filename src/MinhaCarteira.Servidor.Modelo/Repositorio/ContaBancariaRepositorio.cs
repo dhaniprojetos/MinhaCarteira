@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
-    public class ContaBancariaRepositorio : RepositorioBase<ContaBancaria>
+    public class ContaBancariaRepositorio 
+        : RepositorioBase<ContaBancaria>, IContaBancariaRepositorio
     {
         public ContaBancariaRepositorio(MinhaCarteiraContext contexto) : base(contexto)
         {

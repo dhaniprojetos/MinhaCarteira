@@ -3,12 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
-    public class CategoriaRepositorio : RepositorioBase<Categoria>
+    public class CategoriaRepositorio 
+        : RepositorioBase<Categoria>, ICategoriaRepositorio
     {
         public CategoriaRepositorio(MinhaCarteiraContext contexto)
             : base(contexto) { }

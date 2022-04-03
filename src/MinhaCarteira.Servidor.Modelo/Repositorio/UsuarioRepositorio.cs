@@ -1,10 +1,12 @@
 ﻿using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio.Base;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
-    public class UsuarioRepositorio : RepositorioBase<Usuario>
+    public class UsuarioRepositorio
+        : RepositorioBase<Usuario>, IUsuarioRepositorio
     {
         public UsuarioRepositorio(MinhaCarteiraContext contexto) : base(contexto)
         {

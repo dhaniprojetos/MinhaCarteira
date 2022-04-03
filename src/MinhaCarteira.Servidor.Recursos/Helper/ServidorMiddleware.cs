@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MinhaCarteira.Comum.Definicao.Entidade;
-using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Servidor.Modelo.Data;
@@ -22,25 +21,25 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
             services.AddScoped(typeof(RelatorioServico));
             services.AddScoped(typeof(RelatorioRepositorio));
 
-            services.AddScoped<ICrud<Pessoa>, PessoaRepositorio>();
+            services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
             services.AddScoped<IPessoaServico, PessoaServico>();
 
-            services.AddScoped<ICrud<InstituicaoFinanceira>, InstituicaoFinanceiraRepositorio>();
+            services.AddScoped<IInstituicaoFinanceiraRepositorio, InstituicaoFinanceiraRepositorio>();
             services.AddScoped<IInstituicaoFinanceiraServico, InstituicaoFinanceiraServico>();
 
-            services.AddScoped<ICrud<ContaBancaria>, ContaBancariaRepositorio>();
+            services.AddScoped<IContaBancariaRepositorio, ContaBancariaRepositorio>();
             services.AddScoped<IContaBancariaServico, ContaBancariaServico>();
 
-            services.AddScoped<ICrud<Categoria>, CategoriaRepositorio>();
+            services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
             services.AddScoped<ICategoriaServico, CategoriaServico>();
 
-            services.AddScoped<ICrud<CentroClassificacao>, CentroClassificacaoRepositorio>();
+            services.AddScoped<ICentroClassificacaoRepositorio, CentroClassificacaoRepositorio>();
             services.AddScoped<ICentroClassificacaoServico, CentroClassificacaoServico>();
 
-            services.AddScoped<ICrud<MovimentoBancario>, MovimentoBancarioRepositorio>();
+            services.AddScoped<IMovimentoBancarioRepositorio, MovimentoBancarioRepositorio>();
             services.AddScoped<IMovimentoBancarioServico, MovimentoBancarioServico>();
 
-            services.AddScoped<ICrud<Agendamento>, AgendamentoRepositorio>();
+            services.AddScoped<IAgendamentoRepositorio, AgendamentoRepositorio>();
             services.AddScoped<IAgendamentoServico, AgendamentoServico>();
 
             return services;

@@ -15,9 +15,10 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class BaseController<TEntidade, TServico> : ControllerBase
+    public class BaseController<TEntidade, TServico, TRepositorio> : ControllerBase
         where TEntidade : class, IEntidade
-        where TServico : IServicoCrud<TEntidade, ICrud<TEntidade>>
+        where TRepositorio : ICrud<TEntidade>
+        where TServico : IServicoCrud<TEntidade, TRepositorio>
     {
         public BaseController(TServico servico)
         {

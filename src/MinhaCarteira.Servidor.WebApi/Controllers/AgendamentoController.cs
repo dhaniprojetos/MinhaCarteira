@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MinhaCarteira.Comum.Definicao.Filtro;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
     public class AgendamentoController : 
-        BaseController<Agendamento, IAgendamentoServico>
+        BaseController<Agendamento, IAgendamentoServico, IAgendamentoRepositorio>
     {
         public AgendamentoController(IAgendamentoServico servico) : base(servico)
         {

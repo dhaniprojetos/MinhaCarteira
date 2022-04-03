@@ -5,11 +5,12 @@ using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using MinhaCarteira.Servidor.WebApi.Controllers.Base;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 
 namespace MinhaCarteira.Servidor.WebApi.Controllers
 {
     public class ContaBancariaController : 
-        BaseController<ContaBancaria, IContaBancariaServico>
+        BaseController<ContaBancaria, IContaBancariaServico, IContaBancariaRepositorio>
     {
         public ContaBancariaController(IContaBancariaServico servico) : base(servico)
         {

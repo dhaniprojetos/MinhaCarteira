@@ -1,14 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhaCarteira.Comum.Definicao.Entidade.Relatorio;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
 {
-    public class RelatorioRepositorio
+    public class RelatorioRepositorio : IRelatorioRepositorio
     {
-        public async Task<ExtratoRelatorio> ObterRelatorioSaldos(
-            MinhaCarteiraContext ctx)
+        private readonly MinhaCarteiraContext _contexto;
+
+        public RelatorioRepositorio(MinhaCarteiraContext contexto)
+        {
+            _contexto = contexto;
+        }
+
+        public async Task<ExtratoRelatorio> ObterRelatorioSaldos()
         {
             var cmdSql = @"
     drop table if exists ##extrato;
@@ -96,24 +103,22 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 			and grp.MesAno = substring(convert(nvarchar(8), ext.Data, 112), 1, 6)
 	order by grp.ContaBancariaId, grp.MesAno
 ";
-            using (ctx)
-            {
-                ctx.Database.OpenConnection();
+            using var ctx = _contexto;
+            ctx.Database.OpenConnection();
 
-                await ctx.Database.ExecuteSqlRawAsync(cmdSql);
+            await ctx.Database.ExecuteSqlRawAsync(cmdSql);
 
-                var extratoDiario = await ctx.ExtratoDiario
-                    .FromSqlRaw("select * from ##extratoDiario order by ContaBancariaId, Data")
-                    .ToListAsync();
+            var extratoDiario = await ctx.ExtratoDiario
+                .FromSqlRaw("select * from ##extratoDiario order by ContaBancariaId, Data")
+                .ToListAsync();
 
-                var extratoMensal = await ctx.ExtratoMensal
-                    .FromSqlRaw("select * from ##extratoMensal order by ContaBancariaId, MesAno")
-                    .ToListAsync();
+            var extratoMensal = await ctx.ExtratoMensal
+                .FromSqlRaw("select * from ##extratoMensal order by ContaBancariaId, MesAno")
+                .ToListAsync();
 
-                ctx.Database.CloseConnection();
+            ctx.Database.CloseConnection();
 
-                return new ExtratoRelatorio(extratoDiario, extratoMensal);
-            }
+            return new ExtratoRelatorio(extratoDiario, extratoMensal);
         }
     }
 }

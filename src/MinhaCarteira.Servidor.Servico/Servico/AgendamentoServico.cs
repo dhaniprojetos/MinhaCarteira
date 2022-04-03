@@ -1,24 +1,25 @@
 ﻿using Dates.Recurring;
 using Dates.Recurring.Type;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Controle.Servico.Base;
-using MinhaCarteira.Servidor.Modelo.Repositorio;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
-    public class AgendamentoServico : ServicoBase<Agendamento, ICrud<Agendamento>>, IAgendamentoServico
+    public class AgendamentoServico 
+        : ServicoBase<Agendamento, IAgendamentoRepositorio>, IAgendamentoServico
     {
-        private readonly ICrud<MovimentoBancario> _movimentoRepositorio;
+        private readonly Comum.Definicao.Interface.Modelo.IMovimentoBancarioRepositorio _movimentoRepositorio;
 
         public AgendamentoServico(
-            ICrud<Agendamento> repositorio,
-            ICrud<MovimentoBancario> movimentoRepositorio)
+            IAgendamentoRepositorio repositorio,
+            Comum.Definicao.Interface.Modelo.IMovimentoBancarioRepositorio movimentoRepositorio)
             : base(repositorio)
         {
             _movimentoRepositorio = movimentoRepositorio;
@@ -32,7 +33,7 @@ namespace MinhaCarteira.Servidor.Controle.Servico
                     .Starting(agend.DataInicial)
                     .Every(1)
                     .Weeks()
-                    .FirstDayOfWeek(System.DayOfWeek.Monday)
+                    .FirstDayOfWeek(DayOfWeek.Monday)
                     .OnDay(agend.DataInicial.DayOfWeek)
                     .Ending(agend.DataInicial.AddYears(20))
                     .Build(),
@@ -117,35 +118,31 @@ namespace MinhaCarteira.Servidor.Controle.Servico
 
         public async Task<Tuple<int, IList<AgendamentoItem>>> ContasAVencer(ICriterio filtro)
         {
-            var itens = await ((AgendamentoRepositorio)Repositorio)
-                .ContasAVencer(filtro);
+            var itens = await Repositorio.ContasAVencer(filtro);
 
             return itens;
         }
 
         public async Task<AgendamentoItem> ObterParcelaPorId(int id)
         {
-            var item = await ((AgendamentoRepositorio)Repositorio)
-                .ObterParcelaPorId(id);
+            var item = await Repositorio.ObterParcelaPorId(id);
 
             return item;
         }
 
         public async Task<AgendamentoItem> BaixarParcela(AgendamentoItem parcela)
         {
-            var item = await ((AgendamentoRepositorio)Repositorio)
-                .BaixarParcela(parcela);
+            var item = await Repositorio.BaixarParcela(parcela);
 
             return item;
         }
 
         public async Task<bool> ConciliarParcela(int id, string idMovimentos)
         {
-            var _ = await ((MovimentoBancarioRepositorio)_movimentoRepositorio)
+            var _ = await _movimentoRepositorio
                 .ConciliarParcela(id, idMovimentos);
             
-            var alterado = await ((AgendamentoRepositorio)Repositorio)
-                .ConciliarParcela(id);
+            var alterado = await Repositorio.ConciliarParcela(id);
 
             return alterado;
         }

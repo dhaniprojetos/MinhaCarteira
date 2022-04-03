@@ -10,14 +10,15 @@ using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 
 namespace MinhaCarteira.Teste.WebApi.Crud.Base
 {
-    public class TesteBase<TEntidade, TBuilder, TServico>
+    public class TesteBase<TEntidade, TBuilder, TServico, TCrud>
         where TEntidade : class, IEntidade
         where TBuilder : IBuilder<TEntidade>
-        where TServico : IServicoCrud<TEntidade, ICrud<TEntidade>>
+        where TCrud : ICrud<TEntidade>
+        where TServico : IServicoCrud<TEntidade, TCrud>
     {
         public TesteBase(
             IBuilder<TEntidade> builder,
-            IServicoCrud<TEntidade, ICrud<TEntidade>> servico,
+            IServicoCrud<TEntidade, TCrud> servico,
             ITestOutputHelper output)
         {
             Builder = builder;
@@ -29,7 +30,7 @@ namespace MinhaCarteira.Teste.WebApi.Crud.Base
             typeof(TEntidade).Name;
         protected readonly ITestOutputHelper _output;
         protected IBuilder<TEntidade> Builder { get; }
-        protected IServicoCrud<TEntidade, ICrud<TEntidade>> Servico { get; }
+        protected IServicoCrud<TEntidade, TCrud> Servico { get; }
 
         private IList<TEntidade> GerarItens(int qtdItens, params object[] args)
         {

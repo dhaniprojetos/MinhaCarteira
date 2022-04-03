@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Comum.Definicao.Interface.Servico;
-using MinhaCarteira.Servidor.Controle.Servico;
 using MinhaCarteira.Teste.Mock.Faker;
 using MinhaCarteira.Teste.Mock.Interface;
 using MinhaCarteira.Teste.WebApi.Crud.Base;
@@ -13,7 +13,8 @@ namespace MinhaCarteira.Teste.WebApi.Crud
     public class CentroClassificacaoTesteCrud : TesteBase<
         CentroClassificacao,
         CentroClassificacaoBuilder,
-        CentroClassificacaoServico>
+        ICentroClassificacaoServico,
+        ICentroClassificacaoRepositorio>
     {
         public CentroClassificacaoTesteCrud(
             IBuilder<CentroClassificacao> builder,
