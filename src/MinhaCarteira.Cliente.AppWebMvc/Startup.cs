@@ -43,8 +43,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
-                    options.LoginPath = new PathString("/conta/logar");
-                    options.AccessDeniedPath = new PathString("/conta/acessonegado");
+                    options.LoginPath = new PathString("/usuario/logar");
+                    options.AccessDeniedPath = new PathString("/usuario/acessonegado");
                 });
 
             var options = new PwaOptions()
@@ -96,7 +96,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc
                     var result = await authService.AuthorizeAsync(ctx.User, ctx.GetRouteData(), authAttr.Policy);
                     if (!result.Succeeded)
                     {
-                        var path = $"/conta/logar";
+                        var path = $"/usuario/logar";
                         ctx.Response.Redirect(path);
                         return;
                     }

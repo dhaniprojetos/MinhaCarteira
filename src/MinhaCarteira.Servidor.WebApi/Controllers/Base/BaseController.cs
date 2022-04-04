@@ -149,7 +149,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers.Base
         }
 
         [HttpPost]
-        public async Task<IActionResult> Incluir(TEntidade item)
+        public virtual async Task<IActionResult> Incluir(TEntidade item)
         {
             IActionResult resposta;
             try

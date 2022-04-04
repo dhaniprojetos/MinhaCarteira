@@ -94,7 +94,7 @@
                         @if (User.Identity is not { IsAuthenticated: true })
                         {
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="Conta" asp-action="Logar" class="nav-link">
+                                <a asp-area="" asp-controller="Usuario" asp-action="Logar" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>Login</p>
                                 </a>
@@ -105,15 +105,16 @@
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
-                                    <p>
+                                    <span class="d-inline-block align-middle text-truncate" 
+                                          style="max-width: 150px;">
                                         @User.Identity.Name
-                                    </p>
+                                    </span>
                                     <i class="fas fa-angle-left right"></i>
                                 </a>
 
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Conta" asp-action="Sair">
+                                        <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="Sair">
                                             <i class="nav-icon fa fa-door-open"></i> <p>Sair</p>
                                         </a>
                                     </li>

@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 using MinhaCarteira.Cliente.Recursos.Models;
 using AutoMapper;
 using MinhaCarteira.Cliente.Recursos.Refit;
-using MinhaCarteira.Comum.Definicao.Entidade;
 using Microsoft.AspNetCore.Http;
 using System;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
+using MinhaCarteira.Comum.Definicao.Modelo;
+using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
-    public class ContaController : Controller
+    public class UsuarioController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IContaServico _servico;
+        private readonly IUsuarioServico _servico;
         private readonly IHttpContextAccessor _acessor;
 
-        public ContaController(IMapper mapper, IContaServico servico, IHttpContextAccessor acessor)
+        public UsuarioController(IMapper mapper, IUsuarioServico servico, IHttpContextAccessor acessor)
         {
             _mapper = mapper;
             _servico = servico;
@@ -33,7 +34,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Logar(UsuarioViewModel conta, string returnUrl)
+        public async Task<IActionResult> Logar(UsuarioLoginViewModel conta, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
 
@@ -42,16 +43,21 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
             try
             {
-                var itemMap = _mapper.Map<Usuario>(conta);
+                var itemMap = _mapper.Map<UsuarioLogin>(conta);
                 var resposta = await _servico.Logar(itemMap);
-                var userDb = _mapper.Map<UsuarioViewModel>(resposta.Dados);
+                var userDb = _mapper.Map<UsuarioTokenViewModel>(resposta.Dados);
 
                 var claimsIdentity = new ClaimsIdentity(new Claim[]
                 {
-                    new(ClaimTypes.Name, userDb.Username),
-                    new("FullName", userDb.Username),
-                    new(ClaimTypes.Role, userDb.Role)
+                    new(ClaimTypes.Name, userDb.NomeCompleto ?? userDb.Username),
+                    new("FullName", userDb.Nome),
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                claimsIdentity.AddClaims(
+                    userDb.Roles
+                        .Select(s => new Claim(ClaimTypes.Role, s))
+                        .ToArray()
+                );
 
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await Request.HttpContext.SignInAsync(
@@ -75,14 +81,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                     ViewBag.RetornoApi = JsonConvert.DeserializeObject<Resposta<object>>(retorno);
                 }
 
-                return View(new UsuarioViewModel());
+                return View(new UsuarioLoginViewModel());
             }
             catch (Exception e)
             {
                 var retornoApi = new Resposta<Exception>(e, e.Message);
                 ViewBag.RetornoApi = retornoApi;
 
-                return View(new UsuarioViewModel());
+                return View(new UsuarioLoginViewModel());
             }
 
         }

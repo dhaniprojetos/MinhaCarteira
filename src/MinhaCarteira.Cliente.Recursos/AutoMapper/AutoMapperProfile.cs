@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MinhaCarteira.Cliente.Recursos.Models;
 using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Modelo;
 
 namespace MinhaCarteira.Cliente.Recursos.AutoMapper
 {
@@ -34,8 +35,8 @@ namespace MinhaCarteira.Cliente.Recursos.AutoMapper
             CreateMap<Agendamento, AgendamentoViewModel>();
             CreateMap<AgendamentoViewModel, Agendamento>();
             
-            CreateMap<Usuario, UsuarioViewModel>();
-            CreateMap<UsuarioViewModel, Usuario>();
+            CreateMap<UsuarioLoginViewModel, UsuarioLogin>();
+            CreateMap<UsuarioToken, UsuarioTokenViewModel>();
         }
     }
 }

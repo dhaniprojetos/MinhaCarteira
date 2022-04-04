@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Refit;
 
 namespace MinhaCarteira.Cliente.Recursos.Refit
 {
-    public interface IContaServico
+    public interface IUsuarioServico
     {
         [Post("/login")]
-        Task<Resposta<Usuario>> Logar(Usuario item);
+        Task<Resposta<UsuarioToken>> Logar(UsuarioLogin item);
     }
 }

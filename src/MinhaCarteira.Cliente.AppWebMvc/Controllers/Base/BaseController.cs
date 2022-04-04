@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public abstract class BaseController<TEntidade, TEntidadeViewModel> : Controller
         where TEntidade : class, IEntidade
         where TEntidadeViewModel : BaseViewModel, IEntidade
@@ -228,7 +228,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Super, Admin")]
+        [Authorize(Roles = "Admin")]
         public virtual async Task<IActionResult> Deletar(int id)
         {
             var item = await ObterPorId(id);
@@ -237,7 +237,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             return View(item);
         }
         [HttpPost]
-        [Authorize(Roles = "Super, Admin")]
+        [Authorize(Roles = "Admin")]
         public virtual async Task<IActionResult> Deletar(TEntidadeViewModel item)
         {
             if (!ModelState.IsValid)

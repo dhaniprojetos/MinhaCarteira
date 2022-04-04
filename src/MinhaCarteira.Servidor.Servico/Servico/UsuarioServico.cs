@@ -5,12 +5,9 @@ using MinhaCarteira.Comum.Definicao.Interface.Servico;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using MinhaCarteira.Servidor.Controle.Servico.Base;
-using System.Collections.Generic;
-using System;
 using System.Threading.Tasks;
 using System.Linq;
 using MinhaCarteira.Servidor.Modelo.Helper;
-using MinhaCarteira.Comum.Definicao.Helper;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {
@@ -51,8 +48,10 @@ namespace MinhaCarteira.Servidor.Controle.Servico
                 };
             }
 
-            var token = new UsuarioToken(usuario);
-            token.Roles = usuario.Papeis.Select(s => s.Papel.Nome).ToList();
+            var token = new UsuarioToken(usuario)
+            {
+                Roles = usuario.Papeis.Select(s => s.Papel.Nome).ToList()
+            };
 
             return new Resposta<UsuarioToken>(
                 token,

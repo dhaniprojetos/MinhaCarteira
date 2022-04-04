@@ -21,9 +21,9 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
             services.AddTransient<AuthorizationMessageHandler>();
 
             services
-                .AddRefitClient<IContaServico>()
+                .AddRefitClient<IUsuarioServico>()
                 .ConfigureHttpClient(c =>
-                    c.BaseAddress = new Uri(baseUrlApi + "/conta"));
+                    c.BaseAddress = new Uri(baseUrlApi + "/usuario"));
 
             services
                 .AddRefitClient<IServicoBase<Pessoa>>()

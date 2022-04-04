@@ -6,6 +6,11 @@ namespace MinhaCarteira.Comum.Definicao.Modelo
 {
     public class UsuarioToken
     {
+        public UsuarioToken()
+        {
+            //construtor necessário para a injeção de dependencia
+        }
+
         public UsuarioToken(Usuario source)
         {
             this.Mapear(source);
