@@ -6,7 +6,7 @@ namespace MinhaCarteira.Servidor.Modelo.Helper
 {
     public static class Criptografia
     {
-        public static string GerarHashSenha(string senha)
+        public static string GerarHashSenha(this string senha)
         {
             byte[] salt;
             byte[] buffer2;
@@ -24,7 +24,7 @@ namespace MinhaCarteira.Servidor.Modelo.Helper
             return Convert.ToBase64String(dst);
         }
 
-        public static bool VerificarHashSenha(string senhaCifrada, string senha)
+        public static bool VerificarHashSenha(this string senhaCifrada, string senha)
         {
             byte[] buffer4;
             if (senhaCifrada == null)

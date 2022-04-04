@@ -24,9 +24,12 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
         public Resposta(T dados, string mensagem = null)
         {
             Dados = dados;
-            Mensagem = mensagem;
-            MensagemErro = dados is Exception 
-                ? ObterExceptionMaisProfunda() 
+            Mensagem = mensagem ?? (
+                dados is Exception erro
+                    ? erro.Message
+                    : string.Empty);
+            MensagemErro = dados is Exception
+                ? ObterExceptionMaisProfunda()
                 : string.Empty;
             BemSucedido = dados is not Exception;
         }
@@ -34,13 +37,13 @@ namespace MinhaCarteira.Comum.Definicao.Modelo.Servico
         //Propriedades precisam ter GET e SET públicos para a deserialização do cliente
         [JsonProperty(Order = 0)]
         public int? StatusCode { get; set; }
-        
+
         [JsonProperty(Order = 1)]
         public string Mensagem { get; set; }
-        
+
         [JsonProperty(Order = 2)]
         public bool BemSucedido { get; set; }
-        
+
         [JsonProperty(Order = 2)]
         public string MensagemErro { get; set; }
 

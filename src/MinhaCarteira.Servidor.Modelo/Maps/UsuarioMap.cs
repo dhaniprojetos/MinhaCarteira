@@ -20,7 +20,7 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
                 Username = usuario,
                 Email = email,
                 //PasswordHash = "admin"
-                PasswordHash = Criptografia.GerarHashSenha("admin"),
+                PasswordHash = "admin".GerarHashSenha(),
 
                 //NormalizedUserName = usuario.ToUpper(),
                 //NormalizedEmail = email.ToUpper(),

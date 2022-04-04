@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Recursos.Helper;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace MinhaCarteira.Servidor.WebApi
 {
@@ -100,9 +101,14 @@ namespace MinhaCarteira.Servidor.WebApi
 
             Debug.WriteLine(Configuration["SwaggerEndpoint"]);
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint(
-                Configuration["SwaggerEndpoint"],
-                "MinhaCarteira.Servidor.WebApi v1"));
+            app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint(
+                        Configuration["SwaggerEndpoint"],
+                        "MinhaCarteira.Servidor.WebApi v1");
+
+                    c.DocExpansion(DocExpansion.None);
+                });
 
             app.UseHttpsRedirection();
 

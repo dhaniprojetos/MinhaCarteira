@@ -1,11 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using MinhaCarteira.Comum.Definicao.Entidade;
+using MinhaCarteira.Comum.Definicao.Helper;
+using System.Collections.Generic;
 
 namespace MinhaCarteira.Comum.Definicao.Modelo
 {
     public class UsuarioToken
     {
-        public string Usuario { get; set; }
+        public UsuarioToken(Usuario source)
+        {
+            this.Mapear(source);
+        }
+
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        
         public string TokenAcesso { get; set; }
-        public List<string> Papeis { get; set; }
+        public IList<string> Roles { get; set; }
     }
 }

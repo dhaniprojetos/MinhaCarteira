@@ -59,7 +59,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             //    .ThenInclude(ti => ti.ContaBancaria);
         }
 
-        protected IQueryable<AgendamentoItem> AdicionarIncludesParcela(IQueryable<AgendamentoItem> source)
+        protected static IQueryable<AgendamentoItem> AdicionarIncludesParcela(IQueryable<AgendamentoItem> source)
         {
             return source
                 .Include(i => i.Pessoa)

@@ -42,6 +42,9 @@ namespace MinhaCarteira.Servidor.Recursos.Helper
             services.AddScoped<IAgendamentoRepositorio, AgendamentoRepositorio>();
             services.AddScoped<IAgendamentoServico, AgendamentoServico>();
 
+            services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+            services.AddScoped<IUsuarioServico, UsuarioServico>();
+
             return services;
         }
     }
