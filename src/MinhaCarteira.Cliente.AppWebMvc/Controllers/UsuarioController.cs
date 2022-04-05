@@ -49,15 +49,21 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
                 var claimsIdentity = new ClaimsIdentity(new Claim[]
                 {
-                    new(ClaimTypes.Name, userDb.NomeCompleto ?? userDb.Username),
-                    new("FullName", userDb.Nome),
+                    new(ClaimTypes.Name, userDb.Nome),
+                    new(ClaimTypes.Surname, userDb.Sobrenome),
+                    new(ClaimTypes.NameIdentifier, userDb.Username),
+                    new("FullName", userDb.NomeCompleto ?? userDb.Username),
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 claimsIdentity.AddClaims(
                     userDb.Roles
                         .Select(s => new Claim(ClaimTypes.Role, s))
-                        .ToArray()
-                );
+                        .ToArray());
+
+                claimsIdentity.AddClaims(
+                    userDb.Preferences
+                        .Select(s => new Claim(s.Key, s.Value))
+                        .ToArray());
 
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await Request.HttpContext.SignInAsync(
@@ -104,6 +110,36 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public IActionResult AcessoNegado()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GravarCondicaoSidebar(string valor)
+        {
+            var retorno = await Task.FromResult(User.Identity.IsAuthenticated);
+            if (User.Identity.IsAuthenticated)
+            {
+                var identity = User.Identity as ClaimsIdentity;
+                var usuario = identity
+                    .FindFirst(ClaimTypes.NameIdentifier)
+                    .Value;
+
+                var condicaoClaim = identity
+                    .FindFirst("CondicaoSidebar");
+
+                if (condicaoClaim != null)
+                    identity.RemoveClaim(condicaoClaim);
+
+
+                //identity.AddClaim(new Claim("CondicaoSidebar", valor));
+
+                //User.Claims.SingleOrDefault(w => w.Type == chave).Value = valor;
+
+                //var resposta = await _servico.ArmazenarPreferenciaUsuario(usuario, preferencia);
+                retorno = true;
+
+            }
+
+            return Ok(retorno);
         }
     }
 }

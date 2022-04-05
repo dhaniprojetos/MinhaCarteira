@@ -23,5 +23,6 @@ namespace MinhaCarteira.Comum.Definicao.Modelo
         
         public string TokenAcesso { get; set; }
         public IList<string> Roles { get; set; }
+        public IDictionary<string, string> Preferences { get; set; }
     }
 }

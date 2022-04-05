@@ -95,9 +95,7 @@ namespace MinhaCarteira.Servidor.WebApi
             }
 
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
 
             Debug.WriteLine(Configuration["SwaggerEndpoint"]);
             app.UseSwagger();

@@ -9,5 +9,8 @@ namespace MinhaCarteira.Cliente.Recursos.Refit
     {
         [Post("/login")]
         Task<Resposta<UsuarioToken>> Logar(UsuarioLogin item);
+
+        [Post("/armazenar-preferencia-usuario")]
+        Task<Resposta<bool>> ArmazenarPreferenciaUsuario(string username, string chaveValor);
     }
 }

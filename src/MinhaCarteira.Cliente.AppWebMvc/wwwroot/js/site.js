@@ -21,3 +21,31 @@ if ('serviceWorker' in navigator) {
             //console.log('Service Worker Registered');
         });
 }
+
+function gravarEstadoMenu(valor) {
+    $.ajax({
+        url: window.siteRoot + 'usuario/gravarCondicaoSidebar',
+        data: { "valor": valor },
+        type: "POST",
+        success: function (data) {
+            console.log("OK");
+            console.log(data);
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        },
+        failure: function (response) {
+            console.log(response.responseText);
+        }
+    });
+}
+
+$(document).on('shown.lte.pushmenu', function (configMenu) {
+    console.log("sidebar-open");
+    gravarEstadoMenu("sidebar-open");
+})
+
+$(document).on('collapsed.lte.pushmenu', function (configMenu) {
+    console.log("sidebar-collapse");
+    gravarEstadoMenu("sidebar-collapse");
+})

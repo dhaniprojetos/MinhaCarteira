@@ -22,6 +22,7 @@ namespace MinhaCarteira.Servidor.Modelo.Data
             modelBuilder.ApplyConfiguration(new PapelMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new UsuarioPapelMap());
+            modelBuilder.ApplyConfiguration(new UsuarioPreferenciaMap());
 
             modelBuilder.ApplyConfiguration(new PessoaMap());
             modelBuilder.ApplyConfiguration(new InstituicaoFinanceiraMap());
@@ -36,6 +37,8 @@ namespace MinhaCarteira.Servidor.Modelo.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<UsuarioPreferencia> Preferencias { get; set; }
+
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<InstituicaoFinanceira> InstituicoesFinanceira { get; set; }
         public DbSet<ContaBancaria> ContasBancaria { get; set; }

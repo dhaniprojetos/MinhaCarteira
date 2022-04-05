@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MinhaCarteira.Servidor.Modelo.Maps
 {
-    class UsuarioPapelMap : IEntityTypeConfiguration<UsuarioPapel>
+    public class UsuarioPapelMap : IEntityTypeConfiguration<UsuarioPapel>
     {
         private static IList<UsuarioPapel> ObterUsuariosPapeisInicial()
         {

@@ -13,5 +13,6 @@ namespace MinhaCarteira.Comum.Definicao.Entidade
         public string PasswordHash { get; set; }
 
         public IList<UsuarioPapel> Papeis { get; set; }
+        public IList<UsuarioPreferencia> Preferencias { get; set; }
     }
 }

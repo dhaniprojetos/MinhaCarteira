@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using MinhaCarteira.Cliente.Recursos.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -9,7 +10,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IHttpContextAccessor httpContext)
         {
             _logger = logger;
         }

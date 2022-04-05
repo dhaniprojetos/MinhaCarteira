@@ -14,5 +14,6 @@ namespace MinhaCarteira.Cliente.Recursos.Models
 
         public string TokenAcesso { get; set; }
         public IList<string> Roles { get; set; }
+        public IDictionary<string, string> Preferences { get; set; }
     }
 }

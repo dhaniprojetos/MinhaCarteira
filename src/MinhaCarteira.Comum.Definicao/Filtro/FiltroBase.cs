@@ -29,11 +29,22 @@ namespace MinhaCarteira.Comum.Definicao.Filtro
         public override bool Equals(object obj)
         {
             var other = (FiltroOpcao)obj;
-            return
-                NomePropriedade.Equals(other.NomePropriedade, StringComparison.InvariantCultureIgnoreCase) &&
-                Valor.Equals(other.Valor, StringComparison.InvariantCultureIgnoreCase) &&
-                Operador.Equals(other.Operador) &&
-                Visivel.Equals(other.Visivel);
+
+            var operadorEhIgual = Operador.Equals(other.Operador);
+            var visibilidadeEhIgual = Visivel.Equals(other.Visivel);
+
+            var nomePropriedadeEhIgual =
+                (string.IsNullOrWhiteSpace(NomePropriedade) && string.IsNullOrWhiteSpace(other.NomePropriedade)) ||
+                NomePropriedade.Equals(other.NomePropriedade, StringComparison.InvariantCultureIgnoreCase);
+
+            var valorEhIgual =
+                (string.IsNullOrWhiteSpace(Valor) && string.IsNullOrWhiteSpace(other.Valor)) ||
+                Valor.Equals(other.Valor, StringComparison.InvariantCultureIgnoreCase);
+
+            return operadorEhIgual
+                && visibilidadeEhIgual
+                && nomePropriedadeEhIgual
+                && valorEhIgual;
         }
         public override int GetHashCode()
 
