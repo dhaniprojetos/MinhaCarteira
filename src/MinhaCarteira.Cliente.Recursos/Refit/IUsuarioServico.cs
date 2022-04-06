@@ -1,16 +1,18 @@
 ﻿using System.Threading.Tasks;
+using MinhaCarteira.Cliente.Recursos.Refit.Base;
+using MinhaCarteira.Comum.Definicao.Entidade;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Refit;
 
 namespace MinhaCarteira.Cliente.Recursos.Refit
 {
-    public interface IUsuarioServico
+    public interface IUsuarioServico : IServicoBase<Usuario>
     {
         [Post("/login")]
         Task<Resposta<UsuarioToken>> Logar(UsuarioLogin item);
 
-        [Post("/armazenar-preferencia-usuario")]
-        Task<Resposta<bool>> ArmazenarPreferenciaUsuario(string username, string chaveValor);
+        [Post("/atualizar-condicao-sidebar")]
+        Task<Resposta<bool>> AtualizarCondicaoSidebar(string username, string condicao);
     }
 }

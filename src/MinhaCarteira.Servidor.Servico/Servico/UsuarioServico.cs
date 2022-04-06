@@ -66,32 +66,22 @@ namespace MinhaCarteira.Servidor.Controle.Servico
                 "Usuário localizado com sucesso.");
         }
 
-        public async Task<Resposta<bool>> ArmazenarPreferenciaUsuario(string username, string chaveValor)
+        public async Task<Resposta<bool>> AtualizarCondicaoSidebar(string username, string condicao)
         {
             var usuario = await ObterPorUsername(username);
-            var preferencias = chaveValor?
-                .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.Split('='))
-                .ToDictionary(x => x[0], y => y[1]);
+            var condicaoSidebar = usuario.Preferencias
+                .SingleOrDefault(w => w.Nome == "CondicaoSidebar");
 
-            foreach (var preferencia in preferencias)
+            if (condicaoSidebar != null)
+                condicaoSidebar.Valor = condicao;
+            else
             {
-                var item = usuario.Preferencias
-                    .SingleOrDefault(s => s.Nome == preferencia.Key);
+                condicaoSidebar = new UsuarioPreferencia(
+                        usuario.Id,
+                        "CondicaoSidebar",
+                        condicao);
 
-                if (item != null)
-                    item.Valor = preferencia.Value;
-                else
-                {
-                    item = new UsuarioPreferencia()
-                    {
-                        UsuarioId = usuario.Id,
-                        Nome = preferencia.Key,
-                        Valor = preferencia.Value
-                    };
-
-                    usuario.Preferencias.Add(item);
-                }
+                usuario.Preferencias.Add(condicaoSidebar);
             }
 
             var alterado = await Repositorio.ArmazenarPreferenciaUsuario(

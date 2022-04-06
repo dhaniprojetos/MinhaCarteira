@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
@@ -42,7 +44,15 @@
 </head>
 
 @{
-    var sidebarInicial = "sidebar-open";
+
+    var preferencias = HttpContextAccessor.HttpContext
+        .Request
+        .Cookies["CondicaoSidebar"];
+
+    var sidebarInicial = preferencias ?? "sidebar-open";
+    
+
+    /*
     var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
     var condicaoSidebar = identity?.Claims?
         .FirstOrDefault(x => x.Type.Equals("condicaoSidebar", StringComparison.OrdinalIgnoreCase))?
@@ -51,7 +61,6 @@
     if (condicaoSidebar != null)
         sidebarInicial = condicaoSidebar;
 
-    /*
     var preferencias = userPreferencias?
         .Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries)
         .Select(s => s.Split('='))

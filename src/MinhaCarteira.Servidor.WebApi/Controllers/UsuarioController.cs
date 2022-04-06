@@ -43,12 +43,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
             return await base.Incluir(item);
         }
 
-        [Route("armazenar-preferencia-usuario")]
+        [Route("atualizar-condicao-sidebar")]
         [HttpPost]
-        public async Task<IActionResult> ArmazenarPreferenciaUsuario(string username, string chaveValor)
+        public async Task<IActionResult> AtualizarCondicaoSidebar(string username, string condicao)
         {
             var retorno = await Servico
-                .ArmazenarPreferenciaUsuario(username, chaveValor);
+                .AtualizarCondicaoSidebar(username, condicao);
 
             return !retorno.BemSucedido
                 ? NotFound(retorno)

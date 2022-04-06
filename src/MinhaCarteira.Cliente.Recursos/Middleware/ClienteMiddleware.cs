@@ -22,6 +22,7 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
 
             services
                 .AddRefitClient<IUsuarioServico>()
+                .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
                     c.BaseAddress = new Uri(baseUrlApi + "/usuario"));
 

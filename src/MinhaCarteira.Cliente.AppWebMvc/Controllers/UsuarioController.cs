@@ -12,6 +12,7 @@ using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -102,6 +103,8 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         public async Task<IActionResult> Sair()
         {
             Response.Cookies.Delete("Bearer");
+            Response.Cookies.Delete("CondicaoSidebar");
+
             await HttpContext.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
@@ -112,10 +115,18 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> GravarCondicaoSidebar(string valor)
+        public async Task<IActionResult> GravarCondicaoSidebar(string condicao)
         {
             var retorno = await Task.FromResult(User.Identity.IsAuthenticated);
+            var cookie = _acessor.HttpContext.Request.Cookies["CondicaoSidebar"];
+
+            if (cookie != null)
+                Response.Cookies.Delete("CondicaoSidebar");
+
+            Response.Cookies.Append("CondicaoSidebar", condicao);
+
             if (User.Identity.IsAuthenticated)
             {
                 var identity = User.Identity as ClaimsIdentity;
@@ -123,20 +134,16 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                     .FindFirst(ClaimTypes.NameIdentifier)
                     .Value;
 
-                var condicaoClaim = identity
-                    .FindFirst("CondicaoSidebar");
-
-                if (condicaoClaim != null)
-                    identity.RemoveClaim(condicaoClaim);
-
-
-                //identity.AddClaim(new Claim("CondicaoSidebar", valor));
-
-                //User.Claims.SingleOrDefault(w => w.Type == chave).Value = valor;
-
-                //var resposta = await _servico.ArmazenarPreferenciaUsuario(usuario, preferencia);
-                retorno = true;
-
+                try
+                {
+                    var resposta = await _servico.AtualizarCondicaoSidebar(usuario, condicao);
+                    retorno = resposta.Dados;
+                }
+                catch (Exception ex)
+                {
+                    retorno = false;
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
             }
 
             return Ok(retorno);

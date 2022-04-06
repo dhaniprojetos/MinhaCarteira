@@ -25,7 +25,7 @@ if ('serviceWorker' in navigator) {
 function gravarEstadoMenu(valor) {
     $.ajax({
         url: window.siteRoot + 'usuario/gravarCondicaoSidebar',
-        data: { "valor": valor },
+        data: { "condicao": valor },
         type: "POST",
         success: function (data) {
             console.log("OK");

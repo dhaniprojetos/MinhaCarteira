@@ -10,6 +10,6 @@ namespace MinhaCarteira.Comum.Definicao.Interface.Servico
         : IServicoCrud<Usuario, IUsuarioRepositorio>
     {
         Task<Resposta<UsuarioToken>> Login(UsuarioLogin userInfo);
-        Task<Resposta<bool>> ArmazenarPreferenciaUsuario(string username, string chaveValor);
+        Task<Resposta<bool>> AtualizarCondicaoSidebar(string username, string condicao);
     }
 }
