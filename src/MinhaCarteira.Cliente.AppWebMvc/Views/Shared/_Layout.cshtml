@@ -50,7 +50,7 @@
         .Cookies["CondicaoSidebar"];
 
     var sidebarInicial = preferencias ?? "sidebar-open";
-    
+
 
     /*
     var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
@@ -137,12 +137,13 @@
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>
-                                        <span class="d-inline-block align-middle text-truncate"
-                                              style="max-width: 150px;">
+                                        <span class="d-inline-block text-truncate"
+                                              style="max-width: 155px;">
                                             @User.Claims.FirstOrDefault(w => w.Type == "FullName").Value
                                         </span>
+
+                                        <i class="fas fa-angle-left right"></i>
                                     </p>
-                                    <i class="fas fa-angle-left right"></i>
                                 </a>
 
                                 <ul class="nav nav-treeview">

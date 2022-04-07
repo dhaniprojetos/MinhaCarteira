@@ -6,9 +6,14 @@
     height: 40px;
 }
 
-.sidebar p {
+.nav-item p {
     left: 50px;
     position: absolute;
+    width: 203px;
+}
+
+.nav-item p svg {
+    margin-top: -8px !important;
 }
 
 .btn-acao {
