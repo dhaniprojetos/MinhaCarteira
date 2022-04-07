@@ -114,7 +114,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers.Base
             {
                 if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                     ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
-                    return RedirectToAction("Logar", "Conta");
+                    return RedirectToAction("Logar", "Usuario");
 
                 var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
                 if (retornoApi == null)

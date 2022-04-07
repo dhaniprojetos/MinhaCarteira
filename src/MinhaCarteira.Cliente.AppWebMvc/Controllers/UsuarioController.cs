@@ -22,6 +22,14 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         private readonly IUsuarioServico _servico;
         private readonly IHttpContextAccessor _acessor;
 
+        private async Task Logout()
+        {
+            Response.Cookies.Delete("Bearer");
+            Response.Cookies.Delete("CondicaoSidebar");
+
+            await HttpContext.SignOutAsync();
+        }
+
         public UsuarioController(IMapper mapper, IUsuarioServico servico, IHttpContextAccessor acessor)
         {
             _mapper = mapper;
@@ -29,8 +37,10 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             _acessor = acessor;
         }
 
-        public IActionResult Logar(string returnUrl)
+        public async Task<IActionResult> Logar(string returnUrl)
         {
+            await Logout();
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -73,6 +83,15 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
                 Response.Cookies.Append("Bearer", userDb.TokenAcesso);
 
+                var cookie = _acessor.HttpContext.Request.Cookies["CondicaoSidebar"];
+                if (cookie != null)
+                    Response.Cookies.Delete("CondicaoSidebar");
+
+                var condicaoSidebar = userDb.Preferences
+                    .SingleOrDefault(s => s.Key.Equals("CondicaoSidebar", StringComparison.InvariantCultureIgnoreCase))
+                    .Value;
+                Response.Cookies.Append("CondicaoSidebar", condicaoSidebar);
+
                 return Url.IsLocalUrl(returnUrl)
                     ? Redirect(returnUrl)
                     : RedirectToAction("Index", "Home");
@@ -102,10 +121,7 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 
         public async Task<IActionResult> Sair()
         {
-            Response.Cookies.Delete("Bearer");
-            Response.Cookies.Delete("CondicaoSidebar");
-
-            await HttpContext.SignOutAsync();
+            await Logout();
 
             return RedirectToAction("Index", "Home");
         }
