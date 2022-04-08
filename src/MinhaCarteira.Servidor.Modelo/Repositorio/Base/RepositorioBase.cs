@@ -6,6 +6,7 @@ using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Helper;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,10 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio.Base
                     constantExpressionValue = Expression.Constant(null, property.Type);
                 else
                 {
-                    var valor = Convert.ChangeType(queryFilterObject.Valor, property.Type);
+                    var valor = property.Type.IsEnum
+                        ? Enum.Parse(property.Type, queryFilterObject.Valor, true)
+                        : Convert.ChangeType(queryFilterObject.Valor, property.Type);
+
                     constantExpressionValue = Expression.Constant(valor, property.Type);
                 }
 

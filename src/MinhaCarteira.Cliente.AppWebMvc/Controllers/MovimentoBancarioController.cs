@@ -183,30 +183,36 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         {
             var retornoApi = await _contaBancariaServico.Navegar(null);
             var contas = Mapper.Map<IList<ContaBancariaViewModel>>(retornoApi.Dados);
-
             var totalMovimentos = 0;
+
+            var item = new ListaMovimentoBancarioViewModel()
+            {
+                Contas = contas,
+                Filtro = filtroMovimento,
+                Movimentos = new StaticPagedList<MovimentoBancarioViewModel>(
+                    new List<MovimentoBancarioViewModel>(),
+                    filtroMovimento.Pagina,
+                    filtroMovimento.ItensPorPagina,
+                    totalMovimentos)
+            };
+
             IList<MovimentoBancarioViewModel> movimentos;
             try
             {
                 var retornoMovimentos = await Servico.Navegar(filtroMovimento);
                 totalMovimentos = retornoMovimentos.TotalRegistros;
                 movimentos = Mapper.Map<IList<MovimentoBancarioViewModel>>(retornoMovimentos.Dados);
-            }
-            catch (Exception)
-            {
-                movimentos = new List<MovimentoBancarioViewModel>();
-            }
 
-            var item = new ListaMovimentoBancarioViewModel()
-            {
-                Contas = contas,
-                Movimentos = new StaticPagedList<MovimentoBancarioViewModel>(
+                item.Movimentos = new StaticPagedList<MovimentoBancarioViewModel>(
                     movimentos,
                     filtroMovimento.Pagina,
                     filtroMovimento.ItensPorPagina,
-                    totalMovimentos),
-                Filtro = filtroMovimento
-            };
+                    totalMovimentos);
+            }
+            catch
+            {
+                throw;
+            }
 
             return item;
         }
@@ -233,9 +239,9 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
                 };
 
                 filtroMovimento.OpcoesFiltro.Add(new FiltroOpcao(
-                    "ContaBancariaId", 
-                    TipoOperadorBusca.Igual, 
-                    idConta.ToString(), 
+                    "ContaBancariaId",
+                    TipoOperadorBusca.Igual,
+                    idConta.ToString(),
                     false));
 
                 var item = await ObterMovimentosConta(idConta, filtroMovimento);
