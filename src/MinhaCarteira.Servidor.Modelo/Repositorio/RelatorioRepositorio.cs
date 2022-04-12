@@ -25,6 +25,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
     
     select CAST(row_number() over(partition by grp.ContaBancariaId, grp.Data order by grp.Data) as int) Idx
          , grp.ContaBancariaId
+         , conta.Nome ContaBancariaNome
          , CONVERT(DATE, grp.Data) Data
          , grp.Descricao
          , grp.Valor
@@ -77,10 +78,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             left join Agendamento ag on ag.Id = agi.AgendamentoId
         )conta
         group by conta.Id, conta.ValorSaldoInicial
-    )grp;
+    )grp
+    inner join ContaBancaria conta on conta.id = grp.ContaBancariaId;
 
     select cast(row_number() over (partition by ext.ContaBancariaId, substring(convert(nvarchar(8), ext.Data, 112), 1, 6) order by ext.ContaBancariaId, ext.Data) as int) idx
-		 , ext.ContaBancariaId, ext.Data, ext.Descricao, ext.Valor, ext.Saldo
+		 , ext.ContaBancariaId, ext.ContaBancariaNome, ext.Data, ext.Descricao, ext.Valor, ext.Saldo
     into #extratoDiario
     from #extrato ext
     inner join (
@@ -103,7 +105,13 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 	) grp on grp.idx = ext.idx 
 			and grp.contabancariaid = ext.contabancariaid 
 			and grp.MesAno = substring(convert(nvarchar(8), ext.Data, 112), 1, 6)
-	order by grp.MesAno, grp.ContaBancariaId
+	order by grp.MesAno, grp.ContaBancariaId;
+
+    insert into #extratoDiario
+    select 1 idx, -1 ContaBancariaId, 'Total' ContaBancariaNome, data, '' descricao, sum(valor) Valor, sum(Saldo) Saldo
+    from #extratoDiario
+    group by data
+    order by data;
 ";
             using var ctx = _contexto;
             ctx.Database.OpenConnection();
@@ -111,11 +119,13 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             await ctx.Database.ExecuteSqlRawAsync(cmdSql);
 
             var extratoDiario = await ctx.ExtratoDiario
-                .FromSqlRaw("select * from #extratoDiario order by ContaBancariaId, Data")
+                .FromSqlRaw("select * from #extratoDiario order by Data, ContaBancariaId")
+                .AsNoTracking()
                 .ToListAsync();
 
             var extratoMensal = await ctx.ExtratoMensal
-                .FromSqlRaw("select * from #extratoMensal order by ContaBancariaId, MesAno")
+                .FromSqlRaw("select * from #extratoMensal order by MesAno, ContaBancariaId")
+                .AsNoTracking()
                 .ToListAsync();
 
             ctx.Database.CloseConnection();

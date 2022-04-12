@@ -4,7 +4,13 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<canvas id="myChart" width="400" height="100"></canvas>
+<div class="row">
+    <button class="btn btn-primary" onclick="montarEstatistica()">Montar estatísticas</button>
+</div>
+
+<div class="row">
+    <canvas id="myChart" width="400" height="100"></canvas>
+</div>
 
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
@@ -21,74 +27,81 @@
                 const key = keyGetter(item);
                 const collection = map.get(key);
                 if (!collection) {
-                    map.set(key, [{ data: item.data, saldo: item.saldo }]);
+                    map.set(key, [{
+                        data: item.data,
+                        dataJS: Date.parse(item.data),
+                        saldo: item.saldo
+                    }]);
                 } else {
-                    collection.push({ data: item.data, saldo: item.saldo });
+                    collection.push({
+                        data: item.data,
+                        dataJS: Date.parse(item.data),
+                        saldo: item.saldo
+                    });
                 }
             });
 
             return map;
         }
+        function montarEstatistica() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/obterExtratos",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(ajaxOptions);
+                    console.log(thrownError);
+                },
+                success: function (extratos) {
 
-        $.ajax({
-            type: "POST",
-            url: "/Home/obterExtratos",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (extratos) {
+                    const grouped = groupBy(
+                        extratos.saldosDiario,
+                        item => item.contaBancariaNome);
+                    console.log(grouped);
 
-                //var conta1 = extratos.saldosDiario
-                //    .filter(f => f.contaBancariaId === 1)
-                //    .map(function (item) {
-                //        return {
-                //            data: item.data,
-                //            saldo: item.saldo
-                //        };
-                //    });
+                    var colors = ["red", "blue", "yellow", "green", "brown", "black", "gray", "silver"];
+                    var grupos = [grouped.size];
 
-                const grouped = groupBy(
-                    extratos.saldosDiario,
-                    item => item.contaBancariaId);
-
-                var grupos = [grouped.size];
-                for (var i = 0; i < grouped.size; i++) {
-                    grupos[i] = {
-                        data: grouped.get(i+1),
-                        parsing: {
-                            xAxisKey: 'data',
-                            yAxisKey: 'saldo'
+                    for (var i = 0; i < grouped.size; i++) {
+                        grupos[i] = {
+                            label: grouped
+                            data: grouped.get(i + 1),
+                            backgroundColor: colors[i],
+                            parsing: {
+                                xAxisKey: 'data',
+                                yAxisKey: 'saldo'
+                            }
                         }
                     }
+
+                    var dataT = {
+                        datasets: grupos
+                    };
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                    var myNewChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: dataT
+                        /*,
+                        options: {
+                            responsive: true,
+                            title: { display: true, text: 'Vendas de Veículos - 2017 (milhares)' },
+                            legend: { position: 'bottom' },
+                            scales: {
+                                xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
+                                yAxes: [{
+                                    gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' },
+                                    ticks: { stepSize: 50, beginAtZero: true }
+                                }]
+                            },
+                        }
+                    */
+                    });
                 }
-
-                console.log(grupos);
-
-
-                var dataT = {
-                    datasets: grupos
-                };
-
-                const ctx = document.getElementById('myChart').getContext('2d');
-
-                var myNewChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: dataT
-                    /*,
-                    options: {
-                        responsive: true,
-                        title: { display: true, text: 'Vendas de Veículos - 2017 (milhares)' },
-                        legend: { position: 'bottom' },
-                        scales: {
-                            xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
-                            yAxes: [{
-                                gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' },
-                                ticks: { stepSize: 50, beginAtZero: true }
-                            }]
-                        },
-                    }
-                */
-                });
-            }
-        });
+            });
+        }
     </script>
 }

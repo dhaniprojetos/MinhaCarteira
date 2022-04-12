@@ -7,6 +7,8 @@ using MinhaCarteira.Cliente.Recursos.Refit;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using MinhaCarteira.Comum.Definicao.Modelo.Servico;
+using Newtonsoft.Json;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
@@ -28,19 +30,33 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
+        public IActionResult Privacy()
         {
-            var retornoApi = await _servico.ObterExtratos();
-
-            return View(retornoApi.Dados);
+            return View();
         }
 
         [HttpPost]
         public async Task<JsonResult> ObterExtratos()
         {
-            var resp = await _servico.ObterExtratos();
-
-            return Json(resp.Dados);
+            try
+            {
+                var resp = await _servico.ObterExtratos();
+                return Json(resp.Dados);
+            }
+            catch (Refit.ApiException ex)
+            {
+                var retornoApi = await ex.GetContentAsAsync<Resposta<Exception>>();
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+                
+                return null;
+            }
+            catch (Exception e)
+            {
+                var retornoApi = new Resposta<Exception>(e, e.Message);
+                TempData["RetornoApi"] = JsonConvert.SerializeObject(retornoApi);
+                
+                return null;
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
