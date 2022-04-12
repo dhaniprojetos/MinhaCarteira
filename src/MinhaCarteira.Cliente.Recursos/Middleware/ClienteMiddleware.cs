@@ -16,7 +16,7 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
         {
             if (baseUrlApi.EndsWith('/'))
                 baseUrlApi = baseUrlApi.Remove(baseUrlApi.Length - 1, 1);
-            
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<AuthorizationMessageHandler>();
 
@@ -27,10 +27,16 @@ namespace MinhaCarteira.Cliente.Recursos.Middleware
                     c.BaseAddress = new Uri(baseUrlApi + "/usuario"));
 
             services
+                .AddRefitClient<IRelatorioServico>()
+                .AddHttpMessageHandler<AuthorizationMessageHandler>()
+                .ConfigureHttpClient(c =>
+                    c.BaseAddress = new Uri(baseUrlApi + "/relatorio"));
+
+            services
                 .AddRefitClient<IServicoBase<Pessoa>>()
                 .AddHttpMessageHandler<AuthorizationMessageHandler>()
                 .ConfigureHttpClient(c =>
-                        c.BaseAddress = new Uri(baseUrlApi + "/pessoa"));
+                    c.BaseAddress = new Uri(baseUrlApi + "/pessoa"));
 
             services
                 .AddRefitClient<IServicoBase<InstituicaoFinanceira>>()

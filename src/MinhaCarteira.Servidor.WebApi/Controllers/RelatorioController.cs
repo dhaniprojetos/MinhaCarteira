@@ -19,7 +19,7 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
         }
 
         [HttpGet("obter-extratos")]
-        public async Task<IActionResult> ObterPorId()
+        public async Task<IActionResult> ObterExtratos()
         {
             IActionResult resposta;
             try

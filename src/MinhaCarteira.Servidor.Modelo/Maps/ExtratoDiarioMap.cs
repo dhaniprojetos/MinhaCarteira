@@ -8,8 +8,9 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
     {
         public void Configure(EntityTypeBuilder<ExtratoDiario> builder)
         {
-            builder.HasNoKey();
-            //builder.HasNoKey().ToView(null);
+            //builder.HasNoKey();
+            builder.HasNoKey().ToView("#extratoDiario");
+
             builder.Property(p => p.Valor).HasPrecision(18, 6);
             builder.Property(p => p.Saldo).HasPrecision(18, 6);
         }

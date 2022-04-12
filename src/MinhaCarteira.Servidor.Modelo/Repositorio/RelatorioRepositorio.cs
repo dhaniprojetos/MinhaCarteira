@@ -2,6 +2,7 @@
 using MinhaCarteira.Comum.Definicao.Entidade.Relatorio;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
@@ -18,9 +19,9 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
         public async Task<ExtratoRelatorio> ObterRelatorioSaldos()
         {
             var cmdSql = @"
-    drop table if exists ##extrato;
-    drop table if exists ##extratoDiario;
-    drop table if exists ##extratoMensal;
+    drop table if exists #extrato;
+    drop table if exists #extratoDiario;
+    drop table if exists #extratoMensal;
     
     select CAST(row_number() over(partition by grp.ContaBancariaId, grp.Data order by grp.Data) as int) Idx
          , grp.ContaBancariaId
@@ -28,7 +29,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
          , grp.Descricao
          , grp.Valor
          , sum(grp.Valor) over (partition by grp.ContaBancariaId order by grp.Data ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) Saldo
-    into ##extrato
+    into #extrato
     from (
         select id
 			 , datamovimento data
@@ -80,28 +81,29 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
     select cast(row_number() over (partition by ext.ContaBancariaId, substring(convert(nvarchar(8), ext.Data, 112), 1, 6) order by ext.ContaBancariaId, ext.Data) as int) idx
 		 , ext.ContaBancariaId, ext.Data, ext.Descricao, ext.Valor, ext.Saldo
-    into ##extratoDiario
-    from ##extrato ext
+    into #extratoDiario
+    from #extrato ext
     inner join (
         select max(Idx) Idx, ContaBancariaId, data
-        from ##extrato
+        from #extrato
         group by ContaBancariaId, data
     )tmp on ext.Idx = tmp.Idx and ext.ContaBancariaId = tmp.ContaBancariaId and ext.Data = tmp.Data
-    order by ext.ContaBancariaId, ext.Data;
+    
+    order by ext.Data, ext.ContaBancariaId;
     
 	select ext.idx, ext.ContaBancariaId, grp.MesAno, ext.Descricao, ext.Valor, ext.Saldo
-	into ##extratoMensal
-	from ##extratoDiario ext
+	into #extratoMensal
+	from #extratoDiario ext
 	inner join (
 		select max(idx) idx
 				, ContaBancariaId
 				, substring(convert(nvarchar(8), Data, 112), 1, 6) MesAno
-		from ##extratoDiario
+		from #extratoDiario
 		group by ContaBancariaId, substring(convert(nvarchar(8), Data, 112), 1, 6)
 	) grp on grp.idx = ext.idx 
 			and grp.contabancariaid = ext.contabancariaid 
 			and grp.MesAno = substring(convert(nvarchar(8), ext.Data, 112), 1, 6)
-	order by grp.ContaBancariaId, grp.MesAno
+	order by grp.MesAno, grp.ContaBancariaId
 ";
             using var ctx = _contexto;
             ctx.Database.OpenConnection();
@@ -109,11 +111,11 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             await ctx.Database.ExecuteSqlRawAsync(cmdSql);
 
             var extratoDiario = await ctx.ExtratoDiario
-                .FromSqlRaw("select * from ##extratoDiario order by ContaBancariaId, Data")
+                .FromSqlRaw("select * from #extratoDiario order by ContaBancariaId, Data")
                 .ToListAsync();
 
             var extratoMensal = await ctx.ExtratoMensal
-                .FromSqlRaw("select * from ##extratoMensal order by ContaBancariaId, MesAno")
+                .FromSqlRaw("select * from #extratoMensal order by ContaBancariaId, MesAno")
                 .ToListAsync();
 
             ctx.Database.CloseConnection();

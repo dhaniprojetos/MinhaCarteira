@@ -522,7 +522,7 @@ namespace MinhaCarteira.Servidor.Modelo.Migrations
                             Id = 1,
                             Nome = "remember.lte.pushmenu",
                             UsuarioId = 1,
-                            Valor = "sidebar-collapsed"
+                            Valor = "sidebar-collapse"
                         });
                 });
 

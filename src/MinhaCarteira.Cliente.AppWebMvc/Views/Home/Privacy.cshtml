@@ -1,6 +1,94 @@
-﻿@{
+﻿@model MinhaCarteira.Comum.Definicao.Entidade.Relatorio.ExtratoRelatorio
+
+@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<canvas id="myChart" width="400" height="100"></canvas>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
+            integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer">
+    </script>
+
+    <script>
+        function groupBy(list, keyGetter) {
+            const map = new Map();
+
+            list.forEach((item) => {
+                const key = keyGetter(item);
+                const collection = map.get(key);
+                if (!collection) {
+                    map.set(key, [{ data: item.data, saldo: item.saldo }]);
+                } else {
+                    collection.push({ data: item.data, saldo: item.saldo });
+                }
+            });
+
+            return map;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/obterExtratos",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (extratos) {
+
+                //var conta1 = extratos.saldosDiario
+                //    .filter(f => f.contaBancariaId === 1)
+                //    .map(function (item) {
+                //        return {
+                //            data: item.data,
+                //            saldo: item.saldo
+                //        };
+                //    });
+
+                const grouped = groupBy(
+                    extratos.saldosDiario,
+                    item => item.contaBancariaId);
+
+                var grupos = [grouped.size];
+                for (var i = 0; i < grouped.size; i++) {
+                    grupos[i] = {
+                        data: grouped.get(i+1),
+                        parsing: {
+                            xAxisKey: 'data',
+                            yAxisKey: 'saldo'
+                        }
+                    }
+                }
+
+                console.log(grupos);
+
+
+                var dataT = {
+                    datasets: grupos
+                };
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+
+                var myNewChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: dataT
+                    /*,
+                    options: {
+                        responsive: true,
+                        title: { display: true, text: 'Vendas de Veículos - 2017 (milhares)' },
+                        legend: { position: 'bottom' },
+                        scales: {
+                            xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
+                            yAxes: [{
+                                gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' },
+                                ticks: { stepSize: 50, beginAtZero: true }
+                            }]
+                        },
+                    }
+                */
+                });
+            }
+        });
+    </script>
+}

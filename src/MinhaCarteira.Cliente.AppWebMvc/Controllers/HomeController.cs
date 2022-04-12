@@ -3,18 +3,24 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using MinhaCarteira.Cliente.Recursos.Models;
 using Microsoft.AspNetCore.Http;
+using MinhaCarteira.Cliente.Recursos.Refit;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IRelatorioServico _servico;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(
             ILogger<HomeController> logger,
-            IHttpContextAccessor httpContext)
+            IRelatorioServico servico)
         {
             _logger = logger;
+            _servico = servico;
         }
 
         public IActionResult Index()
@@ -22,9 +28,19 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
-            return View();
+            var retornoApi = await _servico.ObterExtratos();
+
+            return View(retornoApi.Dados);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ObterExtratos()
+        {
+            var resp = await _servico.ObterExtratos();
+
+            return Json(resp.Dados);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
