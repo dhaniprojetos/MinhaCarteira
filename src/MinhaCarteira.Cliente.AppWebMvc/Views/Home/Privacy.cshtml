@@ -26,16 +26,17 @@
             list.forEach((item) => {
                 const key = keyGetter(item);
                 const collection = map.get(key);
+
                 if (!collection) {
                     map.set(key, [{
-                        data: item.data,
-                        dataJS: Date.parse(item.data),
+                        data: item.data.replace('T00:00:00', ''),
+                        dataJS: new Date(item.data.replace('T00:00:00', '')),
                         saldo: item.saldo
                     }]);
                 } else {
                     collection.push({
-                        data: item.data,
-                        dataJS: Date.parse(item.data),
+                        data: item.data.replace('T00:00:00', ''),
+                        dataJS: new Date(item.data.replace('T00:00:00', '')),
                         saldo: item.saldo
                     });
                 }
@@ -59,22 +60,24 @@
                     const grouped = groupBy(
                         extratos.saldosDiario,
                         item => item.contaBancariaNome);
-                    console.log(grouped);
 
-                    var colors = ["red", "blue", "yellow", "green", "brown", "black", "gray", "silver"];
                     var grupos = [grouped.size];
+                    var colors = ["red", "blue", "yellow", "green", "brown", "black", "gray", "silver"];
 
-                    for (var i = 0; i < grouped.size; i++) {
+                    console.log(grouped);
+                    var chaves = Array.from(grouped.keys());
+                    for (var i = 0; i < chaves.length; i++) {
                         grupos[i] = {
-                            label: grouped
-                            data: grouped.get(i + 1),
+                            label: chaves[i],
+                            hidden: chaves[i] !== 'Total',
+                            data: grouped.get(chaves[i]),
                             backgroundColor: colors[i],
                             parsing: {
                                 xAxisKey: 'data',
                                 yAxisKey: 'saldo'
                             }
                         }
-                    }
+                    };
 
                     var dataT = {
                         datasets: grupos
@@ -83,7 +86,7 @@
                     const ctx = document.getElementById('myChart').getContext('2d');
 
                     var myNewChart = new Chart(ctx, {
-                        type: 'bar',
+                        type: 'line',
                         data: dataT
                         /*,
                         options: {

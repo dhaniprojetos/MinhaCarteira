@@ -28,24 +28,24 @@ function gravarEstadoMenu(valor) {
         data: { "condicao": valor },
         type: "POST",
         success: function (data) {
-            console.log("OK");
-            console.log(data);
+            //console.log("OK");
+            //console.log(data);
         },
         error: function (response) {
-            console.log(response.responseText);
+            //console.log(response.responseText);
         },
         failure: function (response) {
-            console.log(response.responseText);
+            //console.log(response.responseText);
         }
     });
 }
 
 $(document).on('shown.lte.pushmenu', function (configMenu) {
-    console.log("sidebar-open");
+    //console.log("sidebar-open");
     gravarEstadoMenu("sidebar-open");
 })
 
 $(document).on('collapsed.lte.pushmenu', function (configMenu) {
-    console.log("sidebar-collapse");
+    //console.log("sidebar-collapse");
     gravarEstadoMenu("sidebar-collapse");
 })

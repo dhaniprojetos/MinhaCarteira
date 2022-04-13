@@ -33,7 +33,7 @@ function handleGesture() {
 }
 
 function exibirMenuLatereal() {
-    console.log('Swiped Right');
+    //console.log('Swiped Right');
     //$("body").removeClass("sidebar-collapse");
     //$("body").addClass("sidebar-open");
     $('[data-widget="pushmenu"]').PushMenu('toggle');
