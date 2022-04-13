@@ -2,7 +2,7 @@
 using MinhaCarteira.Comum.Definicao.Entidade.Relatorio;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Modelo.Repositorio
@@ -16,7 +16,7 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
             _contexto = contexto;
         }
 
-        public async Task<ExtratoRelatorio> ObterRelatorioSaldos()
+        public async Task<ExtratoRelatorio> ObterRelatorioSaldos(DateTime inicio, DateTime fim)
         {
             var cmdSql = @"
     drop table if exists #extrato;
@@ -118,13 +118,16 @@ namespace MinhaCarteira.Servidor.Modelo.Repositorio
 
             await ctx.Database.ExecuteSqlRawAsync(cmdSql);
 
+            var filtroMensal = $"where MesAno between '{inicio:yyyyMM}' and '{fim:yyyyMM}'";
+            var filtroDiario = $"where data between '{inicio:yyyyMMdd}' and '{fim:yyyyMMdd}'";
+
             var extratoDiario = await ctx.ExtratoDiario
-                .FromSqlRaw("select * from #extratoDiario order by Data, ContaBancariaId")
+                .FromSqlRaw($"select * from #extratoDiario {filtroDiario} order by Data, ContaBancariaId")
                 .AsNoTracking()
                 .ToListAsync();
 
             var extratoMensal = await ctx.ExtratoMensal
-                .FromSqlRaw("select * from #extratoMensal order by MesAno, ContaBancariaId")
+                .FromSqlRaw($"select * from #extratoMensal {filtroMensal} order by MesAno, ContaBancariaId")
                 .AsNoTracking()
                 .ToListAsync();
 

@@ -1,7 +1,7 @@
 ﻿using MinhaCarteira.Comum.Definicao.Entidade.Relatorio;
 using MinhaCarteira.Comum.Definicao.Interface.Modelo;
-using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Repositorio;
+using System;
 using System.Threading.Tasks;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
@@ -11,15 +11,14 @@ namespace MinhaCarteira.Servidor.Controle.Servico
         private readonly IRelatorioRepositorio _repositorio;
 
         public RelatorioServico(
-            RelatorioRepositorio repositorio, 
-            MinhaCarteiraContext ctx)
+            RelatorioRepositorio repositorio)
         {
             _repositorio = repositorio;
         }
 
-        public async Task<ExtratoRelatorio> ObterRelatorioSaldos()
+        public async Task<ExtratoRelatorio> ObterRelatorioSaldos(DateTime inicio, DateTime fim)
         {
-            return await _repositorio.ObterRelatorioSaldos();
+            return await _repositorio.ObterRelatorioSaldos(inicio, fim);
         }
     }
 }

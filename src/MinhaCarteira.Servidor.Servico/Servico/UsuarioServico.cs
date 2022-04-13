@@ -8,7 +8,6 @@ using MinhaCarteira.Servidor.Controle.Servico.Base;
 using System.Threading.Tasks;
 using System.Linq;
 using MinhaCarteira.Servidor.Modelo.Helper;
-using System;
 
 namespace MinhaCarteira.Servidor.Controle.Servico
 {

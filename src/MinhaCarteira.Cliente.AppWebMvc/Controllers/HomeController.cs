@@ -5,7 +5,6 @@ using MinhaCarteira.Cliente.Recursos.Models;
 using Microsoft.AspNetCore.Http;
 using MinhaCarteira.Cliente.Recursos.Refit;
 using System.Threading.Tasks;
-using System.Linq;
 using System;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Newtonsoft.Json;
@@ -36,11 +35,18 @@ namespace MinhaCarteira.Cliente.AppWebMvc.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ObterExtratos()
+        public async Task<JsonResult> ObterExtratos(string dataInicial, string dataFinal)
         {
             try
             {
-                var resp = await _servico.ObterExtratos();
+                var inicio = string.IsNullOrWhiteSpace(dataInicial)
+                    ? DateTime.Now
+                    : DateTime.Parse(dataInicial);
+                var fim = string.IsNullOrWhiteSpace(dataFinal)
+                    ? DateTime.Now
+                    : DateTime.Parse(dataFinal);
+
+                var resp = await _servico.ObterExtratos(inicio, fim);
                 return Json(resp.Dados);
             }
             catch (Refit.ApiException ex)

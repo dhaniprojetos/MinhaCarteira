@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MinhaCarteira.Comum.Definicao.Entidade.Relatorio;
 using MinhaCarteira.Comum.Definicao.Modelo.Servico;
 using Refit;
@@ -8,6 +9,6 @@ namespace MinhaCarteira.Cliente.Recursos.Refit
     public interface IRelatorioServico
     {
         [Get("/obter-extratos")]
-        Task<Resposta<ExtratoRelatorio>> ObterExtratos();
+        Task<Resposta<ExtratoRelatorio>> ObterExtratos(DateTime inicio, DateTime fim);
     }
 }

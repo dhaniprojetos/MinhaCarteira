@@ -19,12 +19,12 @@ namespace MinhaCarteira.Servidor.WebApi.Controllers
         }
 
         [HttpGet("obter-extratos")]
-        public async Task<IActionResult> ObterExtratos()
+        public async Task<IActionResult> ObterExtratos(DateTime inicio, DateTime fim)
         {
             IActionResult resposta;
             try
             {
-                var itemDb = await _servico.ObterRelatorioSaldos();
+                var itemDb = await _servico.ObterRelatorioSaldos(inicio, fim);
 
                 resposta = itemDb != null
                     ? Ok(new Resposta<ExtratoRelatorio>(

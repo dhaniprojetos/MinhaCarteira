@@ -2,10 +2,32 @@
 
 @{
     ViewData["Title"] = "Privacy Policy";
+    var dataFinal = DateTime.Now.AddMonths(3);
+    var dataInicial = DateTime.Now.AddMonths(-3);
+
+    var dataFinalFormatada = new DateTime(dataFinal.Year, dataFinal.Month, 1);
+    var dataInicialFormatada = new DateTime(dataInicial.Year, dataInicial.Month, 1);
 }
 
 <div class="row">
-    <button class="btn btn-primary" onclick="montarEstatistica()">Montar estatísticas</button>
+    <div class="mb-3 col-md-2">
+        <label class="form-label">Data inicial</label>
+        <input id="txtDataInicial" class="form-control date" value="@dataInicialFormatada.ToString("dd/MM/yyyy")" />
+        <span class="text-danger"></span>
+    </div>
+
+    <div class="mb-3 col-md-3">
+        <label class="form-label">Data inicial</label>
+        <div class="input-group mb-3">
+
+            <input id="txtDataFinal" class="form-control date" value="@dataFinalFormatada.AddDays(-1).ToString("dd/MM/yyyy")" />
+            <button id="btnMontarEstatistica"
+                    class="btn btn-primary"
+                    onclick="montarEstatistica()">
+                <i class="fa fa-search"></i> Buscar
+            </button>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -13,11 +35,13 @@
 </div>
 
 @section Scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
-            integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer">
-    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
+                integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
+                crossorigin="anonymous"
+                referrerpolicy="no-referrer">
+        </script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0/chart.js" integrity="sha512-heziW2w3+/erezjMdHOyvg67lCz19RzOQRy118vTH9+DU6GS56G2FdQJDrGlXuCKGpH+yPdWZajxK+IoqvjYjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         function groupBy(list, keyGetter) {
@@ -45,30 +69,53 @@
             return map;
         }
         function montarEstatistica() {
+            $("#btnMontarEstatistica").addClass("disabled");
+            var inicio = $("#txtDataInicial").val();
+            var fim = $("#txtDataFinal").val();
+
             $.ajax({
+                url: window.siteRoot + 'home/obterExtratos',
+                data: { "dataInicial": inicio, "dataFinal": fim },
                 type: "POST",
-                url: "/Home/obterExtratos",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
                 error: function (xhr, ajaxOptions, thrownError) {
+                    $("#btnMontarEstatistica").removeClass("disabled");
+
                     console.log(xhr.status);
                     console.log(ajaxOptions);
                     console.log(thrownError);
                 },
                 success: function (extratos) {
-
+                    const ctx = document.getElementById('myChart').getContext('2d');
                     const grouped = groupBy(
                         extratos.saldosDiario,
                         item => item.contaBancariaNome);
 
                     var grupos = [grouped.size];
-                    var colors = ["red", "blue", "yellow", "green", "brown", "black", "gray", "silver"];
+                    var colors = ["red", "blue", "green", "orange", "brown", "black", "gray", "silver"];
 
-                    console.log(grouped);
                     var chaves = Array.from(grouped.keys());
                     for (var i = 0; i < chaves.length; i++) {
+                        let gradientVermelho = ctx.createLinearGradient(0, 0, 0, 250);
+                        gradientVermelho.addColorStop(0.0, "white");
+                        gradientVermelho.addColorStop(0.6, "red");
+                        gradientVermelho.addColorStop(1.0, "darkred");
+
+                        let gradientAzul = ctx.createLinearGradient(0, 250, 0, 0);
+                        gradientAzul.addColorStop(0.0, "white");
+                        gradientAzul.addColorStop(0.6, "blue");
+                        gradientAzul.addColorStop(1.0, "darkBlue");
+
                         grupos[i] = {
                             label: chaves[i],
+                            tension: 0.4,
+                            //borderColor: colors[i],
+                            fill: {
+                                "above": gradientAzul,
+                                "below": gradientVermelho,
+                                "target": {
+                                    "value": 0
+                                }
+                            },
                             hidden: chaves[i] !== 'Total',
                             data: grouped.get(chaves[i]),
                             backgroundColor: colors[i],
@@ -83,26 +130,50 @@
                         datasets: grupos
                     };
 
-                    const ctx = document.getElementById('myChart').getContext('2d');
-
+                    var oldChart = Chart.getChart("myChart");
+                    if (oldChart != undefined) {
+                        oldChart.destroy();
+                    }
+                    
                     var myNewChart = new Chart(ctx, {
                         type: 'line',
-                        data: dataT
-                        /*,
+                        data: dataT,
                         options: {
                             responsive: true,
-                            title: { display: true, text: 'Vendas de Veículos - 2017 (milhares)' },
-                            legend: { position: 'bottom' },
-                            scales: {
-                                xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
-                                yAxes: [{
-                                    gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' },
-                                    ticks: { stepSize: 50, beginAtZero: true }
-                                }]
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Fluxo de caixa'
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
                             },
+                            interaction: {
+                                intersect: true,
+                            },
+                            scales: {
+                                x: {
+                                    display: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Data'
+                                    }
+                                },
+                                y: {
+                                    display: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Saldo'
+                                    },
+                                    suggestedMin: -10,
+                                    suggestedMax: 200
+                                }
+                            }
                         }
-                    */
                     });
+
+                    $("#btnMontarEstatistica").removeClass("disabled");
                 }
             });
         }

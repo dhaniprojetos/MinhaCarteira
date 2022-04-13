@@ -6,7 +6,6 @@ using MinhaCarteira.Comum.Definicao.Interface.Modelo.Base;
 using MinhaCarteira.Comum.Definicao.Modelo;
 using MinhaCarteira.Servidor.Modelo.Data;
 using MinhaCarteira.Servidor.Modelo.Helper;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
