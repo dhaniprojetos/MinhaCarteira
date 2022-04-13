@@ -11,6 +11,15 @@
 
 <div class="row">
     <div class="mb-3 col-md-2">
+        <label class="form-label">Tipo</label>
+        <select id="txtTipo" class="form-select" aria-label="Default select example">
+            <option value="Diario" selected>Diario</option>
+            <option value="Mensal">Mensal</option>
+        </select>
+        <span class="text-danger"></span>
+    </div>
+
+    <div class="mb-3 col-md-2">
         <label class="form-label">Data inicial</label>
         <input id="txtDataInicial" class="form-control date" value="@dataInicialFormatada.ToString("dd/MM/yyyy")" />
         <span class="text-danger"></span>
@@ -23,7 +32,7 @@
             <input id="txtDataFinal" class="form-control date" value="@dataFinalFormatada.AddDays(-1).ToString("dd/MM/yyyy")" />
             <button id="btnMontarEstatistica"
                     class="btn btn-primary"
-                    onclick="montarEstatistica()">
+                    onclick="obterRelatorios()">
                 <i class="fa fa-search"></i> Buscar
             </button>
         </div>
@@ -41,10 +50,10 @@
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer">
         </script>*@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0/chart.js" integrity="sha512-heziW2w3+/erezjMdHOyvg67lCz19RzOQRy118vTH9+DU6GS56G2FdQJDrGlXuCKGpH+yPdWZajxK+IoqvjYjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0/chart.js" integrity="sha512-heziW2w3+/erezjMdHOyvg67lCz19RzOQRy118vTH9+DU6GS56G2FdQJDrGlXuCKGpH+yPdWZajxK+IoqvjYjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        function groupBy(list, keyGetter) {
+        function groupBy(tipo, list, keyGetter) {
             const map = new Map();
 
             list.forEach((item) => {
@@ -53,14 +62,18 @@
 
                 if (!collection) {
                     map.set(key, [{
-                        data: item.data.replace('T00:00:00', ''),
-                        dataJS: new Date(item.data.replace('T00:00:00', '')),
+                        data: tipo === "Mensal"
+                            ? item.mesAno
+                            : item.data.replace('T00:00:00', ''),
                         saldo: item.saldo
                     }]);
                 } else {
                     collection.push({
-                        data: item.data.replace('T00:00:00', ''),
-                        dataJS: new Date(item.data.replace('T00:00:00', '')),
+                        //data: item.data.replace('T00:00:00', ''),
+                        //data: item.mesAno,
+                        data: tipo === "Mensal"
+                            ? item.mesAno
+                            : item.data.replace('T00:00:00', ''),
                         saldo: item.saldo
                     });
                 }
@@ -68,10 +81,11 @@
 
             return map;
         }
-        function montarEstatistica() {
+        function obterRelatorios() {
             $("#btnMontarEstatistica").addClass("disabled");
             var inicio = $("#txtDataInicial").val();
             var fim = $("#txtDataFinal").val();
+            var tipo = $("#txtTipo").val();
 
             $.ajax({
                 url: window.siteRoot + 'home/obterExtratos',
@@ -87,7 +101,10 @@
                 success: function (extratos) {
                     const ctx = document.getElementById('myChart').getContext('2d');
                     const grouped = groupBy(
-                        extratos.saldosDiario,
+                        tipo,
+                        tipo === "Mensal"
+                            ? extratos.saldosMensal
+                            : extratos.saldosDiario,
                         item => item.contaBancariaNome);
 
                     var grupos = [grouped.size];
@@ -116,7 +133,7 @@
                                     "value": 0
                                 }
                             },
-                            hidden: chaves[i] !== 'Total',
+                            hidden: chaves[i] !== 'Todas',
                             data: grouped.get(chaves[i]),
                             backgroundColor: colors[i],
                             parsing: {
@@ -134,7 +151,7 @@
                     if (oldChart != undefined) {
                         oldChart.destroy();
                     }
-                    
+
                     var myNewChart = new Chart(ctx, {
                         type: 'line',
                         data: dataT,
