@@ -118,7 +118,7 @@
                         gradientVermelho.addColorStop(1.0, "darkred");
 
                         let gradientAzul = ctx.createLinearGradient(0, 250, 0, 0);
-                        gradientAzul.addColorStop(0.0, "white");
+                        gradientAzul.addColorStop(0.0, "#CCCCFF");
                         gradientAzul.addColorStop(0.6, "blue");
                         gradientAzul.addColorStop(1.0, "darkBlue");
 
@@ -168,6 +168,23 @@
                             },
                             interaction: {
                                 intersect: true,
+                            },
+                            elements: {
+                                point: {
+                                    radius: 0,
+                                    hitRadius: 6,
+                                    hoverRadius: 6
+                                }
+                            },
+                            tooltips: {
+                                backgroundColor: 'transparent',
+                                displayColors: false,
+                                bodyFontSize: 14,
+                                callbacks: {
+                                    label: function (tooltipItems, data) {
+                                        return tooltipItems.yLabel + '°C';
+                                    }
+                                }
                             },
                             scales: {
                                 x: {

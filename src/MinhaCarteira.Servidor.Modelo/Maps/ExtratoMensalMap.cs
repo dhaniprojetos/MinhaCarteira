@@ -11,7 +11,7 @@ namespace MinhaCarteira.Servidor.Modelo.Maps
             //builder.HasNoKey();
             builder.HasNoKey().ToView("#extratoMensal");
 
-            builder.Property(p => p.Valor).HasPrecision(18, 6);
+            //builder.Property(p => p.Valor).HasPrecision(18, 6);
             builder.Property(p => p.Saldo).HasPrecision(18, 6);
         }
     }
